@@ -43,6 +43,7 @@ add_custom_target(${PROJECT_NAME}-glossaries
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                 DEPENDS ${main_file} ${PROJECT_NAME}-prebuild)
 add_custom_target(pdf
+                  ALL
                   COMMAND ${PDFLATEX_COMPILER}
                           -output-directory ${CMAKE_BINARY_DIR}
                           --shell-escape
@@ -62,12 +63,14 @@ add_custom_target(pdf
 set(html_format_options --number-sections --table-of-contents=true --template=${CMAKE_CURRENT_SOURCE_DIR}/template.html --css=${css_file})
 
 add_custom_target(html
+                  ALL
                   COMMAND ${PANDOC_COMPILER} ${main_file} -f latex -t html ${html_format_options} -s -o ${CMAKE_BINARY_DIR}/html/hlsl.html
                   COMMENT "Generating HTML"
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
                   DEPENDS ${main_file} ${PROJECT_NAME}-prebuild ${PROJECT_NAME}-glossaries ${PROJECT_NAME}-dirs)
 
 add_custom_target(html-chunked
+                  ALL
                   COMMAND ${PANDOC_COMPILER} ${main_file} -f latex -t chunkedhtml ${html_format_options} -s -o ${CMAKE_BINARY_DIR}/html/hlsl.zip
                   COMMENT "Generating HTML"
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
