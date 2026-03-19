@@ -47,3 +47,36 @@
   name={ISO/IEC 60559:2020},
   description={IEEE-754 Standard For Floating Point Arithmetic}
 }
+
+\newglossaryentry{lane}{
+  name={Lane},
+  description={The computation performed on a single element as described in the
+  \acrshort{spmd} program. Also called: thread.}
+}
+
+\newglossaryentry{wave}{
+  name={Wave},
+  description={A group of \gls{lane}s which execute together. The number of
+  \gls{lane}s in a Wave varies by hardware implementation. Also called: warp,
+  SIMD-group, subgroup, or wavefront.}
+}
+
+\newglossaryentry{quad}{
+  name={Quad},
+  description={A group of four \gls{lane}s which form a cluster of adjacent
+  computations in the data topology. Also called: quad-group or quad-wave. }
+}
+
+\newglossaryentry{threadgroup}{
+  name={Thread Group},
+  description={A group of \gls{lane}s which may be subdivided into one or more
+  \gls{wave}s and comprise a larger computation. Also known as: group,
+  workgroup, block or thread block.}
+}
+
+\newglossaryentry{dispatch}{
+  name={Dispatch},
+  description={A group of one or more \gls{threadgroup}s which comprise the
+  largest unit of a shader execution. Also called: grid, compute space or index
+  space.}
+}

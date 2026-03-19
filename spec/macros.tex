@@ -13,7 +13,7 @@
 
 \setcounter{secnumdepth}{3} % number subsections
 % Only include sections (no subsections) in the TOC
-\setcounter{tocdepth}{3}
+\setcounter{tocdepth}{1}
 % Ensure section entries are left-aligned (no extra indent)
 \makeatletter
 \renewcommand{\l@chapter}[2]{\@dottedtocline{0}{0pt}{2.6em}{\textbf{#1}}{#2}}
@@ -40,8 +40,6 @@
 \newcommand\resumetoc{\let\addcontentsline\origcontentsline}
 
 \newcommand{\Ch}[2]{\vspace{1em}\chapter[#1]{#1\hfill[#2]}\label{#2}}
-\newcommand{\ChUnnumbered}[2]{\vspace{1em}\chapter*{#1\hfill[#2]}\label{#2}\addcontentsline{toc}{chapter}{#1}}
-
 \newcommand{\Sec}[2]{\section[#1]{#1\hfill[#2]}\label{#2}}
 \newcommand{\Sub}[2]{\subsection[#1]{#1\hfill[#2]}\label{#2}}
 \newcommand{\SubSub}[2]{\subsubsection[#1]{#1\hfill[#2]}\label{#2}}
