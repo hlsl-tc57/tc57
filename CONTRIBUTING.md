@@ -36,3 +36,11 @@ technical work is done by the TC57 RFTG, for which the following IPR policies ap
 * [Ecma International RF Patent Policy](https://ecma-international.org/memento/Policies/Ecma_Royalty-Free_Patent_Policy_Extension_Option.htm)
 * [Ecma International Software Copyright
   Policy](https://ecma-international.org/memento/Policies/Ecma_Policy_on_Submission_Inclusion_and_Licensing_of_Software.htm)
+
+## AI Use Policy
+
+Ecam TC57 requires that all contributions follow the ISO [Guidance on use of
+artificial intelligence (AI) for ISO
+committees](https://www.iso.org/files/live/sites/isoorg/files/developing_standards/who_develops_standards/docs/use%20of%20AI.pdf).
+Following this policy is to avoid any IP issues which may impact the ability of
+standards produced by TC57 being submitted to ISO.
