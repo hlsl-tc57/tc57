@@ -1,0 +1,139 @@
+%%------------------------------------------------------------------------------
+%% General formatting
+%%------------------------------------------------------------------------------
+
+\newcommand{\keyword}[1]{{\texttt{#1}}}
+
+\newcommand*{\numberinmargin}[1]{%
+  \makebox[0pt][r]{%
+    \makebox[\marginparwidth][l]{\arabic{#1}}%
+    \hskip\marginparsep
+  }%
+}
+
+\setcounter{secnumdepth}{3} % number subsections
+% Only include sections (no subsections) in the TOC
+\setcounter{tocdepth}{1}
+% Ensure section entries are left-aligned (no extra indent)
+\makeatletter
+\renewcommand{\l@chapter}[2]{\@dottedtocline{0}{0pt}{2.6em}{\textbf{#1}}{#2}}
+\renewcommand{\l@section}[2]{\@dottedtocline{1}{0pt}{2.6em}{\textbf{#1}}{#2}}
+\makeatother
+
+% Make spacing between paragraphs and titles consistent
+\titleformat{\chapter}{\large\bfseries}{\thechapter.}{0em}{}
+\titlespacing{\chapter}{0pt}{0.5\baselineskip}{0pt}
+
+
+\titleformat{\section}{\bfseries}{\thesection.}{0em}{}
+\titlespacing{\section}{0pt}{0.5\baselineskip}{0pt}
+
+\titleformat{\subsection}{\bfseries}{\thesubsection.}{0em}{}
+\titlespacing{\subsection}{0pt}{0.5\baselineskip}{0pt}
+
+\titleformat{\subsubsection}{\bfseries}{\thesubsection.}{0em}{}
+\titlespacing{\subsubsection}{0pt}{0.5\baselineskip}{0pt}
+
+\newcommand{\nocontentsline}[3]{}
+\let\origcontentsline\addcontentsline
+\newcommand\stoptoc{\let\addcontentsline\nocontentsline}
+\newcommand\resumetoc{\let\addcontentsline\origcontentsline}
+
+\newcommand{\Ch}[2]{\vspace{1em}\chapter[#1]{#1\hfill[#2]}\label{#2}}
+\newcommand{\ChUnnumbered}[2]{\vspace{1em}\chapter*{#1\hfill[#2]}\label{#2}\addcontentsline{toc}{chapter}{#1}}
+
+\newcommand{\Sec}[2]{\section[#1]{#1\hfill[#2]}\label{#2}}
+\newcommand{\Sub}[2]{\subsection[#1]{#1\hfill[#2]}\label{#2}}
+\newcommand{\SubSub}[2]{\subsubsection[#1]{#1\hfill[#2]}\label{#2}}
+\newcommand{\parnum}{\numberinmargin{parcount}}
+
+% Don't start a new page for each chapter, and don't reset page numbers at the
+% start of each chapter. Ths conforms to the Ecma house style (see: TOOLS-011,
+% 6.2.1).
+\titleclass{\chapter}{straight}
+
+\newcommand{\newparcounter}[1]{
+\newcounter{#1}
+\counterwithin{#1}{chapter}
+\counterwithin{#1}{section}
+\counterwithin{#1}{subsection}
+\counterwithin{#1}{subsubsection}
+}
+
+\newparcounter{parcount}
+\newcommand\p{%
+    \vspace{0.5\baselineskip}
+    \stepcounter{parcount}%
+    \parnum%
+}
+
+\newcommand{\Par}[2]{\paragraph[#1]{#1\hfill[#2]\\}\label{#2}\p}
+
+% Table captions will be separated from the table number by a dash (see:
+% TOOLS-011,6.2.5).
+\captionsetup{labelsep=endash}
+
+%%------------------------------------------------------------------------------
+%% Grammar formatting
+%%------------------------------------------------------------------------------
+
+\newlength{\GrammarIndent}
+\setlength{\GrammarIndent}{\leftmargini}
+\newlength{\GrammarInc}
+\setlength{\GrammarInc}{\GrammarIndent}
+\newlength{\GrammarRest}
+\setlength{\GrammarRest}{2\GrammarIndent}
+
+\newenvironment{grammar} {
+  \newcommand{\define}[1]{{\textit{##1}\textnormal{:}}}
+  \newcommand{\terminal}[1]{{\texttt{##1}}}
+  \newcommand{\br}{\\}
+  \newcommand{\opt}[1]{{##1\textsubscript{\textit{opt}}}}
+
+  \renewcommand{\texttt}[1]{{\small\ttfamily\upshape ##1}}
+
+  \newcommand{\grammarindentfirst}{\GrammarIndent}
+  \newcommand{\grammarindentinc}{\GrammarInc}
+  \newcommand{\grammarindentrest}{\GrammarRest}
+  \itshape
+
+  \begin{grammarlist}
+  \item\relax
+}{
+  \end{grammarlist}
+}
+
+\newlist{grammarlist}{itemize}{1}
+\setlist[grammarlist]{
+  parsep=1ex, partopsep=0pt, itemsep=0pt, topsep=0pt, label={},
+  leftmargin=\grammarindentrest, listparindent=-\grammarindentinc,
+  itemindent=\listparindent
+}
+
+\lstloadlanguages{C++} % TODO: Consider defining an HLSL language...
+\lstnewenvironment{HLSL}
+{\lstset{language=C++,
+basicstyle=\small,
+xleftmargin=1em}}{}
+
+%%------------------------------------------------------------------------------
+%% Note formatting
+%%------------------------------------------------------------------------------
+
+% Ecma style requires notes be numbered if more than one occurs in the same
+% section. This doesn't currently happen in our spec, but we may need to define
+% a note counter if it does in the future.
+\newenvironment{note}
+  {
+   \vspace{0.5\baselineskip}
+   \begin{tabular}{|p{3.0em} p{0.84\textwidth}|}
+   \hline
+   \begin{minipage}[t]{3.0em}\centering\textnormal{NOTE}
+   \end{minipage} &
+   \begin{minipage}[t]{0.84\textwidth}\raggedright
+  }
+  {
+   \end{minipage} \\\hline
+   \end{tabular}
+   \vspace{0.5\baselineskip}
+  }

@@ -1,0 +1,72 @@
+\documentclass[a4paper,10pt,oneside,openany,final]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{nameref}
+\usepackage[acronym,numberedsection=nameref,toc]{glossaries}
+\usepackage{multicol}
+\usepackage[marginparwidth=20pt, margin=2cm, top=4cm, headsep=2cm]{geometry}
+\usepackage{listings}
+\usepackage{marginnote}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usepackage{svg}
+\usepackage{caption}
+\usetikzlibrary{arrows,automata,positioning}
+
+\renewcommand{\familydefault}{\sfdefault}
+
+\titleformat{\chapter}
+  {\LARGE\bfseries}{\thechapter}{10pt}{}
+\titlespacing{\chapter}{0pt}{0pt}{10pt}
+
+\input{glossary}
+\title{High-Level Shader Language Specification\\
+       \normalsize{Working Draft}}
+
+\makepagestyle{body}
+ \makeevenhead{body}{}{\includesvg[width=\columnwidth]{assets/ecma-header.svg}}{}
+ \makeoddhead{body}{}{\includesvg[width=\columnwidth]{assets/ecma-header.svg}}{}
+ \makeevenfoot{body}{\thepage}{Working Draft}{\textsuperscript{\textcopyright} Ecma International \the\year}
+ \makeoddfoot{body}{\textsuperscript{\textcopyright} Ecma International \the\year}{Working Draft}{\thepage}
+\pagestyle{body}
+% This is needed to handle cases where a chapter fits entirely on one page,
+% which would otherwise cause the page style to revert to the default (plain)
+% for that page.
+\aliaspagestyle{chapter}{body}
+
+\setcounter{secnumdepth}{3}
+
+\setlength\parindent{0cm}
+
+\begin{document}
+\input{macros}
+\maketitle
+% Hide page number on the title page and do not count it in frontmatter
+\thispagestyle{empty}
+\clearpage
+
+% Use roman numerals for front matter (TOC, lists, etc.)
+\pagenumbering{roman}
+
+% don't include the toc in the toc.
+\stoptoc
+\tableofcontents
+\resumetoc
+\clearpage
+
+% Switch to arabic numbering starting at 1 for main content
+\input{introduction}
+\clearpage
+\pagenumbering{arabic}
+\input{scope}
+\input{references}
+
+\clearpage
+
+\printglossary[type=\acronymtype]
+\printglossary
+
+\end{document}

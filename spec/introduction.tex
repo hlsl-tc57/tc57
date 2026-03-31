@@ -1,0 +1,35 @@
+\ChUnnumbered{Introduction}{Intro}
+
+\p The \acrfull{hlsl} is the GPU programming language originally provided in
+conjunction with the \gls{dx} runtime. Over many years its use has expanded to
+cover every major rendering API across all major development platforms.
+
+\p \acrshort{hlsl} draws heavy inspiration originally from \gls{isoC} and later
+from \gls{isoCPP} with additions specific to graphics and parallel computation
+programming. The language is also influenced to a lesser degree by other popular
+graphics and parallel programming languages.
+
+\p \acrshort{hlsl} has two reference implementations which this specification
+draws heavily from. The original reference implementation \acrfull{fxc} has been
+in use since \gls{dx} 9. The more recent reference implementation \acrfull{dxc}
+has been the primary shader compiler since \gls{dx} 12.
+
+\p In writing this specification bias is leaned toward the language
+behavior of \acrshort{dxc} rather than the behavior of \acrshort{fxc}, although
+that can vary by context.
+
+\p In very rare instances this spec will be aspirational, and may diverge from
+both reference implementation behaviors. This will only be done in instances
+where there is an intent to alter implementation behavior in the future. Since
+this document and the implementations are living sources, one or the other may
+be ahead in different regards at any point in time. The authors will see to
+provide editorial notes in such cases to clarify the intent of the specification
+and the state of the implementations.
+
+\p This document is a \textit{working draft}, and has not been adopted by the
+Ecma General Assembly. As such, this document is subject to change as the
+specification process continues.
+
+% TODO: Delete the paragraph above and replace it with the text below:
+% \p This Ecma Standard was developed by Technical Committee 57 and was adopted
+% by the General Assembly of <month> <year>.
