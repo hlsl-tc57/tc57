@@ -1,4 +1,4 @@
-<img src="resources/HLSL.png" width="128">
+<img src="assets/HLSL.png" width="128">
 
 # Ecma TC57 - The HLSL Standard Committee
 
@@ -11,8 +11,8 @@ To understand the processes used by the Technical Committee please review our
 [process documentation](/docs/Process.md).
 
 The draft HLSL specification is available in
-[HTML](https://hlsl-tc57.github.io/tc57/spec/index.html) and
-[PDF](https://hlsl-tc57.github.io/tc57/spec/hlsl.pdf).
+[HTML](https://llvm-beanz.github.io/tc57/spec/index.html) and
+[PDF](https://llvm-beanz.github.io/tc57/spec/hlsl.pdf).
 
 ## Building the Specification
 
