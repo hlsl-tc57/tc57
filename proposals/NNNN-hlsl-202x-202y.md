@@ -43,12 +43,10 @@ parallel. The proposal adopts a narrowly focused HLSL 202x which will be the
 **first Ecma Standard**. The goal will be to support this language variant in
 both DXC and Clang, although DXC may not be fully conformant.
 
-As a target of opportunity given the ongoing work in Clang we have a set of C++
-features we know we would like to expose in HLSL which we intend to classify as
-the HLSL 202y feature release. HLSL 202y also provides an opportunity for more
-breaking changes where we can implement legacy HLSL syntaxes and semantics in
-Clang in ways that enable better tooling for source code migration to newer
-language constructs.
+HLSL 202y also provides an opportunity for more breaking changes. We have a set
+of C++ features we know we would like to expose in HLSL. This also provides the
+opportunity for changes where we can improve tooling for source code migration
+to newer language constructs.
 
 ### HLSL 202x
 
