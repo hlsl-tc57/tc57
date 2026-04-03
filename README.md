@@ -1,4 +1,4 @@
-<img src="resources/TC57.png" width="128">
+<img src="assets/TC57.png" width="128">
 
 # Ecma TC57 - The HLSL Standard Committee
 
