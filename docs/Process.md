@@ -3,7 +3,7 @@ title: Committee Process
 ---
 
 TC57 conducts its work through two main processes,
-[defects](/docs/DefectProcess.md) and [proposals](/docs/ProposalProcess.md).
+[defects](DefectProcess.md) and [proposals](ProposalProcess.md).
 
 The defect process handles specification errors, omissions or other gaps.
 This is also the primary process used for filling out specification language in

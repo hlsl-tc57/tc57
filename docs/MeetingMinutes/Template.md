@@ -19,7 +19,7 @@ draft: true
 
 # 1 Welcome, opening and meeting logistics
 
-* We have a [Code of Conduct](/docs/CodeOfConduct.md).
+* We have a [Code of Conduct](CodeOfConduct.md).
 * TC57 is part of Ecma and operates under Ecma's [Royalty-Free patent
   policy](https://ecma-international.org/wp-content/uploads/Ecma_Royalty-Free_Patent_Policy_Extension_Option.pdf).
   All delegates from participating companies should have already agreed to the

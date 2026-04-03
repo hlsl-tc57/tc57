@@ -6,7 +6,7 @@ TC57 holds regular teleconferences to discuss and make progress on active
 proposals and defects.
 
 All meetings of TC57 are covered by the [Code of
-Conduct](/docs/CodeOfConduct.md).
+Conduct](CodeOfConduct.md).
 
 ## Agenda and Format
 
@@ -19,7 +19,7 @@ the last meeting and merge them into the repository.
 The agenda for the next meeting will be posted in a pull request at the
 conclusion of each meeting. Topics may be added to the agenda by proposing edits
 to the draft agenda pull request replacing `<placeholder topics>` which appear
-in the [template](/docs/MeetingMinutes/Template.md).
+in the [template](MeetingMinutes/Template.md).
 
 ## Consensus Decision-Making
 
