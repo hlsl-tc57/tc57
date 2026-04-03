@@ -8,7 +8,7 @@ which the specification is edited.
 
 Changes introduced through the defect process must align with the behavior of an
 implementation, and should not seek to change behavior. Changes in behavior
-should follow the [proposal process](/docs/ProposalProcess.md).
+should follow the [proposal process](ProposalProcess.md).
 
 ## Reporting a Defect
 

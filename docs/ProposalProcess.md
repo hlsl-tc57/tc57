@@ -121,7 +121,7 @@ number and merging the PR the author(s) should file issues tracking the work to
 flesh out and complete the detailed design.
 
 PRs introducing new proposals will be reviewed at the next [TC57
-Meeting](/docs/Meetings.md).
+Meeting](Meetings.md).
 
 #### Completing the Detailed Design
 
@@ -140,7 +140,7 @@ tests.
 #### Accepting a Proposal
 
 On the completion of all outstanding issues, a sponsor will schedule the issue
-for an acceptance discussion at a [TC57 meeting](/docs/Meetings.md). On
+for an acceptance discussion at a [TC57 meeting](Meetings.md). On
 completion of the discussion the sponsor will either mark the proposal as
 **Accepted** or file additional issue to track required changes.
 

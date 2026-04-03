@@ -14,7 +14,7 @@ issues for feature requests or identified defects is encouraged. Pull requests
 to address minor defects are also welcome.
 
 For larger non-trivial changes please review the [process
-documentation](/docs/Process.md) before making contributions.
+documentation](docs/Process.md) before making contributions.
 
 ## Required legal agreements
 
