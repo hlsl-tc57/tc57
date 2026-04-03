@@ -30,17 +30,11 @@ the ability to switch to Clang piecemeal or being able to A/B test shaders.
 
 ## Version Naming and Management
 
-HLSL versions names match the intended year of completion. Historically we
-missed with HLSL 2021 not completing the implementation and deployment in 2023.
-Due to schedule uncertainty and a desire to not repeat _that mistake_, future
-versions have placeholder names.
+HLSL versions names match the intended year of completion. Unreleased versions
+may use placeholders until the year of their release is certain.
 
-The next language version is HLSL 202x. HLSL 202y will release after 202x. As we
-near the final release of 202x the release name will change to the target year.
-The same will follow for 202y.
-
-The expectation is that HLSL `x` is a placeholder integer value less than `y`.
-All features added to HLSL 202x will be implicitly inherited by HLSL 202y.
+The next language version is HLSL 202x, which will be followed by HLSL 202y.
+It is implicit that features in HLSL 202x will be present in 202y as well.
 
 ## Proposed Solution
 
