@@ -10,7 +10,7 @@ ignoreLogs = ['warning-goldmark-raw-html']
   github_doc_repository = "https://github.com/microsoft/hlsl-specs"
   github_doc_repository_branch = "main"
   github_doc_repository_path = ""
-  
+
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
@@ -18,7 +18,7 @@ ignoreLogs = ['warning-goldmark-raw-html']
   [markup.tableOfContents]
     startLevel = 2
     endLevel = 3
-    ordered = false  
+    ordered = false
 
 [module]
   [[module.mounts]]
@@ -28,7 +28,7 @@ ignoreLogs = ['warning-goldmark-raw-html']
   [[module.mounts]]
     source = '../docs'
     target = 'content/docs'
-    
+
   # Use README.md as the home page
   [[module.mounts]]
     source = '../README.md'
@@ -39,8 +39,8 @@ ignoreLogs = ['warning-goldmark-raw-html']
     target = 'content/proposals'
 
   [[module.mounts]]
-    source = '../resources'
-    target = 'content/resources'
+    source = '../assets'
+    target = 'content/assets'
 
 [menu]
   [[menu.main]]
