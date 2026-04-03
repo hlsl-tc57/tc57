@@ -40,7 +40,7 @@ It is implicit that features in HLSL 202x will be present in 202y as well.
 
 This proposal adopts the development of two new language versions for HLSL in
 parallel. The proposal adopts a narrowly focused HLSL 202x which will be the
-**first Ecma Standard**. The goal will be to support this langauge variant in
+**first Ecma Standard**. The goal will be to support this language variant in
 both DXC and Clang, although DXC may not be fully conformant.
 
 As a target of opportunity given the ongoing work in Clang we have a set of C++
