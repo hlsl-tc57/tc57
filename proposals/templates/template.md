@@ -25,12 +25,6 @@ params:
 
 ---
 
-*Add the following fields as needed:*
-
-* PRs: [#NNNN](https://github.com/microsoft/DirectXShaderCompiler/pull/NNNN)
-* Issues:
-  [#NNNN](https://github.com/microsoft/DirectXShaderCompiler/issues/NNNN)
-
 ## Introduction
 
 10,000 ft view of the change being proposed. Try to keep to one paragraph and

@@ -2,7 +2,7 @@
 
 # Ecma TC57 - The HLSL Standard Committee
 
-[![Documentation Build Status](https://github.com/microsoft/hlsl-specs/actions/workflows/hugo.yml/badge.svg)](https://github.com/microsoft/hlsl-specs/actions/workflows/hugo.yml)
+[![Documentation Build Status](https://github.com/llvm-beanz/tc57/actions/workflows/hugo.yml/badge.svg)](https://github.com/llvm-beanz/tc57/actions/workflows/hugo.yml)
 
 This repository documents and tracks the specification and evolution process for
 the HLSL programming language under Ecma Technical Committee 57 (TC57). This
