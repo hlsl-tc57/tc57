@@ -93,8 +93,8 @@ see.
 
 ### Language Changes
 
-> Language versioning changes the core language of HLSL: syntax, grammar,
-> semantics, etc.
+> [!NOTE]
+> Language versioning changes the core language of HLSL: syntax, grammar, semantics, etc.
 
 HLSL identifies language versions by the year of release (2015, 2016, 2017,
 2018, 2021, ...), and future language versions have placeholder years (202x,
@@ -109,8 +109,8 @@ for more information about retroactively exposing features.
 
 ### Runtime Changes
 
-> Runtime versioning changes the library functionality of the language: data
-> types, methods, etc.
+> [!NOTE]  
+> Runtime versioning changes the library functionality of the language: data types, methods, etc.
 
 HLSL's supported runtimes are DirectX and Vulkan. For DirectX versioning of HLSL
 is broken down by Shader Model and DXIL version, and for Vulkan versioning is

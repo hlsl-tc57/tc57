@@ -15,10 +15,7 @@ considered or rejected based on priorities set by the Technical Committee. You
 should not create a pull request against this repository if you're not committed
 to at least making a best effort to navigate the process as described below.
 
-If you want to request a feature but not get involved in the process, the best
-way to request features for HLSL is to [file GitHub
-issues](https://github.com/llvm-beanz/tc/issues/new?template=feature_request.md)
-rather than creating pull requests against this repository.
+If you want to request a feature but not get involved in the process, the best way to request features for HLSL is to [file GitHub issues](https://github.com/hlsl-tc57/tc57/issues/new?template=feature_request.md) rather than creating pull requests against this repository.
 
 This process draws heavily from
 [Rust's RFC process](https://github.com/rust-lang/rfcs),
@@ -47,12 +44,8 @@ HLSL 202x will be the first Ecma HLSL standard version, it's goal statement can
 be found [here](HLSL202x.md). HLSL 202y will be the second Ecma HLSL standard
 version, it's goal statement can be found [here](HLSL202y.md).
 
-> Note: We generally do not expect the committee to track more than one version
-> at a time, however during the initial standard development we expect to be
-> tracking a mixture of behavior changes associated with standardization and
-> potential new features. Because we want the initial standard to map closely to
-> the existing implementations we are separating the initial standard (202x)
-> from the first "feature" update (202y).
+> [!NOTE]  
+> We generally do not expect the committee to track more than one version at a time, however during the initial standard development we expect to be tracking a mixture of behavior changes associated with standardization and potential new features. Because we want the initial standard to map closely to the existing implementations we are separating the initial standard (202x) from the first "feature" update (202y).
 
 When writing a proposal you should also familiarize yourself with the HLSL
 [Design Considerations](DesignConsiderations.md).
@@ -120,8 +113,7 @@ New proposals should be merged as **Under Consideration**. After assigning a
 number and merging the PR the author(s) should file issues tracking the work to
 flesh out and complete the detailed design.
 
-PRs introducing new proposals will be reviewed at the next [TC57
-Meeting](/docs/Meetings.md).
+PRs introducing new proposals will be reviewed at the next [TC57 Meeting](./Meetings.md).
 
 #### Completing the Detailed Design
 
@@ -139,10 +131,7 @@ tests.
 
 #### Accepting a Proposal
 
-On the completion of all outstanding issues, a sponsor will schedule the issue
-for an acceptance discussion at a [TC57 meeting](/docs/Meetings.md). On
-completion of the discussion the sponsor will either mark the proposal as
-**Accepted** or file additional issue to track required changes.
+On the completion of all outstanding issues, a sponsor will schedule the issue for an acceptance discussion at a [TC57 meeting](./Meetings.md). On completion of the discussion the sponsor will either mark the proposal as **Accepted** or file additional issue to track required changes.
 
 #### Implementation
 

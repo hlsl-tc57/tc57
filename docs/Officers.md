@@ -25,8 +25,7 @@ delegate responsibilities as necessary.
 
 * Finalizing meeting agendas and managing meeting schedules.
 * Facilitating meeting flow and ensuring necessary prioritization.
-* Conducting the [processes](/docs/Process.md) of TC57, and keeping up-to-date
-  process documentation.
+* Conducting the [processes](./Process.md) of TC57, and keeping up-to-date process documentation.
 * Administering communication and operational services (GitHub, chat, etc).
 * Calling for consensus and noting dissent.
 * Ensuring accurate and timely preparation of meeting minutes.
@@ -36,11 +35,7 @@ delegate responsibilities as necessary.
 
 TC57 shall annually select a set of volunteers to serve as editors.
 
-Editors are responsible for facilitating the [defect
-process](/docs/DefectProcess.md). A core responsibility of editors is to
-determine if an issue or pull request addressing a defect is actually a defect
-or a behavioral change that should go through the [proposal
-process](/docs/ProposalProcess.md).
+Editors are responsible for facilitating the [defect process](./DefectProcess.md). A core responsibility of editors is to determine if an issue or pull request addressing a defect is actually a defect or a behavioral change that should go through the [proposal process](./ProposalProcess.md).
 
 The Editor Group will provide an update at each meeting of the TC summarizing
 the editorial changes made between meetings of the TC, and highlighting any
