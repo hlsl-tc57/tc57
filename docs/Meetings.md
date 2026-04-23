@@ -5,7 +5,7 @@ title: Meetings
 TC57 holds regular teleconferences to discuss and make progress on active
 proposals and defects.
 
-All meetings of TC57 are covered by the [Code of Conduct](./CodeOfConduct.md).
+All meetings of TC57 are covered by the [Code of Conduct](CodeOfConduct.md).
 
 ## Agenda and Format
 

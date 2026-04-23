@@ -6,7 +6,7 @@ The TC57 defect process allows is streamlined process for correcting
 specification text or filling specification gaps. This is the primary process by
 which the specification is edited.
 
-Changes introduced through the defect process must align with the behavior of an implementation, and should not seek to change behavior. Changes in behavior should follow the [proposal process](./ProposalProcess.md).
+Changes introduced through the defect process must align with the behavior of an implementation, and should not seek to change behavior. Changes in behavior should follow the [proposal process](ProposalProcess.md).
 
 ## Reporting a Defect
 
