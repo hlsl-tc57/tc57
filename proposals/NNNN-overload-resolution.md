@@ -53,8 +53,8 @@ this proposal, the remaining elements are inherited from C++.
 | Array-to-pointer | Exact Match |
 | Qualification | Exact Match |
 | **Single Element to Scalar** | Exact Match |
-| **Vector Scalar splat conversion** | **Conversion Extension** |
-| **Matrix Scalar splat conversion** | **Conversion Extension** |
+| **Vector Scalar splat conversion** | **Extension** |
+| **Matrix Scalar splat conversion** | **Extension** |
 | Integral promotion | Promotion |
 | Floating point promotion | Promotion |
 | **Component-wise promotion** | Promotion |
