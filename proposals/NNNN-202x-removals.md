@@ -85,15 +85,22 @@ Template-based polymorphic patterns available in HLSL 2021 and later enable many
 of the code patterns that `interface` declarations would have previously been
 used for and should be the supported path going forward.
 
-Conforming implementations should reject the `interface` keyword and all
-associated parsing and semantic checking.
+Conforming implementations will not treat the `interface` keyword as a reserved
+word, and will not support any special parsing or semantic handling for
+`interface` declarations. Use of the `interface` keyword as a _class-key_
+in the grammar for specifying a declaration shall be rejected and produce a
+diagnostic.
 
 ### Removal of `uniform` Keyword
 
 In DXC the `uniform` keyword is parsed and ignored. This may lead users to
 believing it has some impact when it does not. We should remove it.
 
-Conforming implementations should reject the `uniform` keyword.
+Conforming implementations will not treat the `uniform` keyword as a reserved
+word, and will not support any special parsing or semantic handling for
+variables with the `uniform` type attribute applied. Use of the `uniform`
+keyword as a keyword attribute on any declaration shall be rejected and produce
+a diagnostic.
 
 ## Disallow `cbuffer` initializers
 
@@ -102,6 +109,6 @@ initializer clauses are ignored, and DXC does not issue a diagnostic. In HLSL
 202x initializer clauses on declarations placed into an implicit or explicit
 `cbuffer` declaration are illegal and will produce an error.
 
-Conforming implementations should reject initializers on declarations inside
+Conforming implementations shall reject initializers on declarations inside
 `cbuffer` declarations and on declarations added to the implicit global
 `cbuffer`.
