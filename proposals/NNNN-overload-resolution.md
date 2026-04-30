@@ -44,7 +44,9 @@ This proposal suggests introducing new implicit conversions and conversion ranks
 to classify conversions involving matrix and vector types as source and/or
 destination arguments. The table below is the full list of proposed implicit
 conversions and their ranks. The **bolded** are unique to HLSL and introduced by
-this proposal, the remaining elements are inherited from C++.
+this proposal, the remaining elements are inherited from C++. The table below is
+sorted by the ranks in increasing order such that the conversion of the _lowest_
+rank is preferred.
 
 | Conversion  | Rank |
 |-------------|------|
@@ -66,10 +68,10 @@ this proposal, the remaining elements are inherited from C++.
 | **Component-wise conversion** | Conversion |
 | **Scalar splat conversion** | **Conversion Extension** |
 | **Vector truncation (without conversion)** | Truncation |
-| **Vector truncation promotion** | **Promotion Truncation** |
-| **Vector truncation conversion** | **Conversion Truncation** |
 | **Matrix truncation (without conversion)** | Truncation |
+| **Vector truncation promotion** | **Promotion Truncation** |
 | **Matrix truncation promotion** | **Promotion Truncation** |
+| **Vector truncation conversion** | **Conversion Truncation** |
 | **Matrix truncation conversion** | **Conversion Truncation** |
 
 The new conversions allow combining element type conversions with dimension
