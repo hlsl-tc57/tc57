@@ -1,0 +1,223 @@
+\Ch{Terms and definitions}{Terms}
+
+\p This document uses terms consistent with their definitions in \gls{isoC} and
+\gls{isoCPP}. In cases where the definitions are unclear, or where this document
+diverges from \gls{isoC} and \gls{isoCPP}, the definitions in this clause, and
+the attached glossary (\ref{main}) supersede other sources.
+
+\Sec{Common Definitions}{Terms.Common}
+
+\p The following definitions are consistent between \acrshort{hlsl} and the
+\gls{isoC} and \gls{isoCPP} specifications, however they are included here for
+reader convenience.
+
+\Sub{Correct Data}{Terms.CorrectData}
+\p Data is correct if it represents values that have specified or unspecified
+but not undefined behavior for all the operations in which it is used. Data that
+is the result of undefined behavior is not correct, and may be treated as
+undefined.
+
+\Sub{Diagnostic Message}{Terms.Diags}
+\p An implementation defined message belonging to a subset of the
+implementation's output messages which communicates diagnostic information to
+the user.
+
+\Sub{Ill-formed Program}{Terms.IllFormed}
+\p A program that is not well-formed, for which the implementation is expected
+to return unsuccessfully and produce one or more diagnostic messages.
+
+\Sub{Implementation-defined Behavior}{Terms.ImpDef}
+\p Behavior of a well-formed program and correct data which may vary by the
+implementation, and the implementation is expected to document the behavior.
+
+\Sub{Implementation Limits}{Terms.ImpLimits}
+\p Restrictions imposed upon programs by the implementation of either the
+compiler or runtime environment. The compiler may seek to surface
+runtime-imposed limits to the user for improved user experience.
+
+\Sub{Undefined Behavior}{Terms.Undefined}
+\p Behavior of invalid program constructs or incorrect data for which this
+standard imposes no requirements, or does not sufficiently detail.
+
+\Sub{Unspecified Behavior}{Terms.Unspecified}
+\p Behavior of a well-formed program and correct data which may vary by the
+implementation, and the implementation is not expected to document the behavior.
+
+\Sub{Well-formed Program}{Terms.WellFormed}
+\p An \acrshort{hlsl} program constructed according to the syntax rules,
+diagnosable semantic rules, and the One Definition Rule.
+
+\Sec{General Terms}{Terms.General}
+
+\p The following terms are specific to \acrshort{hlsl} and are used throughout
+the specification.
+
+\Sub{Runtime Implementation}{Terms.Runtime}
+
+\p A runtime implementation refers to a full-stack implementation of a software
+runtime that can facilitate the execution of \acrshort{hlsl} programs. This
+broad definition includes libraries and device driver implementations. The
+\acrshort{hlsl} specification does not distinguish between the user-facing
+programming interfaces and the vendor-specific backing implementation.
+
+\Sub{Host and Device}{Terms.HostDevice}
+
+\p \acrshort{hlsl} is a data-parallel programming language designed for
+programming auxiliary processors in a larger system. In this context the
+\textit{host} refers to the primary processing unit that runs the application
+which in turn uses a runtime to execute \acrshort{hlsl} programs on a supported
+\textit{device}. There is no strict requirement that the host and device be
+different physical hardware, although they commonly are. The separation of host
+and device in this specification is useful for defining the execution and memory
+model as well as specific semantics of language constructs.
+
+\Sec{\acrshort{spmd} Terminology}{Terms.SPMD}
+
+\p \acrshort{hlsl} is a \acrfull{spmd} programming language. The following terms
+are used to describe the execution model of \acrshort{spmd} programs and the
+semantics of language constructs that are specific to \acrshort{spmd}
+programming.
+
+\Sub{\gls{lane}}{Terms.Lane}
+
+\p A \gls{lane} represents a single computed element in an \acrshort{spmd}
+program. In a traditional programming model it would be analogous to a thread of
+execution, however it differs in one key way. In multi-threaded programming,
+threads advance independent of each other. In \acrshort{spmd} programs, a group
+of \gls{lane}s may execute instructions in lockstep because each instruction may
+be a \acrshort{simd} instruction computing the results for multiple \gls{lane}s
+simultaneously, or synchronizing execution across multiple \gls{lane}s or
+\gls{wave}s. A \gls{lane} has an associated \textit{lane state} which denotes
+the execution status of the lane (\ref{Terms.LaneState}).
+
+\Sub{\gls{wave}}{Terms.Wave}
+
+\p A grouping of \gls{lane}s for execution is called a \gls{wave}. The size of a
+\gls{wave} is defined as the maximum number of \textit{active} \gls{lane}s the
+\gls{wave} supports. \gls{wave} sizes vary by hardware architecture, and are required
+to be powers of two. The number of \textit{active} \gls{lane}s in a \gls{wave}
+can be any value between one and the \gls{wave} size.
+
+\p Some hardware implementations support multiple \gls{wave} sizes. There is no
+overall minimum wave size requirement, although some language features do have
+minimum \gls{lane} size requirements.
+
+\p \acrshort{hlsl} is explicitly designed to run on hardware with arbitrary
+\gls{wave} sizes. Hardware architectures may implement \gls{wave}s as
+\acrfull{simt} where each thread executes instructions in lockstep. This is not
+a requirement of the model. Some constructs in \acrshort{hlsl} require
+synchronized execution. Such constructs will explicitly specify that
+requirement.
+
+\Sub{\gls{quad}}{Terms.Quad}
+
+\p A \gls{quad} is a subdivision of four \gls{lane}s in a \gls{wave} which are
+computing adjacent values. In pixel shaders a \gls{quad} may represent four
+adjacent pixels and \gls{quad} operations allow passing data between adjacent
+\gls{lane}s. In compute shaders quads may be one or two dimensional depending
+on the workload dimensionality. Quad operations require four active \gls{lane}s.
+
+\Sub{\gls{threadgroup}}{Terms.Group}
+
+\p A grouping of \gls{lane}s executing the same shader to produce a combined
+result is called a \gls{threadgroup}. \gls{threadgroup}s are independent of
+\acrshort{simd} hardware specifications. The dimensions of a \gls{threadgroup}
+are defined in three dimensions. The maximum extent along each dimension of a
+\gls{threadgroup}, and the total size of a \gls{threadgroup} are implementation
+limits defined by the runtime and enforced by the compiler. If a
+\gls{threadgroup}'s size is not a whole multiple of the hardware \gls{wave}
+size, the unused hardware \gls{lane}s are implicitly inactive.
+
+\p If a \gls{threadgroup} size is smaller than the \gls{wave} size , or if the
+\gls{threadgroup} size is not an even multiple of the \gls{wave} size, the
+remaining \gls{lane} are \textit{inactive} \gls{lane}s.
+
+\Sub{\gls{dispatch}}{Terms.Dispatch}
+
+\p A grouping of \gls{threadgroup}s which represents the full execution of a
+\acrshort{hlsl} program and results in a completed result for all input data
+elements.
+
+\Sub{\gls{lane} States}{Terms.LaneState}
+
+\p \gls{lane}s may be in four primary states: \textit{active}, \textit{helper},
+\textit{inactive}, and \textit{predicated off}.
+
+\p An \textit{active} \gls{lane} is enabled to perform computations and produce
+output results based on the initial launch conditions and program control flow.
+
+\p A \textit{helper} \gls{lane} is a lane which would not be executed by the
+initial launch conditions except that its computations are required for adjacent
+pixel operations in pixel fragment shaders. A \textit{helper} \gls{lane} will
+execute all computations but will not perform writes to buffers, and any outputs
+it produces are discarded. \textit{Helper} lanes may be required for
+\gls{lane}-cooperative operations to execute correctly.
+
+\p An \textit{inactive} \gls{lane} is a lane that is not executed by the initial
+launch conditions. This can occur if there are insufficient inputs to fill all
+\gls{lane}s in the \gls{wave}, or to reduce per-thread memory requirements or
+register pressure.
+
+\p A \textit{predicated off} \gls{lane} is a lane that is not being executed due
+to program control flow. A \gls{lane} may be \textit{predicated off} when
+control flow for the \gls{lane}s in a \gls{wave} diverge and one or more lanes
+are temporarily not executing.
+
+\p The diagram blow illustrates the state transitions between \gls{lane} states:
+
+\begin{center}
+\begin{figure}
+  \centering
+  \caption{State transitions for \gls{lane} states}
+  \begin{tikzpicture}[shorten >=1pt,node distance=3cm,auto, squarednode/.style={rectangle,minimum size=7mm}]
+    \node[squarednode,state,initial above] (active) {$active$};
+    \node[squarednode,state,initial above] (inactive)[right of=active] {$inactive$};
+    \node[squarednode,state] (helper)[below of=active] {$helper$};
+    \node[squarednode,state] (off1)[below left of=active] {off};
+    \node[squarednode,state] (off2)[right of=helper] {off};
+
+
+    \path[->] (active) edge node {discard} (inactive);
+    \path[->] (active) edge node {discard} (helper);
+    \path[->] (active) edge node {branch} (off1);
+    \path[->] (off1) edge node {} (active);
+
+    \path[->] (helper) edge node {branch} (off2);
+    \path[->] (off2) edge node {} (helper);
+  \end{tikzpicture}
+\end{figure}
+\end{center}
+
+\Sub{Uniformity}{Terms.Uniformity}
+
+\p Uniformity is a property of either a value or a control flow construct.
+Uniformity can be discussed in terms of any grouping of \gls{lane}s (e.g.
+\gls{quad}, \gls{threadgroup}, \gls{wave}, \gls{dispatch}), if a grouping of
+\gls{lane}s is not explicitly mentioned, it is assumed to be a \gls{wave}.
+
+\p When referring to a value, uniformity means that the value is the same across
+all \gls{lane}s in the grouping. When referring to a control flow construct,
+uniformity means that all \gls{lane}s in the grouping are executing the same
+path through the program's control flow.
+
+\p Uniformity can be a static property that is determined at compile time, or a
+dynamic property that is determined at runtime.
+
+\Sub{Divergence}{Terms.Divergence}
+
+\p Divergence is a dynamic property of program execution where one or more
+\gls{lane}s in a \gls{wave} are executing different paths through the program's
+control flow. Control flow that causes divergence is said to be
+\textit{divergent}.
+
+\Sub{Convergence}{Terms.Convergence}
+
+\p Convergence is a property of an operation that requires the \gls{lane}s
+executing the operation to synchronize in order to produce correct results.
+Operations requiring convergence are said to be \textit{convergent}.
+
+\Sec{Memory Spaces}{Terms.MemorySpaces}
+
+\p Memory spaces refer to the different types of memory that programs can
+access. Each memory space has different properties and semantics for how it can
+be accessed and used.

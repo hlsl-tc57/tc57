@@ -1,4 +1,8 @@
+<img src="assets/TC57.png" width="128">
+
 # Ecma TC57 - The HLSL Standard Committee
+
+[![Documentation Build Status](https://github.com/hlsl-tc57/tc57/actions/workflows/hugo.yml/badge.svg)](https://github.com/hlsl-tc57/tc57/actions/workflows/hugo.yml)
 
 This repository documents and tracks the specification and evolution process for
 the HLSL programming language under Ecma Technical Committee 57 (TC57). This
@@ -6,7 +10,11 @@ repository is made public to provide visibility into the feature development
 process and solicit feedback from the wider community.
 
 To understand the processes used by the Technical Committee please review our
-[process documentation](/docs/Process.md).
+[process documentation](docs/Process.md).
+
+The draft HLSL specification is available in
+[HTML](https://hlsl-tc57.github.io/tc57/spec/index.html) and
+[PDF](https://hlsl-tc57.github.io/tc57/spec/hlsl.pdf).
 
 ## Building the Specification
 
