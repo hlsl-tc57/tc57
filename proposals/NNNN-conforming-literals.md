@@ -26,7 +26,8 @@ In C-based languages literals are tokens which the compiler interprets in the
 most basic translation to preserve the exact meaning expressed in the source to
 the final program.
 
-HLSL's handling of literals is complex, undocumented, and inconsistent.
+In HLSL 2021, the handling of literals is complex, undocumented, and
+inconsistent.
 
 ## Motivation
 
@@ -70,8 +71,8 @@ specification is simple and concise.
 This solution also works with modern C++ features that have come into HLSL like
 templates, and other features like `auto` which we would like to add. It
 addresses issues like the bugs with the [ternary
-operator](microsoft/DirectXShaderCompiler#6147), where a comprehensive solution
-within the rules of C/C++ is nigh impossible.
+operator](https://github.com/microsoft/DirectXShaderCompiler/issues/6147), where
+a comprehensive solution within the rules of C/C++ is nigh impossible.
 
 This solution also allows for a radical simplification of our handling in IR
 layers because we can restrict the compiler to only generating valid operation
@@ -118,8 +119,9 @@ language modes is available
 This modified version of DXC was used as the compiler for testing to identify
 the impact of this change on existing shaders used in production software.
 
-Tests were performed by both Microsoft and Google using private test suites. In
-Google's testing, *all tests passed all tests with no issues*.
+Tests were performed by both Microsoft and Google using private test suites.
+Google's test suite surfaced no issues, however the test coverage is minimal so
+this alone should not be taken as an indicator of expected impact.
 
 #### Microsoft Test Suite
 
@@ -196,7 +198,7 @@ This difference in rules results in a subtle behavioral difference for bit
 shifts. Given the following code:
 
 ```c++
-export float Fn(int inInt, inFloat) {
+export float Fn(int inInt, float inFloat) {
   int Val = (inInt & 0xffff0000) >> 16);
   return Val* inFloat
 }
@@ -241,23 +243,10 @@ The testing also revealed that the lack of complete overload sets for
 `asfloat16` is a barrier for users. Further discussion is needed to determine
 how best to address this problem.
 
-### Mitigating Migration Pain
+### Note on Mitigations for Implementations
 
-There are no observed instances of the change in floating point behavior causing
-disruption. If such cases exist the existing `-Wconversion` diagnostics will
-sufficiently notify users of implicit conversions that result in precision loss.
-
-The change in integer behavior is more important. The behavior of bit shifts in
-HLSL has historically changed independent of language version, and ambiguity of
-bit shifts on literal operands does produce a compiler diagnostic (see:
-[dxc/#300](https://github.com/microsoft/DirectXShaderCompiler/pull/3400)).
-
-This proposal will introduce a new diagnostic for 32-bit literal integers values
-that will become `unsigned` with this proposal. This diagnostic will be under
-the `-Wfuture-compatibility` diagnostic group.
-
-This proposal will also add a new diagnostic for calls to `asfloat16` with
-floating point arguments to notify users that they should use a cast instead.
+It is recommended but not required that implementations provide diagnostics for
+users to assist in identifying behavior changes.
 
 ## Detailed Design
 
@@ -278,52 +267,7 @@ size of the value is unknown at compile time the diagnostics that can be
 provided are limited.
 
 With this change the minimum precision types are lower in conversion rank to all
-the literal types that can be explicitly specified. This will result in
-conversion warnings on implicit conversion to minimum precision types which will
-notify users of the places where their code may need to be updated.
-
-### New Warnings
-
-Details about implemented warnings are provided as an annex resource. These are
-not required to comply with the language specification.
-
-#### -Wdouble-promotion
-
-Along with the implementation of this proposal a new warning group
-`-Wdouble-promotion` is introduced to identify implicit promotions for floating
-point types. Implicit promotions can have significant performance impact on
-code, and this proposal may introduce new cases where minimum precision or
-16-bit types are promoted to larger types.
-
-The new warnings will be modeled off Clang's `-Wdouble-promotion` warning of the
-form:
-
-```
-warning: implicit conversion increases floating-point precision: 'min16float' to 'float'
-```
-
-These warnings will be default disabled, but available in all language modes.
-
-> Note: The title of the new warning is chosen to match Clang's existing warning
-> _which does_ cover all promotion cases for floating point types even if the
-> end value isn't `double`. By adopting this name, no change is required to
-> support these warnings in Clang, and users will have the same command line
-> option to enable this warning for DXC and Clang.
-
-#### -Whlsl-legacy-literal
-
-The new `-Whlsl-legacy-literal` warning group identifies hexadecimal and octal
-literal values that will change signedness under the new HLSL language rules.
-The change in sign behavior can have a huge impact on bitwise operations as
-described in the cases above.
-
-These warnings will be default disabled, but available in all language modes.
-
-The following warning text will be emitted for any octal or hexadecimal literal
-that has its most-significant bit set. For legacy language modes, the position
-of the most significant bit is based on a 32-bit representation if the value is
-less than or equal to `UINT32_MAX`, otherwise it is 64-bit.
-
-```
-warning: literal value is treated as signed in HLSL before 202x, and unsigned in 202x and later
-```
+the literal types that can be explicitly specified. This will result in current
+implementations issuing conversion warnings on implicit conversion to minimum
+precision types which will notify users of the places where their code may need
+to be updated.
