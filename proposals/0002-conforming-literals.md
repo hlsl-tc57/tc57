@@ -1,5 +1,5 @@
 ---
-title: NNNN - Conforming Literals
+title: 0002 - Conforming Literals
 params:
   authors:
   - llvm-beanz: Chris Bieneman
@@ -165,8 +165,12 @@ image difference tools, but not visibly distinct in final rendered images. These
 appeared as pixels that deviate from the reference value by more than a few
 bits. Examples of the image diff view are:
 
-![Minor Differences Example 1](NNNN-assets/DiffExample1.png)
-![Minor Differences Example 2](NNNN-assets/DiffExample2.png)
+![Minor Differences Example 1](0002-assets/DiffExample1.png)
+![Minor Differences Example 2](0002-assets/DiffExample2.png)
+
+> Note: black pixels are unchanged between the render before and after this
+> language changes is applied. The images seem mostly black because the number
+> of impacted pixels is extremely low.
 
 ##### Subtle Visible Differences
 
