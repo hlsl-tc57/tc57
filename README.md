@@ -62,3 +62,8 @@ sudo apt install inkscape
 sudo apt install pandoc
 sudo apt install cmake
 ```
+
+### Website build
+
+See the full documentation on [building the website with
+Docker](docs/Docker.md).

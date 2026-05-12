@@ -1,0 +1,8 @@
+services:
+  hlsl-website:
+    build: .
+    ports:
+      - "80:80"
+    environment:
+      - HUGO_ENVIRONMENT=production
+    restart: unless-stopped
