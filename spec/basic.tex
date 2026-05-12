@@ -1,16 +1,13 @@
 \Ch{Basic Concepts}{Basic}
 
 \begin{note}
-  \p HLSL inherits a significant portion of its language semantics from C and
+  HLSL inherits a significant portion of its language semantics from C and
   C++. Some of this is a result of intentional adoption of syntax early in the
   development of the language and some a side-effect of the Clang-based
   implementation of DXC.
 
-  \p This chapter includes a lot of definitions that are inherited from C and
-  C++. Some are identical to C or C++, others are slightly different. HLSL is
-  neither a subset nor a superset of C or C++, and cannot be simply described in
-  terms of C or C++. This specification includes all necessary definitions for
-  clarity.
+  For clarity, this specification includes all necessary definitions even if
+  they are not different from the \gls{isoC} or \gls{isoCPP} standard.
 \end{note}
 
 \Sec{Preamble}{Basic.preamble}
@@ -81,7 +78,8 @@ specifier,
 \end{itemize}
 
 \begin{note}
-  Global variable declarations are implicitly constant and external in HLSL.
+  Global variable declarations are implicitly constant and external in HLSL,
+  unless they are declared with the \texttt{static} storage specifier.
 \end{note}
 
 \p The two examples below are adapted from \gls{isoCPP} \textbf{[basic.def]}. All
