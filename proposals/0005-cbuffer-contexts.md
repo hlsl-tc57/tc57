@@ -1,5 +1,5 @@
 ---
-title: NNNN - Refined cbuffer Contexts
+title: 0005 - Refined cbuffer Contexts
 params:
   authors:
   - llvm-beanz: Chris Bieneman
@@ -83,7 +83,7 @@ grammar formation is adopted for cbuffers:
   empty-declaration
 \end{grammar}
 ```
-![Latex Rendering](NNNN-assets/cbuffer-grammar.png)
+![Latex Rendering](0005-assets/cbuffer-grammar.png)
 
 This simplified grammar restricts the declarations that are valid within a
 cbuffer to declarations that are broadly valid inside block scopes as well as
