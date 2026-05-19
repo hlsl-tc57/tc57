@@ -81,3 +81,6 @@ Make sure all required LaTeX packages are installed. The Dockerfile includes `te
 
 ### Large image size
 This is expected due to full TeX Live installation (~600MB). For production, consider a separate LaTeX build step or using a more minimal TeX distribution.
+
+### Seeing "Welcome to nginx!"
+Ensure you have the most up-to-date version of the hugo-theme-techdoc submodule.
