@@ -18,13 +18,13 @@ evaluated in the program.
 \textit{prvalue}, a standard conversion sequence is applied based on the rules
 in \ref{Conv}.
 
-\Sec{Usual Arithmetic Conversions}{Expr.conv}
+\Sec{Usual Arithmetic Conversions}{Expr.Conv}
 
 \p Binary operators for arithmetic and enumeration type require that both
 operands are of a common type. When the types do not match the \textit{usual
 arithmetic conversions} are applied to yield a common type. When \textit{usual
 arithmetic conversions} are applied to vector operands they behave as
-component-wise conversions (\ref{Conv.cwise}). The \textit{usual arithmetic
+component-wise conversions (\ref{Conv.CWise}). The \textit{usual arithmetic
 conversions} are:
 
 \begin{itemize}
@@ -36,11 +36,11 @@ conversions} are:
     \item If both vectors are of the same length, no dimension conversion is
     required.
     \item If one operand is a vector and the other operand is a scalar, the
-    scalar is extended to a vector via a Splat conversion (\ref{Conv.vsplat}) to
+    scalar is extended to a vector via a Splat conversion (\ref{Conv.VSplat}) to
     match the length of the vector.
     \item Otherwise, if both operands are vectors of different lengths, the
     vector of longer length is truncated to match the length of the shorter
-    vector (\ref{Conv.vtrunc}).
+    vector (\ref{Conv.VTrunc}).
   \end{itemize}
   \item If either operand is of type \texttt{double} or \texttt{vector<double,
   X>}, the other operator shall be converted to match.
@@ -326,7 +326,7 @@ lvalue directly decays via array-to-pointer decay.
 
 \p Arguments to \textit{output} and \textit{input/output parameters} must be
 lvalues. \textit{Output parameters} are not initialized prior to the call; they
-are passed as an uninitialized cxvalue (\ref{Basic.lval}). An \textit{output
+are passed as an uninitialized cxvalue (\ref{Basic.LVal}). An \textit{output
 parameter} is only initialized explicitly inside the called function. It is
 undefined behavior to not explicitly initialize an \textit{output parameter}
 before returning from the function in which it is defined. The cxvalue created
