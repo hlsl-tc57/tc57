@@ -29,9 +29,9 @@ Every name that denotes a label is introduced by a \textit{labeled statement}
 than a non-static data member of an object. The variable's name denotes the
 reference or object.
 
-\p Whenever a name is encountered it is necessary to determine if the name
-denotes an entity that is a type or template. The process for determining if a
-name refers to a type or template is called \textit{name lookup}.
+\p \textit{Name lookup} is the process of determining if a name refers to a type
+or template, and if so, which type or template it refers to. Name lookup occurs
+any time a name is encountered during parsing of a translation unit.
 
 \p Two names are the same name if:
 \begin{itemize}
@@ -40,11 +40,6 @@ name refers to a type or template is called \textit{name lookup}.
 \item they are conversion-function-ids formed with the same type, or
 \item they are template-ids that refer to the same class or function.
 \end{itemize}
-
-\begin{note}
-  This section matches \gls{isoCPP} section \textbf{[basic]} except for the
-  exclusion of \texttt{goto} and \textit{literal operators}.
-\end{note}
 
 \Sec{Declarations and definitions}{Basic.Decl}
 
@@ -278,15 +273,15 @@ inside the program begins.
 and execution mode (\ref{Basic.Start.Mode}).
 
 \p Parameters to entry functions and entry function return types must be of
-scalar, vector, or non-intangible class type (\ref{Basic.types}). Scalar and
-vector parameters and return types must be annotated with semantic annotations
-(\ref{Decl.Attr.Semantic}). Class type input and output parameters must have all
-fields annotated with semantic annotations.
+scalar, vector, matrix, non-intangible class type (\ref{Basic.types}), or array
+of such types. Scalar and vector parameters and return types must be annotated
+with semantic annotations (\ref{Decl.Attr.Semantic}). Class type input and
+output parameters must have all fields annotated with semantic annotations.
 
 \Sub{Execution Mode}{Basic.Start.Mode}
 
-\p A runtime may define a set of execution modes in an implementation defined
-way. Each execution mode will have a set of implementation defined rules which
+\p A runtime may define a set of execution modes in an implementation-defined
+way. Each execution mode will have a set of implementation-defined rules which
 restrict available language functionality as appropriate for the execution mode.
 
 \Sec{Types}{Basic.types}
@@ -298,7 +293,7 @@ object may be different based on the \textit{memory space} it is stored in
 (\ref{Intro.Memory.Spaces}).
 
 \begin{note}
-  \texttt{sizeof(T)} returns thesize of the object as-if it's stored in device
+  \texttt{sizeof(T)} returns the size of the object as if it's stored in device
   memory, and determining the size of an object stored in another memory space
   is not currently possible.
 \end{note}
@@ -341,8 +336,14 @@ be defined to have an \textit{incomplete} type.
 \textit{scalar types}.
 
 \p Vectors of scalar types declared with the built-in \texttt{vector<T,N>}
-template are \textit{vector types}. Vector lengths must be between 1 and 4 (i.e.
-\( 1 \leq N \leq 4 \) ).
+template are \textit{vector types}. An implementation must support vector
+lengths must be between 1 and 4 (i.e. \( 1 \leq N \leq 4 \) ).
+
+\begin{note}
+  An implementaiton may support vector lengths greater than 4.
+  %TODO: We should add an annex describing implementation limits and note vector
+  % sizes there.
+\end{note}
 
 \p Matrices of scalar types declared with the built-in \texttt{matrix<T,N,M>}
 template are \textit{matrix types}. Matrix dimensions, \texttt{N} and
@@ -384,18 +385,20 @@ shall satisfy the constraints defined in \glsdesc{isoCPP}, section
 
 \p There are three \textit{standard floating point types}: \texttt{half},
 \texttt{float}, and \texttt{double}. The \texttt{float} type is a 32-bit
-floating point type. The \texttt{double} type is a 64-bit floating point type.
-Both the \texttt{float} and \texttt{double} types have object representations as
-defined in \gls{IEEE754}. The \texttt{half} type may be either 16-bit or 32-bit
-as controlled by implementation defined compiler settings. If \texttt{half} is
-32-bit it will have an object representation as defined in \gls{IEEE754},
-otherwise it will have an object representation matching the \textbf{binary16}
-format defined in \gls{IEEE754}. There is one \textit{minimum precision floating
-point type}: \texttt{min16float}. The minimum precision floating point type is
-named for the required minimum value representation size in bits. The object
-representation of \texttt{min16float} is \texttt{float}. The standard floating
-point types and minimum precision floating point type are collectively called
-\textit{floating point types}.
+floating point type, and has a type alias \texttt{float32_t}. The
+\texttt{double} type is a 64-bit floating point type, and has a type alias
+\texttt{float64_t}. Both the \texttt{float} and \texttt{double} types have
+object representations as defined in \gls{IEEE754}. The \texttt{half} type may
+be either 16-bit or 32-bit as controlled by implementation-defined compiler
+settings. If \texttt{half} is 32-bit it will have an object representation as
+defined in \gls{IEEE754}, otherwise it will have an object representation
+matching the \textbf{binary16} format defined in \gls{IEEE754}. When
+\texttt{half} is 16-bit, it will have a type alias \texttt{float16\_t}. There is
+one \textit{minimum precision floating point type}: \texttt{min16float}. The
+minimum precision floating point type is named for the required minimum value
+representation size in bits. The object representation of \texttt{min16float} is
+\texttt{float}. The standard floating point types and minimum precision floating
+point type are collectively called \textit{floating point types}.
 
 \p Integer and floating point types are collectively called \textit{arithmetic
 types}.
