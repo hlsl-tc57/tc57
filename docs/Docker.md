@@ -55,7 +55,7 @@ After a successful build, the website is available at `http://localhost` with:
 To build only without running the Nginx server, you can modify the `docker-compose.yml` or use:
 
 ```bash
-docker build -t hlsl-website . --target 0
+docker build -t hlsl-website . --target build
 ```
 
 Then copy the output from `/workspace/website/public`:

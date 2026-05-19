@@ -1,7 +1,7 @@
 # Multi-stage build for HLSL TC57 website with Hugo and LaTeX
 
 # Stage 1: Builder
-FROM ubuntu:22.04
+FROM ubuntu:22.04 AS build
 
 # Set environment variables
 ENV HUGO_VERSION=0.148.1 \
@@ -68,9 +68,9 @@ RUN mkdir -p website/public/spec/assets \
     && unzip build/html/hlsl.zip -d website/public/spec/
 
 # Stage 2: Runtime (optional - for serving the built site)
-FROM nginx:alpine
+FROM nginx:alpine AS runtime
 
-COPY --from=0 /workspace/website/public /usr/share/nginx/html
+COPY --from=builder /workspace/website/public /usr/share/nginx/html
 
 EXPOSE 80
 
