@@ -35,7 +35,7 @@ any time a name is encountered during parsing of a translation unit.
 
 \p Two names are the same name if:
 \begin{itemize}
-\item they are identifiers comprised of the same character sequence, or
+\item they are identifiers composed of the same character sequence, or
 \item they are operator-function-ids formed with the same operator, or
 \item they are conversion-function-ids formed with the same type, or
 \item they are template-ids that refer to the same class or function.
@@ -418,13 +418,13 @@ which is a list of one or more types representing each scalar element of
 \p Scalarized representations are determined as follows:
 \begin{itemize}
 \item The scalarized representation of an array \texttt{T[n]} is \(SR(T_0), ..
-SR(T_n)\).
+SR(T_{n-1})\).
 
 \item The scalarized representation of a vector \texttt{vector<T,n>} is \(T_0,
-.. T_n\).
+.. T_{n-1}\).
 
 \item The scalarized representation of a matrix \texttt{matrix<T,n, m>} is
-\(T_0, .. T_{n \times m}\).
+\(T_0, .. T_{(n \times m)-1}\).
 
 \item The scalarized representation of a class type \texttt{T}, \(SR(T)\) is
 computed recursively as \(SR(T::base), SR(T::_0), .. SR(T::_n)\) where
