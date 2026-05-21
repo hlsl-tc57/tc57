@@ -304,8 +304,130 @@ users to assist in identifying behavior changes.
 
   \define{long-suffix} \textnormal{one of}\br
   \terminal{l L}
+
+  \define{floating-literal}\br
+  fractional-constant \opt{exponent-part} \opt{floating-suffix}\br
+  digit-sequence exponent-part \opt{floating-suffx}\br
+  \define{fractional-constant}\br
+  \opt{digit-sequence} \texttt{.} digit-sequence\br
+  digit-sequence \texttt{.}\br
+  \define{exponent-part}\br
+  \texttt{e} \opt{sign} digit-sequence\br
+  \texttt{E} \opt{sign} digit-sequence\br
+  \define{sign} \textnormal{one of}\br
+  \texttt{+} \texttt{-}\br
+  \define{digit-sequence}\br
+  digit\br
+  digit-sequence digit
+  \define{floating-suffix} \textnormal{one of}
+  \texttt{h} \texttt{f} \texttt{l} \texttt{H} \texttt{F} \texttt{L}
 \end{grammar}
 ```
+
+<style>
+.grammarlist {
+  border: 1px solid #000;
+  background: #ffffff;
+	font-family: 'Noto Sans';
+	font-size: 10pt;
+	font-style: italic;
+	margin-left: 25pt;
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+	text-indent: -2em;
+	padding-left: 3em;
+	line-height: 1.5;
+  list-style-type: none;
+}
+
+div.grammarlist span.texttt { font-family: 'Noto Sans Mono'; font-style: normal; }
+</style>
+<div class="grammarlist">
+<p><span><em>literal</em><span
+class="nodecor">:</span></span><br />
+integer-literal<br />
+character-literal<br />
+floating-literal<br />
+string-literal<br />
+boolean-literal<br />
+vector-literal</p>
+<p><span><em>integer-literal</em><span
+class="nodecor">:</span></span><br />
+decimal-literal
+<span>integer-suffix<sub><em>opt</em></sub></span><br />
+octal-literal
+<span>integer-suffix<sub><em>opt</em></sub></span><br />
+hexadecimal-literal
+<span>integer-suffix<sub><em>opt</em></sub></span><br />
+<span><em>decimal-literal</em><span
+class="nodecor">:</span></span><br />
+nonzero-digit<br />
+decimal-literal digit<br />
+<span><em>octal-literal</em><span
+class="nodecor">:</span></span><br />
+octal-literal octal-digit<br />
+<span><em>hexadecimal-literal</em><span
+class="nodecor">:</span></span><br />
+<span>0x</span> hexadecimal-digit<br />
+<span>0X</span> hexadecimal-digit<br />
+hexadecimal-literal hexadecimal-digit<br />
+<span><em>nonzero-digit</em><span
+class="nodecor">:</span></span> <span class="nodecor">one
+of</span><br />
+<span> 2 3 4 5 6 7 8 9</span><br />
+<span><em>octal-digit</em><span
+class="nodecor">:</span></span> <span class="nodecor">one
+of</span><br />
+<span> 1 2 3 4 5 6 7</span><br />
+<span><em>hexadecimal-digit</em><span
+class="nodecor">:</span></span> <span class="nodecor">one
+of</span><br />
+<span> 1 2 3 4 5 6 7 8 9</span><br />
+<span>a b c d e f</span><br />
+<span>A B C D E F</span><br />
+<span><em>integer-suffix</em><span
+class="nodecor">:</span></span><br />
+unsigned-suffix
+<span>long-suffix<sub><em>opt</em></sub></span><br />
+long-suffix
+<span>unsigned-suffix<sub><em>opt</em></sub></span><br />
+<span><em>unsigned-suffix</em><span
+class="nodecor">:</span></span> <span class="nodecor">one
+of</span><br />
+<span>u U</span><br />
+<span><em>long-suffix</em><span
+class="nodecor">:</span></span> <span class="nodecor">one
+of</span><br />
+<span>l L</span></p>
+<p><span><em>floating-literal</em><span
+class="nodecor">:</span></span><br />
+fractional-constant
+<span>exponent-part<sub><em>opt</em></sub></span>
+<span>floating-suffix<sub><em>opt</em></sub></span><br />
+digit-sequence exponent-part
+<span>floating-suffx<sub><em>opt</em></sub></span><br />
+<span><em>fractional-constant</em><span
+class="nodecor">:</span></span><br />
+<span>digit-sequence<sub><em>opt</em></sub></span>
+<span>.</span> digit-sequence<br />
+digit-sequence <span>.</span><br />
+<span><em>exponent-part</em><span
+class="nodecor">:</span></span><br />
+<span>e</span> <span>sign<sub><em>opt</em></sub></span>
+digit-sequence<br />
+<span>E</span> <span>sign<sub><em>opt</em></sub></span>
+digit-sequence<br />
+<span><em>sign</em><span class="nodecor">:</span></span>
+<span class="nodecor">one of</span><br />
+<span>+</span> <span>-</span><br />
+<span><em>digit-sequence</em><span
+class="nodecor">:</span></span><br />
+digit<br />
+digit-sequence digit <span><em>floating-suffix</em><span
+class="nodecor">:</span></span> <span class="nodecor">one
+of</span> <span>h</span> <span>f</span> <span>l</span>
+<span>H</span> <span>F</span> <span>L</span></p>
+</div>
 
 ### Integer Literals
 
