@@ -32,7 +32,7 @@ into a namespace will enable this use case as well.
 
 Each HLSL data type and builtin function will be moved from global scope to the
 `hlsl` namespace. This can be implemented in the AST construction, HLSL headers,
-and other lookup hooks. This would apply to all built in types (`vector`,
-`matrix`, `Texture`, `Buffer`, etc), as well as to their typedefs (`float3`,
-`float3x3`, etc), and to all builtin functions (`DeviceMemoryBarrier`,
+and other lookup hooks. This would apply to all built-in types (`vector`,
+`matrix`, `Texture*`, `Buffer`, etc), as well as to their typedefs (`float3`,
+`float3x3`, etc), and to all built-in functions (`DeviceMemoryBarrier`,
 `WaveIsFirstLane`, etc) including math operations (`abs`, `sin`, etc).
