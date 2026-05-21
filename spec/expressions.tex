@@ -21,14 +21,14 @@ in \ref{Conv}.
 \Sec{Usual Arithmetic Conversions}{Expr.Conv}
 
 \p Binary operators for arithmetic and enumeration type require that both
-operands are of a common type. When the types do not match the \textit{usual
+operands are of a common type. When the types do not match, the \textit{usual
 arithmetic conversions} are applied to yield a common type. When \textit{usual
 arithmetic conversions} are applied to vector operands they behave as
 component-wise conversions (\ref{Conv.CWise}). The \textit{usual arithmetic
 conversions} are:
 
 \begin{itemize}
-  \item If either operand is of scoped enumeration type no conversion is
+  \item If either operand is of scoped enumeration type, no conversion is
   performed, and the expression is ill-formed if the types do not match.
   \item If either operand is a \texttt{vector<T,X>}, vector truncation or scalar
   extension is performed with the following rules:
@@ -53,8 +53,8 @@ conversions} are:
   (\ref{Conv}).
   \begin{itemize}
     \item If both operands are scalar or vector elements of signed or unsigned
-    types, the operand of lesser integer conversion rank shall be converted to
-    the type of the operand with greater rank.
+    integer types, the operand of lesser integer conversion rank shall be
+    converted to the type of the operand with greater rank.
     \item Otherwise, if both the operand of unsigned scalar or vector element
     type is of greater rank than the operand of signed scalar or vector element
     type, the signed operand is converted to the type of the unsigned operand.
@@ -148,8 +148,6 @@ as the same non-parenthesized expression.
   postfix-expression \terminal{(} \opt{expression-list} \terminal{)}\br
   simple-type-specifier \terminal{(} \opt{expression-list} \terminal{)}\br
   typename-specifier \terminal{(} \opt{expression} \terminal{)}\br
-  simple-type-specifier braced-init-list\br
-  typename-specifier braced-init-list\br
   postfix-expression \terminal{.} \opt{\terminal{template}} id-expression\br
   postfix-expression \terminal{.} vector-swizzle-component-sequence\br
   postfix-expression \terminal{.} matrix-swizzle-component-sequence\br
@@ -159,7 +157,7 @@ as the same non-parenthesized expression.
 
 \Sec{Subscript}{Expr.Post.Subscript}
 
-% TODO: Language pending proposal in https://github.com/hlsl-tc57/tc57/pull/27.
+% TODO: Language pending proposal in https://github.com/hlsl-tc57/tc57/blob/main/proposals/0006-restricted-unbound-arrays.md.
 
 \Sec{Swizzle Expressions}{Expr.Post.Swizzle}
 
@@ -322,7 +320,7 @@ array-to-pointer decay. If an argument is an unsized array type, the array
 lvalue directly decays via array-to-pointer decay.
 
 % TODO: The language above matches DXC's behavior but will need to be updated to
-% match the final specification from https://github.com/hlsl-tc57/tc57/pull/27.
+% match the final specification from https://github.com/hlsl-tc57/tc57/blob/main/proposals/0006-restricted-unbound-arrays.md.
 
 \p Arguments to \textit{output} and \textit{input/output parameters} must be
 lvalues. \textit{Output parameters} are not initialized prior to the call; they
@@ -348,7 +346,7 @@ of type \texttt{T[]} through array to pointer decay. An unsized array of type
 \texttt{T[N]}.
 
 % TODO: The language above matches DXC's behavior but will need to be updated to
-% match the final specification from https://github.com/hlsl-tc57/tc57/pull/27.
+% match the final specification from https://github.com/hlsl-tc57/tc57/blob/main/proposals/0006-restricted-unbound-arrays.md.
 
 \p On expiration of the cxvalue, the value is assigned back to the argument
 lvalue expression using a resolved assignment expression as if the expression
