@@ -8,8 +8,6 @@ params:
     status: Under Consideration
 ---
 
-* Planned Version: 202y
-
 ## Introduction
 
 Following conventions of other languages HLSL data types should be moved into a
