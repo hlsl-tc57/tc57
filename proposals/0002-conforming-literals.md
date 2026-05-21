@@ -265,8 +265,16 @@ users to assist in identifying behavior changes.
   string-literal\br
   boolean-literal\br
   vector-literal\br
+\end{grammar}
+```
 
-  \define{integer-literal}\br
+![literal](0002-assets/literal.png)
+
+### Integer Literals
+
+```latex
+\begin{grammar}
+\define{integer-literal}\br
   decimal-literal \opt{integer-suffix}\br
   octal-literal \opt{integer-suffix}\br
   hexadecimal-literal \opt{integer-suffix}\br
@@ -304,29 +312,8 @@ users to assist in identifying behavior changes.
 
   \define{long-suffix} \textnormal{one of}\br
   \terminal{l L}
-
-  \define{floating-literal}\br
-  fractional-constant \opt{exponent-part} \opt{floating-suffix}\br
-  digit-sequence exponent-part \opt{floating-suffx}\br
-  \define{fractional-constant}\br
-  \opt{digit-sequence} \texttt{.} digit-sequence\br
-  digit-sequence \texttt{.}\br
-  \define{exponent-part}\br
-  \texttt{e} \opt{sign} digit-sequence\br
-  \texttt{E} \opt{sign} digit-sequence\br
-  \define{sign} \textnormal{one of}\br
-  \texttt{+} \texttt{-}\br
-  \define{digit-sequence}\br
-  digit\br
-  digit-sequence digit
-  \define{floating-suffix} \textnormal{one of}
-  \texttt{h} \texttt{f} \texttt{l} \texttt{H} \texttt{F} \texttt{L}
 \end{grammar}
 ```
-
-![literal](0002-assets/literal.png)
-
-### Integer Literals
 
 ![integer-literal](0002-assets/integer-literal.png)
 
@@ -353,6 +340,27 @@ An implementation may support the integer suffixes `ll` and
 `ull` as equivalent to `l` and `ul` respectively.
 
 ### Floating Point Literals [Lex.Literal.Float]
+
+```latex
+\begin{grammar}
+  \define{floating-literal}\br
+  fractional-constant \opt{exponent-part} \opt{floating-suffix}\br
+  digit-sequence exponent-part \opt{floating-suffx}\br
+  \define{fractional-constant}\br
+  \opt{digit-sequence} \texttt{.} digit-sequence\br
+  digit-sequence \texttt{.}\br
+  \define{exponent-part}\br
+  \texttt{e} \opt{sign} digit-sequence\br
+  \texttt{E} \opt{sign} digit-sequence\br
+  \define{sign} \textnormal{one of}\br
+  \texttt{+} \texttt{-}\br
+  \define{digit-sequence}\br
+  digit\br
+  digit-sequence digit
+  \define{floating-suffix} \textnormal{one of}
+  \texttt{h} \texttt{f} \texttt{l} \texttt{H} \texttt{F} \texttt{L}
+\end{grammar}
+```
 
 ![floating-literal](0002-assets/floating-literal.png)
 
