@@ -26,7 +26,7 @@ their career after modern C++ was widely adopted.
 
 ### C++11
 
-HLSL should integrate the following C++11 features:
+HLSL should integrate the following C++11 features ([Source](https://en.cppreference.com/cpp/11)):
 
 * auto
 * decltype
@@ -67,7 +67,7 @@ C++14 features that we could consider ([Source](https://en.cppreference.com/cpp/
 
 ### C++17
 
-C++17 features that we could consider:
+C++17 features that we could consider ([Source](https://en.cppreference.com/cpp/17)):
 
 * compile-time `if constexpr`
 * initializers for if and switch
@@ -86,8 +86,6 @@ C++17 features that we could consider:
   * [[maybe_unused]]
   * [[nodiscard]]
 * __has_include
-
-[Source](https://en.cppreference.com/cpp/17)
 
 #### C++17 Excluded Features
 
