@@ -468,6 +468,11 @@ type, the program is ill-formed.
 
 ### Conversion Ranks
 
+> The conversion ranks are not changed by this proposal, however this proposal
+> makes them apply to literal values with types assigned based on the lexing
+> rules described above. For completeness the ranks as implemented in DXC are
+> described below.
+
 #### Integer Conversion Rank [Conv.rank.int]
 
 *   No two signed integer types shall have the same conversion rank even if
