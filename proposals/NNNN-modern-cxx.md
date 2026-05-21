@@ -6,6 +6,16 @@ params:
   status: Under Consideration
 ---
 
+* Issues:
+   * auto: [#24](https://github.com/microsoft/hlsl-specs/issues/24)
+   * decltype: (#82)[https://github.com/microsoft/hlsl-specs/issues/82)
+   * constexpr: [#21](https://github.com/microsoft/hlsl-specs/issues/21)
+(#74)[https://github.com/microsoft/hlsl-specs/issues/74]
+   * scoped enums: [#284](https://github.com/microsoft/hlsl-specs/issues/284)
+   * variadic templates: [#21](https://github.com/microsoft/hlsl-specs/issues/21)
+   * static assert: [#33](https://github.com/microsoft/hlsl-specs/issues/33)
+   * simplified nested namespace: [#68](https://github.com/microsoft/hlsl-specs/issues/68)
+   
 ## Introduction
 
 In DXC HLSL is a set of feature extensions on top of a subset of C++98. C++98
