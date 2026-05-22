@@ -68,9 +68,9 @@ RUN mkdir -p website/public/spec/assets \
     && unzip build/html/hlsl.zip -d website/public/spec/
 
 # Stage 2: Runtime (optional - for serving the built site)
-FROM nginx:alpine AS runtime
+FROM nginx:alpine AS run
 
-COPY --from=builder /workspace/website/public /usr/share/nginx/html
+COPY --from=build /workspace/website/public /usr/share/nginx/html
 
 EXPOSE 80
 
