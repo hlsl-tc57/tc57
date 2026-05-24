@@ -209,39 +209,39 @@ replicated into each element of the flattened \texttt{U[N]}.
 \item \texttt{T}
 \end{itemize}
 
-\p The resulting value of vector truncation is comprised of elements \( [0..y)
-\), dropping elements \( [y..x) \).
+\p The resulting value of vector truncation is comprised of elements \( [0..N$^\prime$)
+\), dropping elements \( [N$^\prime$..N) \).
 
-\p A prvalue of type \texttt{matrix<T,x,y>} can be converted to a prvalue of
+\p A prvalue of type \texttt{matrix<T,M,N>} can be converted to a prvalue of
 type:
 \begin{itemize}
-  \item \texttt{matrix<T,z,w>} only if \( x \geq z \) and \(y \geq w \),
+  \item \texttt{matrix<T,M$^\prime$,N$^\prime$>} only if \( M \geq M$^\prime$ \) and \(N \geq N$^\prime$ \),
   \item \texttt{vector<T,z>} only if \( x \geq z \), or
   \item \texttt{T}.
 \end{itemize}
 
 \p Matrix truncation is performed on each row and column dimension separately.
-The resulting value is comprised of vectors \( [0..z) \) which are each
-separately comprised of elements \( [0..w) \). Trailing vectors and elements are
+The resulting value is comprised of vectors \( [0..M$^\prime$) \) which are each
+separately comprised of elements \( [0..N$^\prime$) \). Trailing vectors and elements are
 dropped.
 
 \p Reducing the dimension of a vector to one (\texttt{vector<T,1>}), can produce
 either a single element vector or a scalar of type \texttt{T}. Reducing the rows
-of a matrix to one (\texttt{matrix<T,x,1>}), can produce either a single row
-matrix, a vector of type \texttt{vector<T,x>}, or a scalar of type \texttt{T}.
+of a matrix to one (\texttt{matrix<T,M,1>}), can produce either a single row
+matrix, a vector of type \texttt{vector<T,M>}, or a scalar of type \texttt{T}.
 
 \Sec{Component-wise conversions}{Conv.CWise}
 
-\p A glvalue of type \texttt{vector<T,x>} can be converted to a cxvalue of type
-\texttt{vector<V,x>}, or a prvalue of type \texttt{vector<T,x>} can be converted
-to a prvalue of type \texttt{vector<V,x>}. The source value is converted by
+\p A glvalue of type \texttt{vector<T,M>} can be converted to a cxvalue of type
+\texttt{vector<V,M>}, or a prvalue of type \texttt{vector<T,M>} can be converted
+to a prvalue of type \texttt{vector<V,M>}. The source value is converted by
 performing the appropriate conversion of each element of type \texttt{T} to an
 element of type \texttt{V} following the rules for standard conversions in
 chapter \ref{Conv}.
 
-\p A glvalue of type \texttt{matrix<T,x,y>} can be converted to a cxvalue of
-type \texttt{matrix<V,x,y>}, or a prvalue of type \texttt{matrix<T,x,y>} can be
-converted to a prvalue of type \texttt{matrix<V,x,y>}. The source value is
+\p A glvalue of type \texttt{matrix<T,M,N>} can be converted to a cxvalue of
+type \texttt{matrix<V,M,N>}, or a prvalue of type \texttt{matrix<T,M,N>} can be
+converted to a prvalue of type \texttt{matrix<V,M,N>}. The source value is
 converted by performing the appropriate conversion of each element of type
 \texttt{T} to an element of type \texttt{V} following the rules for standard
 conversions in chapter \ref{Conv}.
