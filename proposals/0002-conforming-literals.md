@@ -356,9 +356,12 @@ An implementation may support the integer suffixes `ll` and
   \texttt{+} \texttt{-}\br
   \define{digit-sequence}\br
   digit\br
-  digit-sequence digit
-  \define{floating-suffix} \textnormal{one of}
-  \texttt{h} \texttt{f} \texttt{l} \texttt{H} \texttt{F} \texttt{L}
+  digit-sequence digit\br
+  \define{floating-suffix} \textnormal{one of}\br
+  \texttt{h} \texttt{f} \texttt{l}
+  \texttt{H} \texttt{F} \texttt{L}
+  \texttt{f16} \texttt{f32} \texttt{f64}
+  \texttt{F16} \texttt{F32} \texttt{F64}
 \end{grammar}
 ```
 
@@ -369,11 +372,14 @@ an optional _exponent-part_ and optional _floating-suffix_, or as
 an integer _digit-sequence_ with a required _exponent-part_ and
 optional _floating-suffix_.
 
-\p The type of a floating literal is `float`, unless explicitly specified
-by a suffix. The suffixes `h` and `H` specify `half`, the suffixes `f` and `F`
-specify `float`, and the suffixes `l` and `L` specify `double`. If a value
-specified in the source is not in the range of representable values for its
-type, the program is ill-formed.
+The type of a floating literal is `float`, unless explicitly specified by a
+suffix. The suffixes `h` and `H` specify `half`, the suffixes `f` and `F`
+specify `float`, and the suffixes `l` and `L` specify `double`. The explicitly
+sized suffixes `f16`, `F16`, `f32`, `F32`, `f64`, and `F64` specify the types of
+the bit-width specified by the number in the suffix. The `f16` and `F16`
+suffixes will only be supported when an implementation supports native 16-bit
+types. If a value specified in the source is not in the range of representable
+values for its type, the program is ill-formed.
 
 ### Conversion Ranks
 
