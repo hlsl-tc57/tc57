@@ -117,8 +117,7 @@ the implementation.
   preprocessing-op-or-punc\br
   \textnormal{each non-whitespace character from the \textit{translation
   character set} that cannot be one of the above}
-\end{grammar}\footnote{The preprocessor is inherited from C++ 11 with no
-grammar extensions. It is specified here only for completeness.}
+\end{grammar}
 
 \p Each preprocessing token that is converted to a token shall have the lexical
 form of a keyword, an identifier, a constant, a string literal or an operator or
@@ -213,8 +212,7 @@ numbers.
 \p A preprocessing number cannot end in a period (\texttt{.}) if the immediate
 next token is a \textit{scalar-element-sequence} (\ref{Lex.Literal.Vector}). In
 this situation the \textit{pp-number} token is truncated to end before the
-period\footnote{This grammar formulation is not context-free and requires an
-LL(2) parser.}.
+period.
 
 %TODO: \Sec{Identifiers}{Lex.Ident}
 
