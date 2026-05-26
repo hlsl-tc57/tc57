@@ -1,0 +1,30 @@
+# Build and cache directories
+build/
+.hugo_build.lock
+dist/
+node_modules/
+
+# Version control
+.git/
+.gitignore
+.github/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation
+CONTRIBUTING.md
+CODEOWNERS
+
+# Development files
+.env
+.env.local
+*.log
+
+# OS files
+Thumbs.db

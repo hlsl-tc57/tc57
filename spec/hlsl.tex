@@ -14,6 +14,7 @@
 \usepackage{tikz}
 \usepackage{svg}
 \usepackage{caption}
+\usepackage{environ}
 \usetikzlibrary{arrows,automata,positioning}
 
 \renewcommand{\familydefault}{\sfdefault}
@@ -41,8 +42,9 @@
 
 \setlength\parindent{0cm}
 
-\begin{document}
 \input{macros}
+
+\begin{document}
 \maketitle
 % Hide page number on the title page and do not count it in frontmatter
 \thispagestyle{empty}
@@ -62,10 +64,15 @@
 % Switch to arabic numbering starting at 1 for main content
 \pagenumbering{arabic}
 \input{scope}
-\input{terms}
+\input{conformance}
 \input{references}
+\input{terms}
+\input{lex}
+\input{basic}
 \input{conversions}
+\clearpage
 
+\input{annex-a}
 \clearpage
 
 \printglossary[type=\acronymtype]

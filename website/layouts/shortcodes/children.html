@@ -1,16 +1,11 @@
 {{/*
   Shortcode: children
-  Usage: {{< children maxDepth=0 >}}
-  Renders a nested list of child pages/sections under the current page.
+  Usage: {{< children order="asc" sections="false" maxDepth=0 >}}
+  Lists child pages (and optionally sections) under the current section.
   Params:
-    - maxDepth: maximum depth (0 for unlimited)
-*/}}
-{{- $max := .Get "maxDepth" | default 0 -}}
-{{- partial "children-list.html" (dict "Page" .Page "Depth" 0 "MaxDepth" $max) -}}
-{{/*
-  Shortcode: children
-  Usage: {{< children order="desc" >}}
-  Lists all child pages (and optionally sections) under the current section.
+    - order: "asc" or "desc" (by file base name); default "asc"
+    - sections: "true" to include subsections; default "false"
+    - maxDepth: maximum recursion depth (0 for unlimited); default 0
 */}}
 {{- $order := .Get "order" | default "asc" -}}
 {{- $includeSections := .Get "sections" | default "false" -}}

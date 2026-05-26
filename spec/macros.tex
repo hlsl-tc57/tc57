@@ -84,7 +84,10 @@
 \newlength{\GrammarRest}
 \setlength{\GrammarRest}{2\GrammarIndent}
 
-\newenvironment{grammar} {
+% Inner grammar rendering environment. The grammar environment defined below
+% wraps this one so each grammar block is also captured into an auxiliary file
+% for the consolidated grammar reference in Annex A.
+\newenvironment{innergrammar} {
   \newcommand{\define}[1]{{\textit{##1}\textnormal{:}}}
   \newcommand{\terminal}[1]{{\texttt{##1}}}
   \newcommand{\br}{\\}
@@ -108,6 +111,60 @@
   parsep=1ex, partopsep=0pt, itemsep=0pt, topsep=0pt, label={},
   leftmargin=\grammarindentrest, listparindent=-\grammarindentinc,
   itemindent=\listparindent
+}
+
+% Collect every grammar block into an auxiliary file so the consolidated
+% grammar reference in Annex A can re-render them in document order.
+\makeatletter
+\newwrite\hlsl@grammarout
+\newif\ifhlsl@grammarcollect
+\hlsl@grammarcollecttrue
+\immediate\openout\hlsl@grammarout=\jobname.grammar\relax
+
+\newcommand{\closegrammarcollection}{%
+  \ifhlsl@grammarcollect
+    \immediate\closeout\hlsl@grammarout
+    \hlsl@grammarcollectfalse
+  \fi
+}
+
+\NewEnviron{grammar}{%
+  \ifhlsl@grammarcollect
+    \immediate\write\hlsl@grammarout{\noexpand\begin{grammar}}%
+    \immediate\write\hlsl@grammarout{\unexpanded\expandafter{\BODY}}%
+    \immediate\write\hlsl@grammarout{\noexpand\end{grammar}}%
+    \immediate\write\hlsl@grammarout{}%
+  \fi
+  \begin{innergrammar}\BODY\end{innergrammar}%
+}
+\makeatother
+
+%%------------------------------------------------------------------------------
+%% Annex formatting
+%%------------------------------------------------------------------------------
+
+% \Annex{<letter>}{<normative|informative>}{<title>}{<label>}
+%
+% Produces an Ecma-style annex header of the form:
+%
+%        Annex <letter>
+%        (<type>)
+%
+%        <title>
+%
+% and adds an entry to the table of contents. The annex is unnumbered as a
+% chapter; the letter identifies it.
+\newcommand{\Annex}[4]{%
+  \clearpage
+  \chapter*{}%
+  \vspace{-2\baselineskip}%
+  \begin{center}
+    {\Large\bfseries Annex #1}\\[0.3em]
+    {\normalfont (#2)}\\[1.5em]
+    {\Large\bfseries #3\hfill[#4]}
+  \end{center}%
+  \addcontentsline{toc}{chapter}{Annex #1 (#2): #3}%
+  \label{#4}%
 }
 
 \lstloadlanguages{C++} % TODO: Consider defining an HLSL language...

@@ -1,10 +1,10 @@
 {{ define "main" }}
 
   {{ $remaining_pages := (.Pages.ByParam "number") }}
-  
-  {{ range slice "Under Consideration" "Under Review" "Accepted" "Completed" "Rejected" }}
+
+  {{ range slice "Under Consideration" "Refinement" "Accepted" "Completed" "Rejected" "Deferred" }}
     {{ $status := . }}
-    
+
     {{ $pages := $remaining_pages }}
     {{ $remaining_pages = slice }}
 
@@ -20,7 +20,7 @@
     </ul>
  {{ end }}
 
- 
+
  {{ if gt ($remaining_pages | len) 0 }}
  <h2>Invalid Metadata</h2>
  <ul>
