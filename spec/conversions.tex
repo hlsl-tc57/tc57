@@ -205,24 +205,24 @@ replicated into each element of the flattened \texttt{U[N]}.
 
 \p A prvalue of type \texttt{vector<T,N>} can be converted to a prvalue of type:
 \begin{itemize}
-\item \texttt{vector<T,N$^\prime$>} only if \( N$^\prime$ < N \), or
+\item \texttt{vector<T,N$^\prime$>} only if \( N\prime < N \), or
 \item \texttt{T}
 \end{itemize}
 
-\p The resulting value of vector truncation is comprised of elements \( [0..N$^\prime$)
-\), dropping elements \( [N$^\prime$..N) \).
+\p The resulting value of vector truncation is comprised of elements \( [0..N\prime)
+\), dropping elements \( [N\prime..N) \).
 
 \p A prvalue of type \texttt{matrix<T,M,N>} can be converted to a prvalue of
 type:
 \begin{itemize}
-  \item \texttt{matrix<T,M$^\prime$,N$^\prime$>} only if \( M \geq M$^\prime$ \) and \(N \geq N$^\prime$ \),
+  \item \texttt{matrix<T,M$^\prime$,N$^\prime$>} only if \( M \geq M\prime \) and \(N \geq N\prime \),
   \item \texttt{vector<T,z>} only if \( x \geq z \), or
   \item \texttt{T}.
 \end{itemize}
 
 \p Matrix truncation is performed on each row and column dimension separately.
-The resulting value is comprised of vectors \( [0..M$^\prime$) \) which are each
-separately comprised of elements \( [0..N$^\prime$) \). Trailing vectors and elements are
+The resulting value is comprised of vectors \( [0..M\prime) \) which are each
+separately comprised of elements \( [0..N\prime) \). Trailing vectors and elements are
 dropped.
 
 \p Reducing the dimension of a vector to one (\texttt{vector<T,1>}), can produce
