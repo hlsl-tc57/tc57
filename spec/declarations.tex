@@ -1,0 +1,138 @@
+\Ch{Declarations}{Decl}
+\Sec{Preamble}{Decl.Pre}
+\p Declarations generally specify how names are to be interpreted. Declarations have the form
+\begin{grammar}
+  \define{declaration-seq}\br
+  declaration\br
+  declaration-seq declaration\br
+
+  \define{declaration}\br
+  name-declaration\br
+  special-declaration\br
+
+  \define{name-declaration}\br
+  block-declaration\br
+  function-definition\br
+  template-declaration\br
+  namespace-definition\br
+  empty-declaration\br
+  attribute-declaration\br
+  cbuffer-declaration\br
+
+  \define{special-declaration}\br
+  export-declaration-group\br
+  cbuffer-member-declaration\br
+
+  \define{block-declaration}\br
+  simple-declaration\br
+  namespace-alias-definition\br
+  using-declaration\br
+  using-directive\br
+  static\_assert-declaration\br
+  alias-declaration\br
+  opaque-enum-declaration\br
+
+  \define{empty-declaration}\br
+  \terminal{;}
+
+\end{grammar}
+
+\Sec{Specifiers}{Decl.Spec}
+\Sub{General}{Decl.Spec.General}
+\p The specifiers that can be used in a declaration are
+\begin{grammar}
+  \define{decl-specifier}\br
+  \textit{storage-class-specifier}\br
+  \textit{type-specifier}\br
+  \textit{function-specifier}\br
+  \texttt{typedef}\br
+
+  \define{decl-specifier-seq}\br
+  decl-specifier\br
+  decl-specifier decl-specifier-seq\br
+\end{grammar}
+
+\Sub{Function specifiers}{Decl.Spec.Fct}
+
+\p A \textit{function-specifier} can be used only in a function declaration.
+
+\begin{grammar}
+  \define{function-specifier}\br
+  \texttt{export}\br
+\end{grammar}
+
+\p The \texttt{export} specifier denotes that the function has program linkage (\ref{Basic.Linkage.Program}).
+
+\p The \texttt{export} specifier cannot be used on functions directly or indirectly within an unnamed namespace.
+
+\p Functions with program linkage can also be specified in \textit{export-declaration-group} (\ref{Decl.Export}).
+
+\p If a function is declared with an \texttt{export} specifier then all redeclarations of the same function must also use the \texttt{export} specifier or be part of \textit{export-declaration-group} (\ref{Decl.Export}).
+
+\Sec{Declarators}{Decl.Decl}
+% TODO: Complete the declarators subclause.
+\Sec{Initializers}{Decl.Init}
+
+\p The process of initialization described in this section applies to all
+initializers regardless of the context.
+
+\begin{grammar}
+  \define{initializer}\br
+  brace-or-equal-initializer\br
+  \terminal{(} expression-list \terminal{)}\br
+
+  \define{brace-or-equal-initializer}\br
+  \terminal{=} initializer-clause\br
+  braced-init-list\br
+
+  \define{initializer-clause}\br
+  assignment-expression\br
+  braced-init-list\br
+
+  \define{braced-init-list}\br
+  \terminal{\{} initializer-list \opt{\terminal{,}} \terminal{\}}\br
+  \terminal{\{} \terminal{\}}\br
+
+  \define{initializer-list}\br
+  initializer-clause\br
+  initializer-list \terminal{,} initializer-clause\br
+\end{grammar}
+
+\Sub{Aggregate Initialization}{Decl.Init.Agg}
+
+\p An \textit{aggregate} is a vector, matrix, array, or class.
+
+\p The subobjects of an aggregate have a defined order. For vectors and arrays
+the order is increasing subscript order. For matrices it is increasing subscript
+order with the subscript nesting such that in the notation
+\texttt{Mat[M][N]}, the ordering is \(Mat[0][0]...Mat[0][N]...
+Mat[M][0]...Mat[M][N]\). For classes the order is base class, followed by member
+subobjects in declaration order.
+
+\p A \textit{flattened ordering} of subobjects can be produced by performing a
+depth-first traversal of the subobjects of an object following the defined
+subobject ordering.
+
+\p Each \textit{braced initializer list} is comprised of zero or more
+\textit{initializer-clause} expressions, which is either another braced
+initializer list or an expression which generates a value that either is or can
+be implicitly converted to an rvalue. Each assignment-expression is an object,
+which may be a scalar or aggregate type. A \textit{flattened initializer
+sequence} is a sequence of expressions constructed by a depth-first traversal
+over each assignment-expression in an initializer-list and performing a
+depth-first traversal accessing each subobject of the assignment-expression.
+
+\p If the target object is an array of unknown size, the object is assumed to
+have \(m\) possible elements during parsing, where \(m>0\).
+
+\p An initializer-list is a valid initializer if for each element
+\(E_{n \bmod m}\) in the target object's flattened ordering there is a
+corresponding expression \(E_n\) in the flattened initializer sequence, which
+can be implicitly converted to the element's type. For arrays of unknown size,
+the total number of expressions in the flattened initializer sequence must be a
+multiple of the array's base element type.
+
+\p An initializer-list is invalid if the flattened initializer sequence contains
+more or fewer elements than the target object's flattened ordering, or if any
+initializer \(I_n\) cannot be implicitly converted to the corresponding element
+\(E_n\)'s type.
