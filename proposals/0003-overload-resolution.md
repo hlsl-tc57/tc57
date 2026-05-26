@@ -1,12 +1,11 @@
 ---
 title: "0003 - Simplified Overload Resolution"
-draft: true
 params:
   authors:
     - llvm-beanz: Chris Bieneman
   sponsors:
     - llvm-beanz: Chris Bieneman
-  status: Under Consideration
+  status: Refinement
 ---
 
 ## Introduction

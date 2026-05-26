@@ -109,7 +109,7 @@ for more information about retroactively exposing features.
 
 ### Runtime Changes
 
-> [!NOTE]  
+> [!NOTE]
 > Runtime versioning changes the library functionality of the language: data types, methods, etc.
 
 HLSL's supported runtimes are DirectX and Vulkan. For DirectX versioning of HLSL
@@ -149,3 +149,8 @@ check compiler versions explicitly. The Clang feature checking macros are
 documented
 [here](https://clang.llvm.org/docs/LanguageExtensions.html#feature-checking-macros).
 The `__has_feature` macro is known to work in DXC, and should be used.
+
+## Minor Details
+
+* Standard defined headers shall have no file extension (i.e. `enable_if` rather
+  than `enable_if.h` or `enable_if.hlsli`). (See: [#36](https://github.com/hlsl-tc57/tc57/issues/36))
