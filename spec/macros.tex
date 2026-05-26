@@ -156,7 +156,7 @@
 %% Annex formatting
 %%------------------------------------------------------------------------------
 
-% \Annex{<letter>}{<normative|informative>}{<title>}{<label>}
+% \Annex{<normative|informative>}{<title>}{<label>}
 %
 % Produces an Ecma-style annex header of the form:
 %
@@ -165,19 +165,25 @@
 %
 %        <title>
 %
-% and adds an entry to the table of contents. The annex is unnumbered as a
-% chapter; the letter identifies it.
-\newcommand{\Annex}[4]{%
+% and adds an entry to the table of contents.
+
+\newenvironment{annexes} {
+  \appendix
+  \renewcommand{\thechapter}{\Alph{chapter}}
+}{}
+
+\newcommand{\Annex}[3]{%
   \clearpage
-  \chapter*{}%
+  \refstepcounter{chapter}%
+  \chaptermark{Annex \thechapter}%
   \vspace{-2\baselineskip}%
   \begin{center}
-    {\Large\bfseries Annex #1}\\[0.3em]
-    {\normalfont (#2)}\\[1.5em]
-    {\Large\bfseries #3\hfill[#4]}
+    {\Large\bfseries Annex \thechapter}\\[0.3em]
+    {\normalfont (#1)}\\[1.5em]
+    {\Large\bfseries #2\hfill[#3]}
   \end{center}%
-  \addcontentsline{toc}{chapter}{Annex #1 (#2): #3}%
-  \label{#4}%
+  \addcontentsline{toc}{chapter}{Annex \thechapter (#1): #2}%
+  \label{#3}%
 }
 
 \lstloadlanguages{C++} % TODO: Consider defining an HLSL language...

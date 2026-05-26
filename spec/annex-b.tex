@@ -1,0 +1,27 @@
+\Annex{informative}{Implementation Documentation}{AnnexB}
+
+\Sec{Implementation Limits}{AnnexB.Limits}
+
+\p This section describes reasonable implementation limits that may be assumed
+by a conforming implementation. These limits specify minimum required or maximum
+allowed values for various implementation-defined parameters.
+
+\p \ref{Basic.Types} declares a vector type as having required supported sizes
+of 1 to 4 components. Implementations may support larger vector sizes but are
+not required to do so. An implementation that supports larger vector sizes must
+define its vector size limit.
+
+\Sec{Observed Deviations}{AnnexB.Documentation}
+
+\p This section provides documentation for users around behavior observed by the
+specification authors around specific implementations. This documentation is
+provided for historical context and information purposes only.
+
+\Sub{Resource Objects}{AnnexB.Resources}
+
+\p In violation of \ref{Basic.Types.Intangible}, DXC supports storing objects
+that contain resources in \texttt{cbuffer} declarations. In this use case the
+resource objects are not actually stored in the \texttt{cbuffer}, but instead
+the resource is treated as a global resource declaration and name lookup
+resolves the value inside the structure declaration to the implied global
+resource declaration.
