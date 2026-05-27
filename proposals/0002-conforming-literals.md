@@ -20,9 +20,10 @@ params:
 
 ## Implementation Status
 
-| DXC     | Clang    |
-|---------|----------|
-| Partial (missing https://github.com/microsoft/DirectXShaderCompiler/pull/8478) | Complete |
+|   | DXC     | Clang    |
+|---|---------|----------|
+| C/C++ Literal Lexing | Complete | Complete |
+| fixed size suffixes (C++23) | [In progress](https://github.com/microsoft/DirectXShaderCompiler/pull/8478) | Complete |
 
 ## Introduction
 
