@@ -8,8 +8,6 @@ params:
   status: Refinement
 ---
 
-
-
 * Planned Version: HLSL 202x
 * PRs: [#175](https://github.com/microsoft/hlsl-specs/pull/175)
 * Issues: [#73](https://github.com/microsoft/hlsl-specs/issues/73),
@@ -19,6 +17,12 @@ params:
   [microsoft/DirectXShaderCompiler#5493](https://github.com/microsoft/DirectXShaderCompiler/issues/5493),
   [microsoft/DirectXShaderCompiler#6410](https://github.com/microsoft/DirectXShaderCompiler/issues/6410),
   [shader-slang/slang#1185](https://github.com/shader-slang/slang/issues/1185)
+
+## Implementation Status
+
+| DXC     | Clang    |
+|---------|----------|
+| Partial (missing https://github.com/microsoft/DirectXShaderCompiler/pull/8478) | Complete |
 
 ## Introduction
 
