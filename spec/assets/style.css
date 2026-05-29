@@ -1,6 +1,29 @@
+/* ---------------------------------------------------------------------------
+   Sidebar sizing tokens
+   ---------------------------------------------------------------------------
+   The sidebar width is governed by three knobs:
+     --toc-min-width  - floor; the sidebar will never be narrower than this.
+                        JS in template.html may raise this at load time to fit
+                        the widest actual TOC entry.
+     --toc-max-width  - ceiling on very large monitors so prose doesn't get
+                        pushed too far to the right.
+     --toc-ratio      - the fraction of the viewport the sidebar may occupy
+                        (0.25 = 1/4). Everything in between min and max scales
+                        with the window.
+   The drawer breakpoint below is derived from these:
+     viewport * ratio < min  =>  viewport < min / ratio
+   With the defaults (16rem / 0.25) that is 64rem (1024px). If you change
+   --toc-min-width or --toc-ratio, update the @media query value to match
+   (or let the JS in template.html flip the .toc-drawer body class for you). */
+:root {
+  --toc-min-width: 16rem;
+  --toc-max-width: 22rem;
+  --toc-ratio: 0.25;
+}
+
 /* Sidebar */
 #toc {
-  width: 20rem;
+  width: clamp(var(--toc-min-width), calc(100vw * var(--toc-ratio)), var(--toc-max-width));
   background: #d9d9d9;
   padding: 0; /* reduced left/right gutter */
   position: sticky;
@@ -134,7 +157,7 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a { color: 
 .toc-toggle[aria-expanded="true"] { transform: rotate(90deg); }
 
 /* Grammar style */
-.grammarlist {
+.grammar {
   border: 1px solid #000;
   background: #ffffff;
 	font-family: 'Noto Sans';
@@ -149,4 +172,159 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a { color: 
   list-style-type: none;
 }
 
-div.grammarlist span.texttt { font-family: 'Noto Sans Mono'; font-style: normal; }
+div.grammar span.texttt { font-family: 'Noto Sans Mono'; font-style: normal; }
+
+/* Mobile TOC toggle button - hidden on desktop, shown via media query below. */
+#toc-mobile-toggle { display: none; }
+
+/* ---------------------------------------------------------------------------
+   Narrow-screen / drawer layout
+   ---------------------------------------------------------------------------
+   Activated when the viewport is too small to honour the sidebar's minimum
+   width at the configured ratio (default: 25vw < 16rem  =>  vw < 64rem).
+   The same rules also apply when JS adds .toc-drawer to <body>, which it
+   does after measuring the actual longest TOC entry so the breakpoint stays
+   content-aware even if you change the tokens above.
+
+   In this mode we hide the TOC behind a "Contents" button, drop the sticky
+   full-height styling, allow long entries to wrap, and let code blocks /
+   tables scroll inside the content column instead of widening the page. */
+@media (max-width: 64rem) {
+  /* Show the toggle button in the top navbar. */
+  #toc-mobile-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 6px 10px 6px 0;
+    padding: 6px 10px;
+    background: #f1f1f1;
+    border: 1px solid #c5c5c5;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #333;
+  }
+  #toc-mobile-toggle .toc-mobile-toggle-icon {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    background: #333;
+  }
+  #toc-mobile-toggle .toc-mobile-toggle-icon::before,
+  #toc-mobile-toggle .toc-mobile-toggle-icon::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 18px;
+    height: 2px;
+    background: #333;
+  }
+  #toc-mobile-toggle .toc-mobile-toggle-icon::before { top: -6px; }
+  #toc-mobile-toggle .toc-mobile-toggle-icon::after  { top:  6px; }
+
+  /* Title sits next to the toggle on its own line if needed. */
+  .navbar .container { display: flex; flex-wrap: wrap; align-items: center; }
+  .doc-title { float: none; padding: 8px 4px; font-size: 18px; }
+
+  /* TOC becomes a collapsible drawer above the content. */
+  #toc, #TOC {
+    position: static;            /* drop the sticky positioning */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 70vh;            /* scroll inside, don't fill the screen */
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    padding: 0.25rem 0.75rem;
+    display: none;               /* hidden until the user taps Contents */
+  }
+  #toc.toc-open, #TOC.toc-open { display: block; }
+
+  /* Let long entries wrap on narrow screens. */
+  .toc li, .toc li > a, .toc ul ul { white-space: normal; }
+  .toc li > a { padding: 8px 6px; display: inline-block; }
+  div#toc li { padding-left: 0.5rem; }
+
+  /* Content uses the full viewport width. */
+  #content {
+    width: 100%;
+    padding: 0 0.75rem;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  /* Slightly smaller, more comfortable reading sizes. */
+  body { font-size: 16px; }
+  h1.title { font-size: 1.8em; }
+  h2 { font-size: 1.6em; }
+  h3 { font-size: 1.35em; }
+  h4 { font-size: 1.15em; }
+
+  /* Long code blocks scroll horizontally instead of pushing the page wider. */
+  pre {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.85rem;
+    padding: 0.75rem;
+  }
+  pre code { white-space: pre; word-break: normal; }
+
+  /* Tables become independently scrollable so they don't stretch the page. */
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    margin: 0 0 1em 0;
+  }
+
+  /* Prev/Next links stack instead of crowding one line. */
+  .sitenav { display: flex; flex-direction: column; gap: 0.25rem; }
+  .sitenav .navlink { display: block; }
+}
+
+/* JS-driven drawer mode. Mirrors the @media block above but is toggled by
+   template.html based on the *measured* widest TOC entry, so the drawer
+   activates whenever 25vw can no longer fit the content rather than at a
+   fixed pixel breakpoint. Keep these rules in sync with the @media block. */
+body.toc-drawer #toc-mobile-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 6px 10px 6px 0;
+  padding: 6px 10px;
+  background: #f1f1f1;
+  border: 1px solid #c5c5c5;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #333;
+}
+body.toc-drawer .navbar .container { display: flex; flex-wrap: wrap; align-items: center; }
+body.toc-drawer .doc-title { float: none; padding: 8px 4px; font-size: 18px; }
+body.toc-drawer #toc,
+body.toc-drawer #TOC {
+  position: static;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  padding: 0.25rem 0.75rem;
+  display: none;
+}
+body.toc-drawer #toc.toc-open,
+body.toc-drawer #TOC.toc-open { display: block; }
+body.toc-drawer .toc li,
+body.toc-drawer .toc li > a,
+body.toc-drawer .toc ul ul { white-space: normal; }
+body.toc-drawer #content { width: 100%; padding: 0 0.75rem; overflow-wrap: anywhere; }
+body.toc-drawer pre { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+body.toc-drawer table { display: block; max-width: 100%; overflow-x: auto; }

@@ -37,6 +37,13 @@ $endfor$
   $if(title)$
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
+      <button type="button" id="toc-mobile-toggle"
+              aria-controls="$idprefix$toc"
+              aria-expanded="false"
+              aria-label="Toggle table of contents">
+        <span class="toc-mobile-toggle-icon" aria-hidden="true"></span>
+        <span class="toc-mobile-toggle-text">Contents</span>
+      </button>
       <span class="doc-title">$title$</span>
     </div>
   </nav>
@@ -75,6 +82,78 @@ $endfor$
             else li.insertBefore(toggle, li.firstChild);
           }
         });
+
+        // Mobile TOC drawer toggle
+        var mobileToggle = document.getElementById('toc-mobile-toggle');
+        var tocPanel = document.getElementById('$idprefix$toc');
+        if (mobileToggle && tocPanel) {
+          mobileToggle.addEventListener('click', function(){
+            var open = tocPanel.classList.toggle('toc-open');
+            mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+          // Close the drawer when the user taps a TOC link
+          tocPanel.addEventListener('click', function(e){
+            if (e.target.tagName === 'A' && document.body.classList.contains('toc-drawer')) {
+              tocPanel.classList.remove('toc-open');
+              mobileToggle.setAttribute('aria-expanded', 'false');
+            }
+          });
+        }
+
+        // Content-aware sidebar sizing.
+        //
+        // The sidebar's width is clamp(min, 25vw, max), where min defaults to
+        // 16rem in style.css. If the longest TOC entry is wider than that, we
+        // raise --toc-min-width so the entry isn't clipped or forced to scroll
+        // horizontally. We then watch the viewport and toggle .toc-drawer on
+        // <body> whenever 25vw can no longer fit that measured minimum, so the
+        // breakpoint follows the actual content rather than a fixed pixel value.
+        (function adaptiveSidebar(){
+          if (!tocPanel) return;
+          var rootStyles = getComputedStyle(document.documentElement);
+          var rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+          var ratio = parseFloat(rootStyles.getPropertyValue('--toc-ratio')) || 0.25;
+          // Hard cap so a single absurdly long identifier can't blow the
+          // sidebar past about 28rem. Long entries beyond that just scroll
+          // inside the sidebar.
+          var maxMinPx = 28 * rem;
+
+          function measureWidest(){
+            // Temporarily let entries take their natural width so scrollWidth
+            // reports the real text length rather than the current clipped one.
+            var prev = tocPanel.style.cssText;
+            tocPanel.style.width = 'max-content';
+            tocPanel.style.maxWidth = 'none';
+            var widest = 0;
+            tocPanel.querySelectorAll('li > a').forEach(function(a){
+              var w = a.scrollWidth;
+              if (w > widest) widest = w;
+            });
+            tocPanel.style.cssText = prev;
+            // Add room for the disclosure toggles + a little gutter.
+            return widest + 32;
+          }
+
+          function update(){
+            var needed = Math.min(measureWidest(), maxMinPx);
+            // Don't shrink below the stylesheet's default floor.
+            var cssDefault = parseFloat(rootStyles.getPropertyValue('--toc-min-width')) || (16 * rem);
+            var minPx = Math.max(needed, cssDefault);
+            document.documentElement.style.setProperty('--toc-min-width', minPx + 'px');
+            // Drawer mode kicks in once 25vw can't accommodate the measured min.
+            var collapse = (window.innerWidth * ratio) < minPx;
+            document.body.classList.toggle('toc-drawer', collapse);
+          }
+
+          update();
+          // Re-evaluate on resize (orientation change, window resize, devtools, etc.).
+          var pending = false;
+          window.addEventListener('resize', function(){
+            if (pending) return;
+            pending = true;
+            requestAnimationFrame(function(){ pending = false; update(); });
+          });
+        })();
       });
       </script>
 
