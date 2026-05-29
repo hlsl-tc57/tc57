@@ -134,7 +134,7 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a { color: 
 .toc-toggle[aria-expanded="true"] { transform: rotate(90deg); }
 
 /* Grammar style */
-.grammarlist {
+.grammar {
   border: 1px solid #000;
   background: #ffffff;
 	font-family: 'Noto Sans';
@@ -149,4 +149,4 @@ h1:hover a, h2:hover a, h3:hover a, h4:hover a, h5:hover a, h6:hover a { color: 
   list-style-type: none;
 }
 
-div.grammarlist span.texttt { font-family: 'Noto Sans Mono'; font-style: normal; }
+div.grammar span.texttt { font-family: 'Noto Sans Mono'; font-style: normal; }
