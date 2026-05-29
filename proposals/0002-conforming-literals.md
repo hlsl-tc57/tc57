@@ -269,7 +269,7 @@ users to assist in identifying behavior changes.
   floating-literal\br
   string-literal\br
   boolean-literal\br
-  vector-literal\br
+  vector-literal
 \end{grammar}
 ```
 
@@ -279,41 +279,41 @@ users to assist in identifying behavior changes.
 
 ```latex
 \begin{grammar}
-\define{integer-literal}\br
+  \define{integer-literal}\br
   decimal-literal \opt{integer-suffix}\br
   octal-literal \opt{integer-suffix}\br
-  hexadecimal-literal \opt{integer-suffix}\br
+  hexadecimal-literal \opt{integer-suffix}
 
   \define{decimal-literal}\br
   nonzero-digit\br
-  decimal-literal digit\br
+  decimal-literal digit
 
   \define{octal-literal}
   \terminal{0}\br
-  octal-literal octal-digit\br
+  octal-literal octal-digit
 
   \define{hexadecimal-literal}\br
   \terminal{0x} hexadecimal-digit\br
   \terminal{0X} hexadecimal-digit\br
-  hexadecimal-literal hexadecimal-digit\br
+  hexadecimal-literal hexadecimal-digit
 
   \define{nonzero-digit} \textnormal{one of}\br
-  \terminal{1 2 3 4 5 6 7 8 9}\br
+  \terminal{1 2 3 4 5 6 7 8 9}
 
   \define{octal-digit} \textnormal{one of}\br
-  \terminal{0 1 2 3 4 5 6 7}\br
+  \terminal{0 1 2 3 4 5 6 7}
 
   \define{hexadecimal-digit} \textnormal{one of}\br
   \terminal{0 1 2 3 4 5 6 7 8 9}\br
   \terminal{a b c d e f}\br
-  \terminal{A B C D E F}\br
+  \terminal{A B C D E F}
 
   \define{integer-suffix}\br
   unsigned-suffix \opt{long-suffix}\br
-  long-suffix \opt{unsigned-suffix}\br
+  long-suffix \opt{unsigned-suffix}
 
   \define{unsigned-suffix} \textnormal{one of}\br
-  \terminal{u U}\br
+  \terminal{u U}
 
   \define{long-suffix} \textnormal{one of}\br
   \terminal{l L}
@@ -350,22 +350,27 @@ An implementation may support the integer suffixes `ll` and
 \begin{grammar}
   \define{floating-literal}\br
   fractional-constant \opt{exponent-part} \opt{floating-suffix}\br
-  digit-sequence exponent-part \opt{floating-suffx}\br
+  digit-sequence exponent-part \opt{floating-suffx}
+
   \define{fractional-constant}\br
   \opt{digit-sequence} \texttt{.} digit-sequence\br
-  digit-sequence \texttt{.}\br
+  digit-sequence \texttt{.}
+
   \define{exponent-part}\br
   \texttt{e} \opt{sign} digit-sequence\br
-  \texttt{E} \opt{sign} digit-sequence\br
+  \texttt{E} \opt{sign} digit-sequence
+
   \define{sign} \textnormal{one of}\br
-  \texttt{+} \texttt{-}\br
+  \texttt{+} \texttt{-}
+
   \define{digit-sequence}\br
   digit\br
-  digit-sequence digit\br
+  digit-sequence digit
+
   \define{floating-suffix} \textnormal{one of}\br
-  \texttt{h} \texttt{f} \texttt{l}
-  \texttt{H} \texttt{F} \texttt{L}
-  \texttt{f16} \texttt{f32} \texttt{f64}
+  \texttt{h} \texttt{f} \texttt{l}\br
+  \texttt{H} \texttt{F} \texttt{L}\br
+  \texttt{f16} \texttt{f32} \texttt{f64}\br
   \texttt{F16} \texttt{F32} \texttt{F64}
 \end{grammar}
 ```
