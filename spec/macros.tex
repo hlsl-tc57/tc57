@@ -77,6 +77,24 @@
 %% Grammar formatting
 %%------------------------------------------------------------------------------
 
+% Grammar markup commands.
+%
+% These are intentionally defined at the document (preamble) level rather than
+% scoped inside the \innergrammar environment because pandoc's latex_macros
+% extension only expands macros declared at the document level. When these
+% commands were defined inside \newenvironment{innergrammar}{...}, pandoc
+% treated \define, \br, \terminal, and \opt as unknown control sequences and
+% silently dropped them, so the generated HTML had no rule-name labels, no
+% line breaks between productions, and no "opt" subscripts. Defining them
+% globally lets pandoc expand them to plain LaTeX commands it already
+% understands (\textit, \texttt, \textsubscript, \\), while LaTeX's PDF build
+% still picks up the local \renewcommand{\texttt} inside \innergrammar to get
+% the smaller terminal font.
+\providecommand{\define}[1]{{\textit{#1}\textnormal{:}}}
+\providecommand{\terminal}[1]{{\texttt{#1}}}
+\providecommand{\br}{\\}
+\providecommand{\opt}[1]{{#1\textsubscript{\textit{opt}}}}
+
 \newlength{\GrammarIndent}
 \setlength{\GrammarIndent}{\leftmargini}
 \newlength{\GrammarInc}
@@ -88,11 +106,6 @@
 % wraps this one so each grammar block is also captured into an auxiliary file
 % for the consolidated grammar reference in Annex A.
 \newenvironment{innergrammar} {
-  \newcommand{\define}[1]{{\textit{##1}\textnormal{:}}}
-  \newcommand{\terminal}[1]{{\texttt{##1}}}
-  \newcommand{\br}{\\}
-  \newcommand{\opt}[1]{{##1\textsubscript{\textit{opt}}}}
-
   \renewcommand{\texttt}[1]{{\small\ttfamily\upshape ##1}}
 
   \newcommand{\grammarindentfirst}{\GrammarIndent}
