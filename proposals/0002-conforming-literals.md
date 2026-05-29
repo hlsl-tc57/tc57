@@ -322,9 +322,9 @@ users to assist in identifying behavior changes.
 
 ![integer-literal](0002-assets/integer-literal.png)
 
-An _integer-literal_ is an optional base prefix, a sequence of digits
-in the appropriate base, and an optional type suffix. An integer literal shall
-not contain a period or exponent specifier.
+An _integer-literal_ is a _decimal-literal_, an _octal-literal_ or a
+_hexidecimal-literal_, and an optional type suffix. An integer literal shall not
+contain a period or exponent specifier.
 
 The type of an integer literal is the first of the corresponding list in the
 table below in which its value can be represented.
