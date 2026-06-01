@@ -8,8 +8,6 @@ params:
   status: Refinement
 ---
 
-
-
 * Planned Version: 202x
 * Issues: [#300](https://github.com/microsoft/hlsl-specs/issues/380),
   [#291](https://github.com/microsoft/hlsl-specs/issues/291),
@@ -21,6 +19,15 @@ params:
 > deprecations](https://github.com/microsoft/hlsl-specs/blob/main/proposals/0036-202x-deprecations.md).
 > In Ecma the proposal is categorized as removals, because the proposal is to
 > not include these features in the first edition of the specification.
+
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| Effects Syntax | https://github.com/microsoft/DirectXShaderCompiler/issues/8480 | Completed |
+| Remove `interface` keyword | https://github.com/microsoft/DirectXShaderCompiler/issues/8481 | Completed |
+| Remove `uniform` keyword | https://github.com/microsoft/DirectXShaderCompiler/issues/8482 | Completed |
+| Error on cbuffer initializer | https://github.com/microsoft/DirectXShaderCompiler/issues/8483 | https://github.com/llvm/llvm-project/issues/200021 |
 
 ## Introduction
 

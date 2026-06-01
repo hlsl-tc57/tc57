@@ -10,6 +10,12 @@ params:
 * Planned Version: 202x
 * Issues: [DXC #4514](https://github.com/microsoft/DirectXShaderCompiler/issues/4514)
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| Disallow `namespace` in `cbuffer` | https://github.com/microsoft/DirectXShaderCompiler/issues/8484 | Completed |
+
 ## Introduction
 
 This proposal aligns `cbuffer` declarations more closely with syntactic and
