@@ -8,6 +8,13 @@ params:
   status: Refinement
 ---
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| C++-aligned best match | Not Planned | Complete |
+| C++-aligned candidate selection | Not Planned | Complete |
+
 ## Introduction
 
 This proposal suggests adopting an overload resolution algorithm that aligns

@@ -8,8 +8,6 @@ params:
   status: Refinement
 ---
 
-
-
 * Planned Version: HLSL 202x
 * PRs: [#175](https://github.com/microsoft/hlsl-specs/pull/175)
 * Issues: [#73](https://github.com/microsoft/hlsl-specs/issues/73),
@@ -19,6 +17,13 @@ params:
   [microsoft/DirectXShaderCompiler#5493](https://github.com/microsoft/DirectXShaderCompiler/issues/5493),
   [microsoft/DirectXShaderCompiler#6410](https://github.com/microsoft/DirectXShaderCompiler/issues/6410),
   [shader-slang/slang#1185](https://github.com/shader-slang/slang/issues/1185)
+
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| C/C++ Literal Lexing | Complete | Complete |
+| fixed size suffixes (C++23) | https://github.com/microsoft/DirectXShaderCompiler/pull/8478 | Complete |
 
 ## Introduction
 
@@ -254,15 +259,173 @@ users to assist in identifying behavior changes.
 
 ## Detailed Design
 
-The full proposed specification for floating point literals in HLSL is in
-[#175](https://github.com/microsoft/hlsl-specs/pull/175).
+### Literals [Lex.Literal]
 
-The full proposed specification for integer literals in HLSL is in
-[#208](https://github.com/microsoft/hlsl-specs/pull/208).
+```latex
+\begin{grammar}
+  \define{literal}\br
+  integer-literal\br
+  character-literal\br
+  floating-literal\br
+  string-literal\br
+  boolean-literal\br
+  vector-literal
+\end{grammar}
+```
 
-Documentation for related conversion rank behavior is in the **[Conv.rank]**
-section of the language spec (minimum precision types added in
-[#206](https://github.com/microsoft/hlsl-specs/pull/206)).
+![literal](0002-assets/literal.png)
+
+### Integer Literals
+
+```latex
+\begin{grammar}
+  \define{integer-literal}\br
+  decimal-literal \opt{integer-suffix}\br
+  octal-literal \opt{integer-suffix}\br
+  hexadecimal-literal \opt{integer-suffix}
+
+  \define{decimal-literal}\br
+  nonzero-digit\br
+  decimal-literal digit
+
+  \define{octal-literal}
+  \terminal{0}\br
+  octal-literal octal-digit
+
+  \define{hexadecimal-literal}\br
+  \terminal{0x} hexadecimal-digit\br
+  \terminal{0X} hexadecimal-digit\br
+  hexadecimal-literal hexadecimal-digit
+
+  \define{nonzero-digit} \textnormal{one of}\br
+  \terminal{1 2 3 4 5 6 7 8 9}
+
+  \define{octal-digit} \textnormal{one of}\br
+  \terminal{0 1 2 3 4 5 6 7}
+
+  \define{hexadecimal-digit} \textnormal{one of}\br
+  \terminal{0 1 2 3 4 5 6 7 8 9}\br
+  \terminal{a b c d e f}\br
+  \terminal{A B C D E F}
+
+  \define{integer-suffix}\br
+  unsigned-suffix \opt{long-suffix}\br
+  long-suffix \opt{unsigned-suffix}
+
+  \define{unsigned-suffix} \textnormal{one of}\br
+  \terminal{u U}
+
+  \define{long-suffix} \textnormal{one of}\br
+  \terminal{l L}
+\end{grammar}
+```
+
+![integer-literal](0002-assets/integer-literal.png)
+
+An _integer-literal_ is a _decimal-literal_, an _octal-literal_ or a
+_hexidecimal-literal_, and an optional type suffix. An integer literal shall not
+contain a period or exponent specifier.
+
+The type of an integer literal is the first of the corresponding list in the
+table below in which its value can be represented.
+
+| Suffix                         | Decimal constant       | Octal or hexadecimal constant                |
+|--------------------------------|------------------------|----------------------------------------------|
+| none                           | `int32_t`, `int64_t`   | `int32_t`, `uint32_t`, `int64_t`, `uint64_t` |
+| `u` or `U`                     | `uint32_t`, `uint64_t` | `uint32_t`, `uint64_t`                       |
+| `l` or `L`                     | `int64_t`              | `int64_t`, `uint64_t`                        |
+| Both `u` or `U` and `l` or `L` | `uint64_t`             | `uint64_t`                                   |
+
+
+If the specified value of an integer literal cannot be represented by any
+type in the corresponding list, the integer literal has no type and the program
+is ill-formed.
+
+An implementation may support the integer suffixes `ll` and
+`ull` as equivalent to `l` and `ul` respectively.
+
+### Floating Point Literals [Lex.Literal.Float]
+
+```latex
+\begin{grammar}
+  \define{floating-literal}\br
+  fractional-constant \opt{exponent-part} \opt{floating-suffix}\br
+  digit-sequence exponent-part \opt{floating-suffx}
+
+  \define{fractional-constant}\br
+  \opt{digit-sequence} \texttt{.} digit-sequence\br
+  digit-sequence \texttt{.}
+
+  \define{exponent-part}\br
+  \texttt{e} \opt{sign} digit-sequence\br
+  \texttt{E} \opt{sign} digit-sequence
+
+  \define{sign} \textnormal{one of}\br
+  \texttt{+} \texttt{-}
+
+  \define{digit-sequence}\br
+  digit\br
+  digit-sequence digit
+
+  \define{floating-suffix} \textnormal{one of}\br
+  \texttt{h} \texttt{f} \texttt{l}\br
+  \texttt{H} \texttt{F} \texttt{L}\br
+  \texttt{f16} \texttt{f32} \texttt{f64}\br
+  \texttt{F16} \texttt{F32} \texttt{F64}
+\end{grammar}
+```
+
+![floating-literal](0002-assets/floating-literal.png)
+
+A floating literal is written either as a _fractional-constant_ with
+an optional _exponent-part_ and optional _floating-suffix_, or as
+an integer _digit-sequence_ with a required _exponent-part_ and
+optional _floating-suffix_.
+
+The type of a floating literal is `float`, unless explicitly specified by a
+suffix. The suffixes `h` and `H` specify `half`, the suffixes `f` and `F`
+specify `float`, and the suffixes `l` and `L` specify `double`. The explicitly
+sized suffixes `f16`, `F16`, `f32`, `F32`, `f64`, and `F64` specify the types of
+the bit-width specified by the number in the suffix. The `f16` and `F16`
+suffixes will only be supported when an implementation supports native 16-bit
+types. If a value specified in the source is not in the range of representable
+values for its type, the program is ill-formed.
+
+### Conversion Ranks
+
+> The conversion ranks are not changed by this proposal, however this proposal
+> makes them apply to literal values with types assigned based on the lexing
+> rules described above. For completeness the ranks as implemented in DXC are
+> described below.
+
+#### Integer Conversion Rank [Conv.rank.int]
+
+*   No two signed integer types shall have the same conversion rank even if
+  they have the same representation.
+*  The rank of a signed integer type shall be greater than the rank of any
+  signed integer type with a smaller size.
+*  The rank of any unsigned integer type shall equal the rank of the
+  corresponding signed integer type.
+*  The rank of `bool` shall be less than the rank of all other
+  standard integer types.
+*  The rank of a minimum precision integer type shall be less than the rank
+  of any other minimum precision integer type with a larger minimum value
+  representation size.
+*  The rank of a minimum precision integer type shall be less than the rank
+  of all standard integer types.
+*  For all integer types `T1`, `T2`, and `T3`: if
+  `T1` has greater rank than `T2` and `T2` has greater rank
+  than `T3`, then `T1` shall have greater rank than `T3`.
+
+#### Floating Point Conversion Rank [Conv.rank.float]
+
+*  The rank `half` shall be greater than the rank of `min16float`.
+*  The rank `float` shall be greater than the rank of `half`.
+*  The rank `double` shall be greater than the rank of `float`.
+*  For all floating point types `T1`, `T2`, and `T3`:
+  if `T1` has greater rank than `T2` and `T2` has greater
+  rank than `T3`, then `T1` shall have greater rank than
+  `T3`.
 
 ### Notes on minimum precision types
 
