@@ -1,0 +1,177 @@
+\Ch{Resource Types}{Resources}
+
+\p Resources are intangible types representing memory with an external interface.
+
+\p These take the form of Typed Buffers, Raw Buffers, Textures, Constant Buffers
+and Samplers.
+
+\p Typed Buffer, Raw Buffer, and Texture resources may be read-only or
+read-write as denoted by the type of the resource, where the names of read-write
+resources are prefixed with \texttt{RW}.
+
+\begin{note}
+The resource class objects in this clause require language behaviors not
+defined in the current language. Specifically, they utilize constructor
+behaviors, reference types, and concepts (for constraining instantiation). For
+ease of reading this clause uses C++ syntax to represent those language
+constructs. Additionally this clause assumes the introduction of the
+\texttt{device} keyword to denote references to device memory.
+\end{note}
+
+\p Global resource declarations are \textit{bound} to device memory managed by
+an application through a runtime implementation. A resource declaration that is
+not bound is said to be \textit{unbound}. Operations on unbound resources are
+evaluated as no-ops.
+
+\p An implementation may impose restrictions on how local resource objects may
+be used (\ref{AnnexB.LocalResources}).
+
+\Sec{Typed Buffers}{Resources.TypedBuffers}
+
+\p The typed buffer class template represents a one-dimensional resource
+containing an array of a single given type. Its contents are indexed by typed
+access to each element. Types may have their formats converted upon load in an
+implementation-defined way.
+
+\p The element type may be any type up to 16 bytes in size. Elements may be
+padded to 16 bytes if the element type is smaller than 16 bytes.
+
+\p All typed buffers can be read through subscript operators or Load methods.
+Writable typed buffers can be written through subscript operators.
+
+\p Where \texttt{T} can be any arithmetic type \ref{Basic.Types.Arithmetic}
+or a vector with a maximum of four elements containing such an arithmetic type.
+The total size of a single contained element must be less than 16 bytes.
+
+\p Typed buffers perform format conversions on load such that the underlying
+data gets converted to the destination type in an implementation-defined way.
+
+\begin{HLSL}
+template <typename T = float4> requires hlsl::is_vector<T>::value || hlsl::is_arithmetic<T>::value
+class Buffer {
+  Buffer();
+  Buffer(const Buffer &buf);
+  Buffer &operator=(Buffer &buf);
+  Buffer(const __DynamicResourceHandle &handle);
+
+  void GetDimensions(out uint width) const;
+
+  // Element access.
+  T operator[](int index) const;
+  T Load(int index) const;
+  T Load(int index, out uint status) const;
+};
+
+
+template <typename T> requires hlsl::is_vector<T>::value || hlsl::is_arithmetic<T>::value
+class RWBuffer {
+  RWBuffer();
+  RWBuffer(RWBuffer buf);
+  RWBuffer &operator=(RWBuffer &buf);
+  Buffer(const __DynamicResourceHandle &handle);
+
+  void GetDimensions(out uint width) const;
+
+  // Element access.
+  T operator[](int index) const;
+  device T &operator[](int n) const;
+  T Load(int index) const;
+  T Load(int index, out uint status) const;
+};
+\end{HLSL}
+
+\Sub{Constructors}{Resources.TypedBuffers.Ctrs}
+
+\p When defined at global scope, typed buffers are bound to externally-defined
+backing stores using the explicit binding location if provided or the implicit
+binding if not (\ref{Resources.Binding}).
+
+\p When defined at local scope, typed buffers represent local references that
+can be associated with global buffers when assigned. Use of an uninitialized
+typed buffer is undefined.
+
+\begin{HLSL}
+Buffer<int> grobuf;
+RWBuffer<int> grwbuf;
+void main() {
+  Buffer<int> lrobuf = grobuf;
+  RWBuffer<int> lrwbuf = grwbuf;
+}
+\end{HLSL}
+
+\p Buffers cannot be implicitly nor explicitly cast from one type to another.
+
+\p Buffers may be created from dynamic resources. The
+\texttt{\_\_DynamicResourceHandle} type in the examples above is a placeholder
+for the implementation-specific type returned by subscript indexing into the
+\texttt{ResourceDescriptorHeap} (\ref{Resources.Binding.Dynamic}).
+
+\Sub{Dimensions}{Resources.TypedBuffers.Dims}
+
+\p The size of a typed buffer can be retrieved using the \texttt{GetDimensions}
+method.
+
+\begin{HLSL}
+void GetDimensions(out uint width) const;
+\end{HLSL}
+
+\p This returns the full length, in elements of the buffer through the
+\texttt{width} output parameter.
+
+\Sub{Element Access}{Resources.TypedBuffers.Access}
+
+\p The contents of typed buffers can be retrieved using the \texttt{Load} methods
+or the subscript operator.
+
+\begin{HLSL}
+T Load(in int index) const;
+T operator[](int index) const;
+\end{HLSL}
+
+\p These each return the element of the buffer's type at the given index
+\texttt{index}.
+
+\p An additional \texttt{Load} method returns the indicated element just as the
+other, but also takes a second \texttt{status} parameter that returns
+information about the accessed resource.
+
+\begin{HLSL}
+T Load(in int index, out uint status) const;
+\end{HLSL}
+
+\p The \texttt{status} parameter returns an indication of whether all of the
+retrieved value came from fully mapped parts of the resource. This parameter
+must be passed to the built-in function \texttt{CheckAccessFullyMapped}
+(\ref{Resources.Mapcheck}) in order to interpret it.
+
+\p Writable buffers have an additional subscript operator that allows assignment
+to an element of the buffer. It behaves as if it returns a reference to that
+element as stored in device memory.
+
+\begin{HLSL}
+device T &operator[](int index);
+\end{HLSL}
+
+\begin{note}
+  Accurately modeling the memory operations for writable typed buffers would
+  require a proxy-object interface since the address written to isn't actually
+  the device memory since it may be converted or otherwise normalized by the
+  implementation.
+\end{note}
+
+\p Writes to typed buffer elements overwrite the entire element, even if only
+part of the data is written. The behavior of partial writes is
+implementation-defined.
+
+\Sec{CheckAccessFullyMapped}{Resources.mapcheck}
+
+\p The mapped status value returned by certain texture and buffer methods can be
+intrepreted by a built-in function:
+
+\begin{HLSL}
+bool CheckAccessFullyMapped(uint status);
+\end{HLSL}
+
+\p This function returns true if the value was accessed from memory that was
+mapped by the runtime implementation. If any part of the return value was from
+unmapped memory, false is returned.
