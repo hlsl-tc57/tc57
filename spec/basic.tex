@@ -119,6 +119,31 @@ tbuffer TB {                 // does not declare TB
 
 \Sec{Scope}{Basic.Scope}
 
+\p A \textit{valid} name is a name that may be used unqualified to refer to a
+specific entity.
+
+\p The \textit{declarative region} of a declaration is the largest part of a
+program in which the name is valid.
+
+\p The \textit{scope} of a name is the possibly discontiguous region of a
+program in which the name may be used as an unqualified name to refer to the
+same entity. The scope of a declaration is the same as its declarative region,
+unless another declaration of the same name exists within that region, in which
+case the declarative region of the inner declaration is excluded from the outer
+declaration's scope.
+
+\p Names declared by a declaration are introduced into the scope in which the
+declaration occurs except for members of \textit{cbuffer-declarations}
+(\ref{Decl.cbuffer}), and \textit{using-declarations} (\ref{Decl.Using}) which
+do not follow this general behavior.
+
+\p Within a declarative region, if multiple declarations introduce the same name
+either all the declarations shall refer to the same entity, or all refer to
+functions or function templates; or one declaration shall declare a class or
+enumeration name, and the other declarations shall refer to the same entity, or
+all refer to functions or function templates, hiding the class or enumeration
+name.
+
 \Sec{Name Lookup}{Basic.Lookup}
 
 \Sec{Storage Duration}{Basic.Storage}
