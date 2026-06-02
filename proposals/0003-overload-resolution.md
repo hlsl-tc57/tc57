@@ -220,9 +220,7 @@ functions called the _candidate set_, and a list of expressions that
 comprise the argument list for the call.
 
 Overload resolution selects the function to call in the following
-contexts\footnote{DXC only supports overload resolution for function calls and
-invocation of operators during expressions. Clang will support all contexts
-listed.}:
+contexts:
 
   * invocation of a function named in a function call expression;
   * invocation of a function call operator on a class object named in
@@ -360,12 +358,13 @@ standard conversion sequence:
 An implicit conversion sequence models a copy-initialization unless it is an
 inverted implicit conversion sequence when it models an assignment. Any
 difference in top-level cv-qualification is handled by the copy-initialization
-or assignment, and does not constitute a conversion\footnote{"Top-level"
-cv-qualification refers to the qualification of the value. This means an
-parameter of type `T` can be initialized by a argument of type
-`const T`. This does not mean that a parameter of type `inout T`
-can be initialized with a argument of type `const T` because there is no
-valid inverted conversion system to assign back to a value of type `const T`.}.
+or assignment, and does not constitute a conversion.
+
+> Note: "Top-level" cv-qualification refers to the qualification of the value.
+> This means an parameter of type `T` can be initialized by a argument of type
+> `const T`. This does not mean that a parameter of type `inout T` can be
+> initialized with a argument of type `const T` because there is no valid
+> inverted conversion system to assign back to a value of type `const T`.
 
 When the source value type and the destination type are the same, the
 implicit conversion sequence is an _identity conversion_, which signifies
