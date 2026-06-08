@@ -22,15 +22,15 @@ forces reliance on Windows device certification for behavior conformance, and a
 general approach that the implementation defines the behavior.
 
 This state is not ideal from the start, however as HLSL becomes more widely
-portable, and DirectX moves to SPIRV the lack of a documented memory and
+portable and DirectX moves to SPIR-V, the lack of a documented memory and
 execution model makes it near impossible to ensure portability across byte code
 formats.
 
 The SPIRV-defined memory and execution model is constantly evolving and seeking
 to address some of the specific problems discussed in this proposal, however
-SPIRV is not designed to be written by humans. It is not a requirement that
-HLSL's memory and execution models match SPIRV, just that SPIRV is expressive
-enough to model programs in the model defined by HLSL.
+SPIR-V is not designed to be written by humans. It is not a requirement that
+HLSL's memory and execution models match SPIR-V, just that the HLSL model can be
+expressed using SPIR-V.
 
 This proposal is structured with multiple proposed solutions. Those will become
 _Alternatives Considered_ as they are eliminated from consideration. There are
