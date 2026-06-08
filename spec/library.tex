@@ -1,0 +1,31 @@
+\Ch{Library Overview}{Library}
+
+\p This clause serves as an overview to the remaining clauses of the
+specification which detail \acrshort{hlsl}'s standard library of functions and
+objects.
+
+\Sec{Syntax Notations}{Library.Notation}
+
+\p Some of the constructs in the standard library are not expressible with
+spellable syntax. This section describes syntax constructs which are
+non-standard but are used throughout the standard library specification.
+
+\Sub{Constructors}{Library.Notation.Constructors}
+
+\p Some standard library types have behaviors associated in \gls{isoCPP} with
+constructors. These syntaxes are intended to describe compatible behavior with
+C++ constructors.
+
+\Sub{Reference Types}{Library.Notation.References}
+
+\p Some standard library functions or member functions behave as if a parameter
+or return value are references (passed by address or returned by address). To
+simplify this notation the syntax \textit{address-space\textsubscript{opt}}
+\texttt{T \&} is used where the optional \textit{address-space} is one of
+\texttt{device} or \texttt{groupshared}.
+
+\Sub{Concepts}{Library.Notation.Concepts}
+
+\p Some standard library template functions or objects have constraints to which
+types are valid as template arguments. To simplify this notation the concepts
+syntax from \gls{isoCPP20} is used.

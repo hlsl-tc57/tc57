@@ -9,15 +9,6 @@ and Samplers.
 read-write as denoted by the type of the resource, where the names of read-write
 resources are prefixed with \texttt{RW}.
 
-\begin{note}
-The resource class objects in this clause require language behaviors not
-defined in the current language. Specifically, they utilize constructor
-behaviors, reference types, and concepts (for constraining instantiation). For
-ease of reading this clause uses C++ syntax to represent those language
-constructs. Additionally this clause assumes the introduction of the
-\texttt{device} keyword to denote references to device memory.
-\end{note}
-
 \p Global resource declarations are \textit{bound} to device memory managed by
 an application through a runtime implementation. A resource declaration that is
 not bound is said to be \textit{unbound}. Operations on unbound resources are
