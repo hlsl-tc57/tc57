@@ -49,7 +49,7 @@ of fall through.
 ### Proposed solution #1 : Full Lockstep
 
 A full lockstep execution model is the simplest to understand. Under full
-lockstep, all the threads in a warp must behave as if they share the same
+lockstep, all the threads in a wave must behave as if they share the same
 program counter whether they are in the same tangle or not.
 
 This execution model provides some of the strictest guarantees for memory
@@ -137,7 +137,7 @@ becomes unintuitive and potentially undefined.
 
 This can be made slightly stricter by requiring that branch statements (`if`,
 `else`, `switch`, `for`, `while`, etc.) are thread sync points. It also likely
-requires atomic operations to behave a sync points as well.
+requires atomic operations to behave as sync points as well.
 
 ## Memory Model Proposals
 
