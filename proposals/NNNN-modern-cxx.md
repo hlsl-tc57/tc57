@@ -109,5 +109,5 @@ C++17 features that we could consider ([Source](https://en.cppreference.com/cpp/
 
 ### C++20 and later
 
-Adopting C++ 20 and later features is explicitly rejected due to feasibility in
-existing implementations.
+Adopting C++ 20 and later features is not under consideration at this time due
+to feasibility in existing implementations.
