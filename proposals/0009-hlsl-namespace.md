@@ -1,5 +1,5 @@
 ---
-title: NNNN - HLSL Namespace
+title: 0009 - HLSL Namespace
 params:
     authors:
     - llvm-beanz: Chris Bieneman
