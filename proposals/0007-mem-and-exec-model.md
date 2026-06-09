@@ -152,7 +152,7 @@ Specific concerns that must be addressed:
 * What are the ordering requirements, if any, for memory operations to aliasing
   memory across a set of tangled threads?
 
-## Appendix 1: Magic Decoder Ring
+## Appendix 1: Glossary
 
 | DirectX Term | Khronos Term | Description |
 | ------------ | ------------ | ----------- |
