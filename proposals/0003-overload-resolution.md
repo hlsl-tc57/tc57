@@ -617,4 +617,42 @@ rules applies:
     `C` to `A`.
 
 #### Overloaded Operators `[Overload.Operators]`
+
+```
+operator-function-id:
+  `operator` operator
+operator: one of
+  `+` `-` `*` `/` `%` `^` `&` `|` `~` `!` `<` `>` `<<` `>>` `&&` `||` `,` `()` `[]`
+```
+
+The operators `+`, `-`, `*`, and `&` may only be overloaded in their binary
+form.
+
+The `.`, `::` and `?:` operators cannot be overloaded.
+
+Operator functions may be called directly by their name in the form `operator@`
+or through the resolution of an overload from an operator expression.
+
+An overloaded operator function must be either a non-static member function or a
+non-member function, and must have at least one parameter whose type is a class
+or enumeration.
+
+An overloaded operator may not change the number of operands of an operator,
+except the function call operator which may have any number of operands.
+
+The meaning of the `,` operator, which is pre-defined for all types, can be
+changed by operator overloading.
+
+Overloaded operator functions are inherited from base classes in the same way as
+other base class member functions.
+
+Only an overloaded call operator may have default arguments, no other operator
+functions may be defined with default arguments. All operator functions must
+take exactly the number of parameters of the corresponding operator as defined
+in this subclause.
+
+##### Unary Operators
+##### Binary Operators
+##### Function Call Operator
+##### Subscript operator
 #### Built-in Operators `[Overload.Builtin]`
