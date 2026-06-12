@@ -92,13 +92,18 @@ sequence may be aplied from that scalar type.
 ### Overload resolution contexts
 
 In HLSL 2021 as implemented by DXC overload resolution only occurs on the
-invocation of a function named in a function call expression or for an operator
-referenced when the argument to the left hand side is a class object.
+invocation of a function named in a function call expression, for a subset of
+binary and unary operators referenced when the argument to the left hand side is
+a class object, or for the function call operator on a class object.
 
 This proposal extends the contexts that overload resolution occurs in to include
-the function call operator on a class object, all operators referenced in
-expressions, and invocations of conversion functions for initialization of an
-object of non-class type.
+conversion operators which may be explicitly invoked via C-style casting syntax
+or implicitly invoked when converting objects of class type to built-in types or
+during direct and copy initialization.
+
+With this change we also introduce the `explicit` keyword to HLSL to allow
+marking an operator as `explicit` so that it may not be considered for implicit
+conversions.
 
 ### Overload candidate selection
 
@@ -226,6 +231,10 @@ contexts:
   * invocation of a function call operator on a class object named in
   function call syntax;
   * invocation of the operator referenced in an expression;
+  * invocation of a user-defined conversion function for copy-initialization of
+    an object of class type; and
+  * invocation of a user-defined conversion function for initializing an object
+    of non-class type from an expression of class type.
 
 In each of these contexts a unique method is used to construct the overload
 candidate set and argument expression list.
@@ -331,15 +340,45 @@ are assumed to be built-in operators and interpreted following \ref{Expr}.
 
 If either operand is of class or enumeration type, overload resolution
 determines which operator function or built-in operator is resolved for the
-expression. For operator expressions for an operator `@` are resolved as if
-transformed to function call notation following the pattern:
+expression.
 
-| Expression | Member function   |
-| @a         | (a).operator@()   |
-| a@b        | (a).operator@(b)  |
-| a[b]       | (a).operator[](b) |
+The table below maps unary and binary operator expressions to equivalent member
+and non-member function call expressions. In the table `@` represents any
+spellable operator, and `a` and `b` represent arguments to the operator.
 
-> TODO: for @llvm-beanz to continue from here...
+| Expression | Member function   | Non-member function |
+| @a         | (a).operator@()   | operator@(a)        |
+| a@b        | (a).operator@(b)  | operator@(a,b)      |
+| a[b]       | (a).operator[](b) |                     |
+
+Given the table above, operand `a` is of type `T1`, and operand `b` is of type
+`T2`. `T1` must be of class or enumeration type, and `T2` may be of any type
+including `T1`. The candidate set for operator resolution is constructed by the
+process:
+
+* If `T1` is a class type, the result of qualified lookup of `operator@` is
+  added to the set.
+* The result of unqualified lookup of `operator@` in the context of the
+  expression excluding the results from step 1. If no operand is of class type,
+  only functions where `T1` or `T2` are enumerations are added to the set.
+* The built-in operators of `operator@` from the operators defined in
+  \ref{Overload.Builtin} are added to the set.
+
+The left operand to built-in assignment operators, may not have user-defined
+conversion applied to it, and no temporary may be introduced to hold it.
+
+If the operator is the `,` operator, and there are no viable functions, the
+built-in operator is used.
+
+**Initialization by Conversion `[Overload.Res.Convert]`**
+
+An object of class type or non-class type `T` may be initialized with an
+initializing expression of class type `S` invoking a user-defined conversion.
+
+The candidate set of conversion functions will be the non-explicit conversion
+functions of `S` and its base classes.
+
+The argument list has one argument which is the initializer expression.
 
 ##### Viable Functions `[Overload.Res.Viable]`
 
@@ -519,6 +558,30 @@ rank of each conversion.
   * **Promotion Truncation**
   * **Conversion Truncation**
 
+**User-defined Conversion Sequences**
+
+A _user-defined conversion sequence_ is a standard conversion sequence
+followed by a user-defined conversion, followed by a second standard conversion
+sequence.
+
+The first standard conversion sequence converts the source type to the
+type of the object parameter of the conversion function of the user-defined
+conversion.
+
+The second standard conversion converts the result of the user-defined
+conversion to the target type for the conversion sequence.
+
+If the user-defined conversion is a template specialization, the second standard
+conversion sequence shall have the rank **Exact Match**.
+
+If the user-defined conversion specifies a conversion from a class type to the
+same class type, it shall have the rank **Exact Match** even if a conversion
+function is invoked and it produces temporaries or other side-effects.
+
+If the user-defined conversion converts from a class type to a base class of
+that type, it shall have the rank **Conversion** even if a conversion function
+is invoked and it produces temporaries or other side-effects.
+
 **Comparing Implicit Conversion Sequences `[Overload.ICS.Comparing]`**
 
 A partial ordering of implicit conversion sequences exists based on defining
@@ -549,3 +612,6 @@ rules applies:
     cxvalue of type `A`,
     * conversion of `B` to `A` is better than conversion of
     `C` to `A`.
+
+#### Overloaded Operators `[Overload.Operators]`
+#### Built-in Operators `[Overload.Builtin]`
