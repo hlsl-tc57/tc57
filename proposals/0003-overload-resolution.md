@@ -622,7 +622,7 @@ rules applies:
 operator-function-id:
   `operator` operator
 operator: one of
-  `+` `-` `*` `/` `%` `^` `&` `|` `~` `!` `<` `>` `<<` `>>` `&&` `||` `,` `()` `[]`
+  `+` `-` `*` `/` `%` `^` `&` `|` `~` `!` `<` `>` `<<` `>>` `<=` `>=` `&&` `||` `,` `()` `[]`
 ```
 
 The operators `+`, `-`, `*`, and `&` may only be overloaded in their binary
@@ -652,7 +652,85 @@ take exactly the number of parameters of the corresponding operator as defined
 in this subclause.
 
 ##### Unary Operators
+
+An overloaded prefix unary operator must be implemented by a non-static member
+function with no parameters or a non-member function with one parameter.
+
+Postfix unary operators are not overloadable.
+
 ##### Binary Operators
+
+An overloaded binary operator must be implmeneted by a non-static member
+function with one parameter or a non-member function with two parameters.
+
 ##### Function Call Operator
+
+An overloaded function call operator must be a non-static member function with
+an arbitrary number of parameters, and may have default arguments. Function call
+operator functions are overload candidates for the function call syntax when the
+_postfix-expression_ is an object of class type.
+
 ##### Subscript operator
+
+An overloaded subscript operator must be a non-static member function with one
+parameter. Subscript operator functions are overload candidates for the
+subscript syntax when the _postfix-expression_ is an object of class type.
+
 #### Built-in Operators `[Overload.Builtin]`
+
+// arithmetic
+T operator+(T );
+T operator-(T );
+T operator~(T );
+
+// arithmetic
+LR operator*(L , R );
+LR operator/(L , R );
+LR operator+(L , R );
+LR operator-(L , R );
+bool operator<(L , R );
+bool operator>(L , R );
+bool operator<=(L , R );
+bool operator>=(L , R );
+bool operator==(L , R );
+bool operator!=(L , R );
+LR operator%(L , R );
+
+// enumeration
+bool operator<(T , T );
+bool operator>(T , T );
+bool operator<=(T , T );
+bool operator>=(T , T );
+bool operator==(T , T );
+bool operator!=(T , T );
+
+// integral
+LR operator&(L , R );
+LR operator^(L , R );
+LR operator|(L , R );
+L operator<<(L , R );
+L operator>>(L , R );
+
+// arithmetic
+VQ L & operator=(VQ L &, R );
+VQ L & operator*=(VQ L &, R );
+VQ L & operator/=(VQ L &, R );
+VQ L & operator+=(VQ L &, R );
+VQ L & operator-=(VQ L &, R );
+VQ L & operator%=(VQ L &, R );
+
+// integral
+VQ L & operator<<=(VQ L &, R );
+VQ L & operator>>=(VQ L &, R );
+VQ L & operator&=(VQ L &, R );
+VQ L & operator^=(VQ L &, R );
+VQ L & operator|=(VQ L &, R );
+
+bool operator!(bool);
+bool operator&&(bool, bool);
+bool operator||(bool, bool);
+
+// arithmetic
+LR operator?:(bool, L , R );
+
+operator?:(bool, T , T );
