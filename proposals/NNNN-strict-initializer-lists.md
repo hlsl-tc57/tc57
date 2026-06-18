@@ -10,7 +10,7 @@ params:
 
 ## Introduction
 
-HLSL should adopt C and C++ initializer list formatting rules, rather than
+HLSL should adopt C and C++ initializer list parsing rules, rather than
 custom rules that are unintuitive and error prone.
 
 ## Motivation
