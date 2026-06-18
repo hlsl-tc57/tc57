@@ -26,7 +26,7 @@ values from a source type to a destination type with tight validation.
 ## Proposed solution
 
 HLSL will introduce three new named cast templates, `static_cast<T>`,
-`elementwise_cast<T>` and `bit_cast<T>`.
+`elementwise_cast<T>` and `hlsl::bit_cast<T>`.
 
 The `static_cast<T>(V)` will behave similar to the C++ `static_cast<T>(V)`
 expression, except as changes are required due to other differences between C++
@@ -39,7 +39,10 @@ The `elementwise_cast<T>(V)`, will perform an element-wise conversion
 (\ref{Conv.Flat}). The type of the expression `V` and the result type `T` must
 be scalar layout compatible (\ref{Basic.Types.Scalarized}).
 
-The `bit_cast<T>(V)` cast operator will convert the expression `V` to type `T`
-without modifying the precise bit representation. The type of the expression `V`
-and the result type `T` must not be intangible types
+The `hlsl::bit_cast<T>(V)` cast function template will convert the expression
+`V` to type `T` without modifying the precise bit representation. The type of
+the expression `V` and the result type `T` must not be intangible types
 (\ref{Basic.Types.Intangible}), and must be of the same size.
+
+> Note: the `bit_cast` template is put in the hlsl namespace since it will be a
+> function template matching how C++ implemented `std::bit_cast`.
