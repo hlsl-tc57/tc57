@@ -137,7 +137,7 @@ overloaded name is called an _overloaded declaration_. The set of
 overloaded declarations that declare the same overloaded name are that name's
 _overload set_.
 
-Only function and template declarations can be overloaded; variable and type
+Only function and function template declarations can be overloaded; variable and type
 declarations cannot be overloaded.
 
 #### Overloadable Declarations `[Overload.Decl]`
@@ -191,7 +191,7 @@ void F(vector<int, 4> I);  // ill-formed: int4 is a type alias of vector<int, 4>
 ```
 
   * An overload set contains more than one function declaration which only
-  differ in `const` specifiers.
+  differ in `const` parameter specifiers.
 ```hlsl
 void G(int);
 void G(const int);         // ill-formed: redeclaration of G(int)
@@ -266,7 +266,7 @@ The type of the implicit object parameter is: lvalue reference `cv T`; where `T`
 is the class containing the declaration of the function, and `cv` is the
 _cv-qualification_ on the function declaration.
 
-Implied object arguments behave the same as any explicit argument, no temporary
+Implied object arguments behave the same as any explicit argument except that no temporary
 object shall be created to hold the argument for the implicit object parameter
 except when the implicit object parameter is a member of a
 _cbuffer-declaration_.
