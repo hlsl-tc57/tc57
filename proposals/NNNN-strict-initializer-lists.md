@@ -11,12 +11,12 @@ params:
 ## Introduction
 
 HLSL should adopt C and C++ initializer list parsing rules, rather than
-custom rules that are unintuitive and error prone.
+custom rules that are unintuitive and error-prone.
 
 ## Motivation
 
 HLSL supports flattened brace initialization such that the structure of the
-bracket initializer on the right hand side of an initialization is ignored, and
+bracket initializer on the right-hand side of an initialization is ignored, and
 only the number of initialization arguments matters. Further, vector and matrix
 arguments are implicitly expanded.
 
@@ -26,7 +26,6 @@ of the members.
 
 In HLSL the following code is valid:
 
-```c++
   struct A {
     int a;
     double b;
@@ -62,14 +61,13 @@ initialization for structure members omitted from the initialization list.
 This change will be forward source breaking, and backwards compatible with some
 caveats. Current code that takes advantage of HLSL initialization semantics will
 produce an error, but implementations should be able to automate migration
-throuhg tooling. Code updated to support the new syntax should be mostly
+through tooling. Code updated to support the new syntax should be mostly
 backward compatible to older HLSL versions as long as each structure is fully
 initialized.
 
 For example given the source example from the motivation section above, a tool
 could rewrite the initializers as:
 
-```c++
   B b = {{{1, 1.2}, {2, 2.2}}, 3};
   B b2 = {{{1, 2}, {3, 4}}, 5};
   B b3 = {{{1, 2}, {3, 4}}, 5};
@@ -77,13 +75,13 @@ could rewrite the initializers as:
   B b4 = {{{i4.x, i4.y}, {i4.z, i4.w}}, 5};
 ```
 
-The rewritten initializers all behave the same, but shift braces to match
+The rewritten initializers all behave the same but shift braces to match
 structure layouts and explicitly expand aggregate members.
 
 ### Non-backward compatible uses
 
 New code that takes advantage of C & C++'s zero-initialization behavior or
-relies on user-defined convesrion functions will not be backwards compatible to
+relies on user-defined conversion functions will not be backwards compatible to
 older HLSL versions.
 
 For example:
@@ -92,7 +90,7 @@ For example:
 struct S {
   int X[2];
   operator float() {
-    return ((float)X[0])/((float)X[1]));
+    return ((float)X[0])/((float)X[1]);
   }
 
   operator double() {
