@@ -110,5 +110,26 @@ S s1 = {{1,2}}; // Valid with and without this change.
 S s2 = {};      // Invalid without and valid with this proposal, zero-initializes all members.
 S s3 = {1};     // Invalid without and valid with this proposal, zero-initializes unspecified members.
 F f1 = {s1};    // Invalid without and valid in both cases, but the meaning changes. Without this proposal f1 is initialized to {1,2}, with this proposal it is initialized to {0.5, 0}.
-D d1 = {s1};    // Invalid without and valid with this proposal, initializes to {0.5,0,0}.
+D d1 = {s1};    // Invalid without and valid with this proposal, initializes to {0.5,0.5,0.5}.
 ```
+
+### Extension of Vectors
+
+A common pattern in shading languages is to zero-extend or one-extend vectors.
+Commonly used syntaxes for such extensions are:
+
+```hlsl
+float4 vec4 = float4(vec3, 1.0);
+float4 vec4 = {vec3, 0.0};
+```
+
+Both of these syntaxes would be ill-formed with this feature.
+
+A separate feature that could be considered to mitigate this would be allowing
+`0` and `1` as swizzle operator elements. This was suggested in HLSL in
+[microsoft/hlsl-specs#70](https://github.com/microsoft/hlsl-specs/issues/70),
+and similarly in WebGPU in
+[webgpu/webgpu#732](https://github.com/gpuweb/gpuweb/issues/732).
+
+Should the committee be interested in such an approach, it is the opinion of the
+author of this proposal that we should evaluate it as a separate proposal.
