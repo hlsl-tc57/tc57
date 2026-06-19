@@ -138,11 +138,18 @@ declaration occurs except for members of \textit{cbuffer-declarations}
 do not follow this general behavior.
 
 \p Within a declarative region, if multiple declarations introduce the same name
-either all the declarations shall refer to the same entity, or all refer to
-functions or function templates; or one declaration shall declare a class or
-enumeration name, and the other declarations shall refer to the same entity, or
-all refer to functions or function templates, hiding the class or enumeration
-name.
+either;
+
+\begin{itemize}
+\item all the declarations shall refer to the same entity; or
+\item all refer to functions or function templates; or
+\item one declaration shall declare a class or enumeration name; and
+\begin{itemize}
+  \item the other declarations shall refer to the same entity; or
+  \item all refer to functions or function templates, hiding the class or
+  enumeration name.
+\end{itemize}
+\end{itemize}
 
 \p Scopes nest within each other. A \textit{containing scope}, is a scope that
 fully contains another scope which is said to be \textit{contained}.
