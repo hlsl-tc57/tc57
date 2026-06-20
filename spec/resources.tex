@@ -1,13 +1,13 @@
 \Ch{Resource Types}{Resources}
 
-\p Resources are intangible types representing memory with an external interface.
+\p Resource types are intangible types representing memory or configuration with an external interface.
 
 \p These take the form of Typed Buffers, Raw Buffers, Textures, Constant Buffers
 and Samplers.
 
 \p Typed Buffer, Raw Buffer, and Texture resources may be read-only or
 read-write as denoted by the type of the resource, where the names of read-write
-resources are prefixed with \texttt{RW}.
+resource types are prefixed with \texttt{RW}.
 
 \p Global resource declarations are \textit{bound} to device memory managed by
 an application through a runtime implementation. A resource declaration that is
@@ -115,7 +115,7 @@ void GetDimensions(out uint width) const;
 or the subscript operator.
 
 \begin{HLSL}
-T Load(in int index) const;
+T Load(int index) const;
 T operator[](int index) const;
 \end{HLSL}
 
@@ -127,7 +127,7 @@ other, but also takes a second \texttt{status} parameter that returns
 information about the accessed resource.
 
 \begin{HLSL}
-T Load(in int index, out uint status) const;
+T Load(int index, out uint status) const;
 \end{HLSL}
 
 \p The \texttt{status} parameter returns an indication of whether all of the
