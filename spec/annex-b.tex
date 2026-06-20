@@ -1,0 +1,87 @@
+\Annex{informative}{Implementation Documentation}{AnnexB}
+
+\Sec{Pre-standard Language Versions}{AnnexB.Versions}
+
+\p HLSL has evolved over time, with various versions of the language being
+released alongside different versions of DirectX. Beginning with the DirectX
+Shader Compiler (DXC), the compiler began supporting language modes
+corresponding to specific historical versions of HLSL. These historical versions
+are useful for understanding the evolution of the language and for documenting
+observed behaviors in specific implementations, and they are named for the years
+in which they were released. The following historical versions of HLSL are
+relevant to this specification:
+
+\begin{itemize}
+  \item \textbf{HLSL 2015}: Roughly equivalent to the version of HLSL supported
+  by the Effects Compiler (FXC).
+  \item \textbf{HLSL 2016}: The initial version of HLSL supported by the DirectX
+  Shader Compiler (DXC).
+  \item \textbf{HLSL 2017}: Added enumerations similar to C++11.
+  \item \textbf{HLSL 2018}: Added support for 16-bit data types and intrinsic
+  templates.
+  \item \textbf{HLSL 2021}: Added user-defined templates, operator overloading,
+  short-circuiting boolean operators, and stricter implicit casting rules for
+  user-defined structures.
+\end{itemize}
+
+\begin{note}
+Both the DirectX Shader Compiler (DXC) and Clang support a language mode called
+"HLSL 202x" which refers to this draft specification.
+\end{note}
+
+\Sec{Known Implementations}{AnnexB.Implementations}
+
+\p This section provides a list of known implementations of HLSL, including both
+conforming and non-conforming implementations. This is not meant to be
+comprehensive, but is provided to supplement later sections in this annex which
+discuss details of specific implementations.
+
+\begin{itemize}
+  \item \textbf{Clang}: The open-source C/C++ compiler developed by the LLVM
+    project. Clang contains a partial implementation of HLSL this specification
+    and is actively being developed. It is available at
+    \url{https://clang.llvm.org/}.
+  \item \textbf{DirectX Shader Compiler (DXC)}: The open-source reference
+    implementation of HLSL, developed by Microsoft and based on the LLVM/Clang
+    infrastructure. It is available at
+    \url{https://github.com/microsoft/DirectXShaderCompiler}.
+  \item \textbf{Effects Compiler (FXC)}: The legacy implementation of HLSL,
+    developed by Microsoft. It is included with the Windows SDK and is available
+    at \url{https://learn.microsoft.com/en-us/windows/apps/windows-sdk/}.
+  \item \textbf{GLSLang}: An open-source implementation of the OpenGL Shading
+    Language (GLSL), developed by The Khronos Group. GLSLang contains a (now
+    deprecated) partial implementation of HLSL 2018. It is available at
+    \url{https://github.com/KhronosGroup/glslang}.
+  \item \textbf{Slang}: An open-source shader language and compiler framework
+    developed by The Khronos Group. Slang contains a partial implementation of
+    HLSL 2018. It is available at \url{https://github.com/shader-slang/slang}.
+\end{itemize}
+
+\Sec{Implementation Limits}{AnnexB.Limits}
+
+\p This section describes reasonable implementation limits that may be assumed
+by a conforming implementation. These limits specify minimum required or maximum
+allowed values for various implementation-defined parameters.
+
+\p \ref{Basic.Types} declares a vector type as having required supported sizes
+of 1 to 4 components. Implementations may support larger vector sizes but are
+not required to do so. An implementation that supports larger vector sizes must
+define its vector size limit.
+
+\Sec{Observed Deviations}{AnnexB.Documentation}
+
+\p This section provides documentation around implementation behaviors that are
+known to differ between specific implementations. This includes breaking
+changes between historical HLSL and standard HLSL where some compilers or
+versions of compilers may not conform to standard HLSL, as well as observed
+non-conformant behaviors in such compilers. This is not meant to be a
+comprehensive list of bugs.
+
+\Sub{Resource Objects}{AnnexB.Resources}
+
+\p In violation of \ref{Basic.Types.Intangible}, DXC supports storing objects
+that contain resources in \texttt{cbuffer} declarations. In this use case the
+resource objects are not actually stored in the \texttt{cbuffer}, but instead
+the resource is treated as a global resource declaration and name lookup
+resolves the value inside the structure declaration to the implied global
+resource declaration.
