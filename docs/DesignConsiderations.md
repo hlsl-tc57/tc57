@@ -155,9 +155,9 @@ The `__has_feature` macro is known to work in DXC, and should be used.
 ### Expressive HLSL Library
 
 It is a long-term goal for HLSL to be expressive enough to implement the
-built-in HLSL functionality using HLSL. This goal is to enable compiler authors
-to avoid hard-coding behaviors and to avoid introducing inconsistencies or
-unintentional special case behaviors.
+built-in data types and functions using HLSL. This goal is to enable compiler
+authors to avoid hard-coding behaviors and to avoid introducing inconsistencies
+or unintentional special case behaviors.
 
 It is not the intention of the specification to mandate that HLSL library
 functionality be implemented in HLSL, nor does the committee have a target date
