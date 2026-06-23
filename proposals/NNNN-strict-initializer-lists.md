@@ -8,6 +8,8 @@ params:
   status: Under Consideration
 ---
 
+* Planned Version: 202y
+* Dependencies: [0003 Overload Resolution](0003-overload-resolution.md
 ## Introduction
 
 HLSL should adopt C and C++ initializer list parsing rules, rather than
