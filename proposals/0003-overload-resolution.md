@@ -245,8 +245,8 @@ candidate set and argument expression list.
 ##### Candidate Functions and Argument Lists `[Overload.Res.Sets]`
 
 At each point where an overload must be resolved an implementation will generate
-a _candidate set_, containing all possible candidate functions, and the argument
-list for the overloaded call. The subclauses under \ref(Overload.Res.Sets)
+a candidate set, containing all possible candidate functions, and the argument
+list for the overloaded call. The subclauses under this clause
 define the process by which the candidate set and argument lists are constructed
 in each context where overload resolution occurs.
 
@@ -259,7 +259,7 @@ implicit object parameter.
 When appropriate the context shall construct an _implied object argument_
 referring to the object operated on.
 
-The implicit object parameter and implied object argument if present are always
+Any implicit object parameter or implied object argument is always
 the first parameter or argument.
 
 The type of the implicit object parameter is: lvalue reference `cv T`; where `T`
@@ -286,7 +286,7 @@ postfix-expression ( \opt{expression-list} )
 In a function call (\ref{Expr.Post.Call}), if the _postfix-expression_ names a
 candidate set comprised of overloaded functions and/or function templates, the
 overload resolves as to a named function (\ref{Overload.Res.Call.Named}). If the
-_postfix-expression_ names an object of class type the overload is resolved as a
+_postfix-expression_ names an object of class type, the overload is resolved as a
 call to an object of class type (\ref{Overload.Res.Call.Object}).
 
 _Call to a Named Function `[Overload.Res.Call.Named]`_
@@ -300,8 +300,8 @@ postfix-expression:
   primary-expression
 ```
 
-In the first grammar production the _id-expression_ is the name of the function
-to be called, and the _postfix-expression_ preceeding the `.` operator. This
+In the first grammar production, the _id-expression_ is the name of the function
+to be called, and the _postfix-expression_ preceding the `.` operator. This
 formation represents a _qualified_ function call, where the _postfix-expression_
 must be an object of class type, and the call is looked up as a member function
 of that object. The function names found by that lookup constitute the overload
@@ -309,9 +309,9 @@ candidate set for the call. The argument list for the call is the
 _expression-list_ in the call with the left operand of the `.` operator
 prepended as the implicit object parameter (\ref{Overload.Res.Sets}).
 
-In the second grammar production the name is not qualified by an object
+In the second grammar production, the name is not qualified by an object
 parameter, so it is an unqualified call. Name lookup occurs as normal for name
-lookup of a function call (\ref{Basic.Lookup}), function declarations found
+lookup of a function call (\ref{Basic.Lookup}). Function declarations found
 constitute the candidate set. The candidate set for an unqualified call will be
 comprised either entirely of non-member functions or entirely of member
 functions of some class `T`. If the candidate set is entirely non-member
@@ -331,7 +331,7 @@ If the _primary-expression_ in the function call expression is a class object of
 type `T`, then the set of candidate functions will include the call operators of
 `T` obtained by name lookup of the name `operator()` (\ref{Basic.Lookup}).
 
-For this formulation the argument list consists of the _expression-list_ from
+For this formulation, the argument list consists of the _expression-list_ from
 the call syntax with the implicit object argument prefixed. The implicit object
 argument in this form is the object produced from the evaluated
 _postfix-expression_.
@@ -459,7 +459,7 @@ type is the argument expression's lvalue type.
 A well-formed implicit conversion sequence is either a _standard conversion
 sequence_, or a _user-defined conversion sequence_.
 
-In the following contexts an implicit conversion sequence can only be a
+In the following contexts, an implicit conversion sequence can only be a
 standard conversion sequence:
 
   * Argument conversion for a user-defined conversion function.
@@ -511,14 +511,17 @@ below:
 | Lvalue-to-rvalue | Lvalue Transformation | Exact Match | \ref{Conv.lval} |
 | Array-to-pointer | Lvalue Transformation | Exact Match | \ref{Conv.array} |
 | Qualification | Qualification Adjustment | Exact Match | \ref{Conv.qual} |
+| Vector Scalar splat (without conversion) | Scalar Extension | Extension | \ref{Conv.vsplat} |
 | Vector Scalar splat conversion | Scalar Extension Conversion | Conversion Extension | \ref{Conv.vsplat} |
+| Matrix Scalar splat (without conversion) | Scalar Extension | Extension | \ref{Conv.msplat} |
 | Matrix Scalar splat conversion | Scalar Extension Conversion | Conversion Extension | \ref{Conv.msplat} |
 | Integral promotion | Promotion | Promotion | \ref{Conv.iconv} & \ref{Conv.rank.int} |
 | Floating point promotion | Promotion | Promotion | \ref{Conv.fconv} & \ref{Conv.rank.float} |
 | Component-wise promotion | Promotion | Promotion | \ref{Conv.cwise} |
-| Scalar splat promotion | Scalar Extension Promotion | Promotion Extension | \ref{Conv.vsplat} |
+| Vector Scalar splat promotion | Scalar Extension Promotion | Promotion Extension | \ref{Conv.vsplat} |
+| Matrix Scalar splat promotion | Scalar Extension Promotion | Promotion Extension | \ref{Conv.msplat} |
 | Integral conversion | Conversion | Conversion | \ref{Conv.iconv} |
-| Floating point conversion | Convesrion | Conversion | \ref{Conv.fconv} |
+| Floating point conversion | Conversion | Conversion | \ref{Conv.fconv} |
 | Floating-integral conversion | Conversion | Conversion | \ref{Conv.fpint} |
 | Boolean conversion | Convesrion | Conversion | \ref{Conv.bool} |
 | Component-wise conversion | Conversion | Conversion | \ref{Conv.cwise} |
@@ -538,11 +541,11 @@ sequence with a **Promotion** conversion, the conversion is ranked as
 sequence with a **Conversion** conversion, the conversion is ranked as
 **Conversion Extension**.
 
-If a vector truncation conversion occurs in a conversion sequence where all
+If a vector or matrix truncation conversion occurs in a conversion sequence where all
 other conversions are **Exact Match** rank, the conversion is ranked as
-**Truncation**. If a vector truncation occurs in a conversion
+**Truncation**. If a vector or matrix truncation occurs in a conversion
 sequence with a **Promotion** conversion, the conversion is ranked as
-**Promotion Truncation**. If a vector truncation occurs in a conversion
+**Promotion Truncation**. If a vector or matrix truncation occurs in a conversion
 sequence with a **Conversion** conversion, the conversion is ranked as
 **Conversion Truncation**.
 
@@ -775,5 +778,5 @@ LR operator?:(bool, L , R );
 For all types `T`, a ternary operator will be defined of the form:
 
 ```
-operator?:(bool, T , T );
+T operator?:(bool, T , T );
 ```
