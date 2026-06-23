@@ -150,7 +150,24 @@ documented
 [here](https://clang.llvm.org/docs/LanguageExtensions.html#feature-checking-macros).
 The `__has_feature` macro is known to work in DXC, and should be used.
 
+## Long-term Goals
+
+### Expressive HLSL Library
+
+It is a long-term goal for HLSL to be expressive enough to implement the
+built-in HLSL functionality using HLSL. This goal is to enable compiler authors
+to avoid hard-coding behaviors and to avoid introducing inconsistencies or
+unintentional special case behaviors.
+
+It is not the intention of the specification to mandate that HLSL library
+functionality be implemented in HLSL, nor does the committee have a target date
+for when this would be compete. Setting it as a goal helps guide specification
+authors and committee participants in evaluating ongoing work.
+
+See: [#116](https://github.com/hlsl-tc57/tc57/issues/116)
+
 ## Minor Details
 
 * Standard defined headers shall have no file extension (i.e. `enable_if` rather
   than `enable_if.h` or `enable_if.hlsli`). (See: [#36](https://github.com/hlsl-tc57/tc57/issues/36))
+* Unsigned types should be used to specify sizes and dimensions. (See: [#67](https://github.com/hlsl-tc57/tc57/issues/67))
