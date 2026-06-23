@@ -161,7 +161,7 @@ or unintentional special case behaviors.
 
 It is not the intention of the specification to mandate that HLSL library
 functionality be implemented in HLSL, nor does the committee have a target date
-for when this would be complete. Setting it as a goal helps guide specification
+for when this would be feasible. Setting it as a goal helps guide specification
 authors and committee participants in evaluating ongoing work.
 
 See: [#116](https://github.com/hlsl-tc57/tc57/issues/116)
