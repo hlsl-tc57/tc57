@@ -1,5 +1,5 @@
 ---
-title: NNNN - Strict Initializer Lists
+title: 0011 - Strict Initializer Lists
 params:
   authors:
   - llvm-beanz: Chris Bieneman
@@ -9,7 +9,8 @@ params:
 ---
 
 * Planned Version: 202y
-* Dependencies: [0003 Overload Resolution](0003-overload-resolution.md
+* Dependencies: [0003 Overload Resolution](0003-overload-resolution.md)
+
 ## Introduction
 
 HLSL should adopt C and C++ initializer list parsing rules, rather than
