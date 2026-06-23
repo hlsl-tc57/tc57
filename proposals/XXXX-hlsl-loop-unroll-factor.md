@@ -19,7 +19,7 @@ This proposal seeks to unify the diverging behaviors between the agreed upon
 and the current behavior of DXC.
 
 The new spec wants to treat the unroll factor as a hint to the compiler for
-partial loop unroll. The current behavior in dxc is that the unroll factor
+partial loop unroll. The current behavior in DXC is that the unroll factor
 specifies the maximum number of times the loop is to execute.
 
 The DXC behavior was determined to violate user expectations by overriding
@@ -33,8 +33,8 @@ implementations that exist in LLVM.
 The HLSL compilers transition to clang has resulted in a compat break between
 the [HLSL loop unroll implementation in clang](https://github.com/llvm/llvm-project/pull/93879)
 and the one in DXC. While there is an expectation that the new compiler will
-not be fully compatible with the previous compilers, These compat breaks should
- be minimized when possible.
+not be fully compatible with the previous compilers, these compatibility  breaks
+should be minimized when possible. This is not one of those cases.
 
 ## Proposed solution
 In [HLSL 202X](0001-hlsl-202x-202y.md) the DXC implementation of the loop
