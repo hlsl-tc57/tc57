@@ -76,7 +76,7 @@ jobs:
           mkdir -p ${{github.workspace}}/website/public/spec/assets
           cp spec/assets/* ${{github.workspace}}/website/public/spec/assets/
           cp build/hlsl.pdf ${{github.workspace}}/website/public/spec/
-          scripts/progress_bar.sh build/hlsl.pdf 600 -o ${{github.workspace}}/website/public/spec/assets/progress_bar.svg
+          ${{github.workspace}}scripts/progress_bar.py build/hlsl.pdf 600 -o ${{github.workspace}}/website/public/spec/assets/progress_bar.svg
           unzip build/html/hlsl.zip -d ${{github.workspace}}/website/public/spec/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
