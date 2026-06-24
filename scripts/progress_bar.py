@@ -6,6 +6,7 @@ import re
 import subprocess
 import sys
 from datetime import date, timedelta
+from typing import Optional
 
 
 DEFAULT_START_DATE = date(2026, 1, 1)
@@ -43,8 +44,7 @@ def estimate_completion(progress: int, start_date: date, today: date) -> str:
     completion_date = start_date + timedelta(days=total_days)
     return completion_date.strftime("%B %-d, %Y")
 
-
-def generate_progress_bar_svg(progress: int, start_date: date = DEFAULT_START_DATE, today: date = None) -> str:
+def generate_progress_bar_svg(progress: int, start_date: date = DEFAULT_START_DATE, today: Optional[date] = None) -> str:
     """Generate an SVG progress bar for the given progress percentage."""
     if not 0 <= progress <= 100:
         raise ValueError(f"Progress must be between 0 and 100, got {progress}")
