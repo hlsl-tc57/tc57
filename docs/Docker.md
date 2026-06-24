@@ -1,3 +1,6 @@
+---
+title: Building the Spec and Website
+---
 # Building the HLSL TC57 Website with Docker
 
 This Dockerfile builds the complete HLSL TC57 website, including both the Hugo static site and the LaTeX specification.
