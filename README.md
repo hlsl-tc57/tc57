@@ -4,6 +4,9 @@
 
 [![Documentation Build Status](https://github.com/hlsl-tc57/tc57/actions/workflows/hugo.yml/badge.svg)](https://github.com/hlsl-tc57/tc57/actions/workflows/hugo.yml)
 
+SWAG progress estimate:
+<img src="https://hlsl-tc57.github.io/tc57/spec/assets/progress_bar.svg">
+
 This repository documents and tracks the specification and evolution process for
 the HLSL programming language under Ecma Technical Committee 57 (TC57). This
 repository is made public to provide visibility into the feature development
