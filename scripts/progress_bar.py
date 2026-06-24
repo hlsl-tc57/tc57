@@ -45,6 +45,7 @@ def estimate_completion(progress: int, start_date: date, today: date) -> str:
 
 
 def generate_progress_bar_svg(progress: int, start_date: date = DEFAULT_START_DATE, today: date = None) -> str:
+    """Generate an SVG progress bar for the given progress percentage."""
     if not 0 <= progress <= 100:
         raise ValueError(f"Progress must be between 0 and 100, got {progress}")
     if today is None:
