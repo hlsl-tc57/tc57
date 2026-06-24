@@ -8,6 +8,9 @@ params:
   status: Refinement
 ---
 
+* Dependencies: [#74](https://github.com/hlsl-tc57/tc57/pull/74),
+                [#115](https://github.com/hlsl-tc57/tc57/pull/115)
+
 ## Implementation Status
 
 |   | DXC     | Clang    |
@@ -16,7 +19,6 @@ params:
 | C++-aligned candidate selection | Not Planned | Complete |
 | User-defined conversion functions | ??? | Complete |
 | `explicit` keyword | ??? | Complete |
-| Global operator overloading | ??? | Complete |
 
 ## Introduction
 
