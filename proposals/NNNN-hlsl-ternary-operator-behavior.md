@@ -41,7 +41,7 @@ operands are `lvalue` `DeclRefExpr` nodes, while the result of the ternary
 itself is an rvalue (note the absence of an `lvalue` annotation on the
 `ConditionalOperator`). This was produced with DXC in HLSL 202x mode
 (`-T lib_6_5 -HV 202x -ast-dump`,
-[Compiler Explorer](https://godbolt.org/z/r1sv16ToM)):
+[Compiler Explorer](https://godbolt.org/z/djz1WK4ed)):
 
 ```
 | `-ParenExpr 0x61edecdc4378 <col:5, col:18> 'RWByteAddressBuffer'
