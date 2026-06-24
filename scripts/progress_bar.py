@@ -2,31 +2,30 @@
 """Generate an SVG progress bar image."""
 
 import argparse
-import re
-import subprocess
 import sys
 from datetime import date, timedelta
 from typing import Optional
+
+try:
+    from pypdf import PdfReader
+except ImportError:
+    PdfReader = None
 
 
 DEFAULT_START_DATE = date(2026, 1, 1)
 
 
 def count_pdf_pages(path: str) -> int:
-    """Return the total page count of a PDF using pdfinfo."""
+    """Return the total page count of a PDF using a Python PDF reader."""
+    if PdfReader is None:
+        raise RuntimeError("pypdf is not installed. Install it with 'python3 -m pip install pypdf'.")
+
     try:
-        result = subprocess.run(
-            ["pdfinfo", path],
-            capture_output=True, text=True, check=True,
-        )
-    except FileNotFoundError:
-        raise RuntimeError("'pdfinfo' not found. Install poppler-utils to use this script.")
-    except subprocess.CalledProcessError as e:
-        raise ValueError(f"pdfinfo failed for '{path}': {e.stderr.strip()}")
-    match = re.search(r"^Pages:\s+(\d+)", result.stdout, re.MULTILINE)
-    if not match:
-        raise ValueError(f"Could not parse page count from pdfinfo output for '{path}'.")
-    return int(match.group(1))
+        reader = PdfReader(path)
+    except Exception as e:
+        raise ValueError(f"Could not read PDF '{path}': {e}") from e
+
+    return len(reader.pages)
 
 
 
