@@ -23,9 +23,9 @@ params:
 | `auto` keyword | Complete  | Complete |
 | C++11 template closing `>>` | Complete  | Complete |
 | decltype | Not Started | Complete |
-| constexpr | Not Started | Complete |
+| constexpr | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb) | Complete |
 | scoped enum | Partial | Complete |
-| static_assert | Not Started | Complete |
+| static_assert | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702) | Complete |
 | nested namespace | Not Started | Complete |
 | variadic templates | Not Started | Complete |
 
@@ -51,13 +51,15 @@ their career after modern C++ was widely adopted.
 
 HLSL should integrate the following C++11 features ([Source](https://en.cppreference.com/cpp/11)):
 
-* auto
+* auto - Implemented in both DXC and Clang
 * decltype
 * constexpr
+  * [DXC Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb)
 * C++11 scoped enumerations
 * variadic templates
 * user-defined literals
 * Static assert
+  * [DXC Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702)
 * Template parsing rules (no required space in `>>`)
 
 #### C++11 Excluded Features
@@ -80,6 +82,7 @@ C++14 features that we could consider ([Source](https://en.cppreference.com/cpp/
 * binary literals
 * digit separators
 * return type deduction for functions
+  * [DXC Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/594f9cdcd9379ec7637e0c3467e2d9407f332b55)
 
 #### C++14 Excluded features
 
