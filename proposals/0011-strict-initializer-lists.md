@@ -11,6 +11,12 @@ params:
 * Planned Version: 202y
 * Dependencies: [0003 Overload Resolution](0003-overload-resolution.md)
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| C/C++ Initializers | Not Planned | Not Started |
+
 ## Introduction
 
 HLSL should adopt C and C++ initializer list parsing rules, rather than

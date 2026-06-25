@@ -12,6 +12,12 @@ params:
 * PRs: [#276](https://github.com/microsoft/hlsl-specs/pull/276)
 * Impacted Projects: DXC & Clang
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| [unroll] doesn't truncate | Not Started | Complete |
+
 ## Introduction
 
 This proposal seeks to unify the diverging behaviors between the agreed upon

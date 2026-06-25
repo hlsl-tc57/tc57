@@ -11,6 +11,12 @@ params:
 * Planned Version: 202x
 * PRs: [#634](https://github.com/microsoft/hlsl-specs/pull/634)
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| Restricting unbound array declarations | Not Started | Not Started |
+
 ## Introduction
 
 New restrictions imposed on where declarators of arrays of unknown size can be

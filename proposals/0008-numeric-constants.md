@@ -8,6 +8,12 @@ params:
   status: Under Consideration
 ---
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| hlsl::numeric_limits | Not Started | Not Started |
+
 ## Introduction
 
 A new C++ STL-styled numeric constants interface will enable migrating off older
