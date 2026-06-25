@@ -8,6 +8,12 @@ params:
   status: Under Consideration
 ---
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| `const` member functions | [Prototype implementation](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/aa44718f81c58d6aca7d53d0705c897bd2c7eae4) | Complete |
+
 ## Introduction
 
 HLSL does not currently support `const` non-`static` member functions for user-defined data
@@ -63,6 +69,8 @@ call `()` operator:
 struct Pupper {
   void Wag() const { /* body omitted */ }
   void operator() const { /* body omitted */ }
+  void Walk() mutable { /* body omitted */ }
+  mutable int Speed;
 };
 ```
 
