@@ -8,6 +8,12 @@ params:
   status: Under Consideration
 ---
 
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| `const` member functions | [Prototype implementation](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/6be9ac89dce5a1256174bfaa98dd4db4bc5f4c99) | Complete |
+
 ## Introduction
 
 HLSL 2021 introduced operator overloading for member operators of user defined
