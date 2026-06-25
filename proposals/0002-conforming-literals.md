@@ -23,7 +23,7 @@ params:
 |   | DXC     | Clang    |
 |---|---------|----------|
 | C/C++ Literal Lexing | Complete | Complete |
-| fixed size suffixes (C++23) | https://github.com/microsoft/DirectXShaderCompiler/pull/8478 | Complete |
+| fixed size suffixes (C++23) | Complete| Complete |
 
 ## Introduction
 

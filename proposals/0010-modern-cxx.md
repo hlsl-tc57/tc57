@@ -15,7 +15,20 @@ params:
    * variadic templates: [#21](https://github.com/microsoft/hlsl-specs/issues/21)
    * static assert: [#33](https://github.com/microsoft/hlsl-specs/issues/33)
    * simplified nested namespace: [#68](https://github.com/microsoft/hlsl-specs/issues/68)
-   
+
+## Implementation Status
+
+|   | DXC     | Clang    |
+|---|---------|----------|
+| `auto` keyword | Complete  | Complete |
+| C++11 template closing `>>` | Complete  | Complete |
+| decltype | Not Started | Complete |
+| constexpr | Not Started | Complete |
+| scoped enum | Partial | Complete |
+| static_assert | Not Started | Complete |
+| nested namespace | Not Started | Complete |
+| variadic templates | Not Started | Complete |
+
 ## Introduction
 
 In DXC HLSL is a set of feature extensions on top of a subset of C++98. C++98
