@@ -109,6 +109,11 @@ variables with the `uniform` type attribute applied. Use of the `uniform`
 keyword as a keyword attribute on any declaration shall be rejected and produce
 a diagnostic.
 
+### Removal of `shared` Keyword
+
+In DXC the `shared` keyword is parsed and ignored. This may lead users to
+believing it has some impact when it does not. We should remove it.
+
 ## Disallow `cbuffer` initializers
 
 DXC allows variables within a `cbuffer` to have initializer clauses. The
