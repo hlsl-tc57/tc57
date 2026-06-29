@@ -8,6 +8,10 @@ params:
   status: Refinement
 ---
 
+* Dependencies: [#74](https://github.com/hlsl-tc57/tc57/pull/74),
+                [#115](https://github.com/hlsl-tc57/tc57/pull/115),
+                [#127](https://github.com/hlsl-tc57/tc57/pull/127)
+
 ## Implementation Status
 
 |   | DXC     | Clang    |
@@ -92,13 +96,18 @@ sequence may be aplied from that scalar type.
 ### Overload resolution contexts
 
 In HLSL 2021 as implemented by DXC overload resolution only occurs on the
-invocation of a function named in a function call expression or for an operator
-referenced when the argument to the left hand side is a class object.
+invocation of a function named in a function call expression, for a subset of
+binary and unary operators referenced when the argument to the left hand side is
+a class object, or for the function call operator on a class object.
 
 This proposal extends the contexts that overload resolution occurs in to include
-the function call operator on a class object, all operators referenced in
-expressions, and invocations of conversion functions for initialization of an
-object of non-class type.
+conversion operators which may be explicitly invoked via C-style casting syntax
+or implicitly invoked when converting objects of class type to built-in types or
+during direct and copy initialization.
+
+With this change we also introduce the `explicit` keyword to HLSL to allow
+marking an operator as `explicit` so that it may not be considered for implicit
+conversions.
 
 ### Overload candidate selection
 
@@ -118,3 +127,648 @@ non-ambiguous cases.
 This proposal adopts a modified overload resolution algorithm from C++ which is
 updated to account for the new conversions and conversion ranks defined in the
 [implicit conversions](#implicit-conversions) section of this document.
+
+## Detailed Design
+
+### Overloading `[Overload]`
+
+When a single name is declared with two or more different declarations in the
+same scope, the name is _overloaded_. A declaration that declares an
+overloaded name is called an _overloaded declaration_. The set of
+overloaded declarations that declare the same overloaded name are that name's
+_overload set_.
+
+Only function and function template declarations can be overloaded; variable and type
+declarations cannot be overloaded.
+
+#### Overloadable Declarations `[Overload.Decl]`
+
+This section specifies the cases in which a function declaration cannot be
+overloaded. Any program that contains an invalid overload set is ill-formed.
+
+An overload set is invalid if:
+  * One or more declaration in the overload set only differ by return type.
+
+```hlsl
+int Yeet();
+uint Yeet(); // ill-formed: decls differ only by return type
+```
+  * An overload set contains more than one member function declarations with
+  the same _parameter-type-list_, and one of those declarations is a
+  `static` member function declaration (\ref{Classes.Static}).
+```hlsl
+class Doggo {
+  static void pet();
+  void pet();              // ill-formed: cannot be overloaded with `static void pet()`
+
+  static void wagTail();
+  void wagTail();          // valid
+
+  void bark(int);
+  static void bark(int);   // ill-formed: cannot be overloaded with `void bark(int)`
+};
+```
+
+  * An overload set contains more than one entry function declaration (\ref{Decl.Attr.Entry}).
+```hlsl
+[shader("vertex")]
+void VS();
+void VS(int);              // valid: only one entry point.
+
+[shader("vertex")]
+void Entry();
+
+[shader("compute")]
+void Entry(int);           // ill-formed: an overload set cannot have more than one entry function
+```
+
+  * An overload set contains more than one function declaration which only
+  differ in `const` parameter specifiers.
+```hlsl
+void G(int);
+void G(const int);         // ill-formed: redeclaration of G(int)
+void G(int) {}
+void G(const int) {}       // ill-formed: redefinition of G(int)
+```
+
+  * An overload set contains more than one function declaration which only
+  differ in parameters mismatching `out` and `inout`.
+```hlsl
+void H(int);
+void H(in int);            // valid: redeclaration of H(int)
+void H(inout int);         // valid: overloading between in and inout is allowed
+
+void I(in int);
+void I(out int);           // valid: overloading between in and out is allowed
+
+void J(out int);
+void J(inout int);         // ill-formed: Cannot overload based on out/inout mismatch
+```
+
+#### Declaration Matching `[Overload.Match]`
+
+Two function declarations with the same name and same parameter lists refer to
+the same function if they are in the same scope (\ref{Basic.Scope}). A function
+declaration in a containing scope is not the same as a function of the same
+name and parameter list in a contained scope.
+
+#### Overload Resolution `[Overload.Res]`
+
+_Overload resolution_ is process by which a function call is mapped to
+a the best overloaded function declaration. Overload resolution uses set of
+functions called the _candidate set_, and a list of expressions that
+comprise the argument list for the call.
+
+Overload resolution selects the function to call in the following
+contexts:
+
+  * invocation of a function named in a function call expression;
+  * invocation of a function call operator on a class object named in
+  function call syntax;
+  * invocation of the operator referenced in an expression;
+  * invocation of a user-defined conversion function for copy-initialization of
+    an object of class type; and
+  * invocation of a user-defined conversion function for initializing an object
+    of non-class type from an expression of class type.
+
+In each of these contexts a unique method is used to construct the overload
+candidate set and argument expression list.
+
+##### Candidate Functions and Argument Lists `[Overload.Res.Sets]`
+
+At each point where an overload must be resolved an implementation will generate
+a candidate set, containing all possible candidate functions, and the argument
+list for the overloaded call. The subclauses under this clause
+define the process by which the candidate set and argument lists are constructed
+in each context where overload resolution occurs.
+
+A candidate set may include both member and non-member functions to be resolved
+against the same argument set. Member functions have an extra _implicit object
+parameter_, representing the object the function is called on. For the purposes
+of overload resolution a static member function is considered to have an
+implicit object parameter.
+
+When appropriate the context shall construct an _implied object argument_
+referring to the object operated on.
+
+Any implicit object parameter or implied object argument is always
+the first parameter or argument.
+
+The type of the implicit object parameter is: lvalue reference `cv T`; where `T`
+is the class containing the declaration of the function, and `cv` is the
+_cv-qualification_ on the function declaration.
+
+Implied object arguments behave the same as any explicit argument except that no temporary
+object shall be created to hold the argument for the implicit object parameter
+except when the implicit object parameter is a member of a
+_cbuffer-declaration_.
+
+If a candidate is a function template, candidate specializations are generated
+through template argument deduction (\ref{Template.Deduction}), candidates are
+then handled as any other candidate. A name may refer to more than one function
+template, in which case candidate functions shall be generated for each function
+template to form the full candidate set.
+
+**Function Call Syntax `[Overload.Res.Call]`**
+
+```
+postfix-expression ( \opt{expression-list} )
+```
+
+In a function call (\ref{Expr.Post.Call}), if the _postfix-expression_ names a
+candidate set comprised of overloaded functions and/or function templates, the
+overload resolves as to a named function (\ref{Overload.Res.Call.Named}). If the
+_postfix-expression_ names an object of class type, the overload is resolved as a
+call to an object of class type (\ref{Overload.Res.Call.Object}).
+
+_Call to a Named Function `[Overload.Res.Call.Named]`_
+
+In a call to a named function, the _postfix-expression_ must be one of the
+forms:
+
+```
+postfix-expression:
+  postfix-expression . id-expression
+  primary-expression
+```
+
+In the first grammar production, the _id-expression_ is the name of the function
+to be called, and the _postfix-expression_ preceding the `.` operator. This
+formation represents a _qualified_ function call, where the _postfix-expression_
+must be an object of class type, and the call is looked up as a member function
+of that object. The function names found by that lookup constitute the overload
+candidate set for the call. The argument list for the call is the
+_expression-list_ in the call with the left operand of the `.` operator
+prepended as the implicit object parameter (\ref{Overload.Res.Sets}).
+
+In the second grammar production, the name is not qualified by an object
+parameter, so it is an unqualified call. Name lookup occurs as normal for name
+lookup of a function call (\ref{Basic.Lookup}). Function declarations found
+constitute the candidate set. The candidate set for an unqualified call will be
+comprised either entirely of non-member functions or entirely of member
+functions of some class `T`. If the candidate set is entirely non-member
+functions, the argument list is the _expression-list_. If the candidate set is
+entirely member functions of class `T`, the argument list is the
+_expression-list_ with an implied object argument prepended. If the call
+expression occurs in a context where an implicit object `this` is in scope and
+of class type `T` or a type `T\``, the `this` object will be the implicit object
+argument, otherwise a contrived argument of type `T` will become the implied
+object argument. If overload resolution selects a non-static member function,
+and the implicit object argument is a contrived argument, the call is
+ill-formed.
+
+_Call to a Object of Class Type `[Overload.Res.Call.Object]`_
+
+If the _primary-expression_ in the function call expression is a class object of
+type `T`, then the set of candidate functions will include the call operators of
+`T` obtained by name lookup of the name `operator()` (\ref{Basic.Lookup}).
+
+For this formulation, the argument list consists of the _expression-list_ from
+the call syntax with the implicit object argument prefixed. The implicit object
+argument in this form is the object produced from the evaluated
+_postfix-expression_.
+
+**Operators in Expressions `[Overload.Res.Oper]`**
+
+Operators in an expression where no operands have a class or enumeration type
+are assumed to be built-in operators and interpreted following \ref{Expr}.
+
+If either operand is of class or enumeration type, overload resolution
+determines which operator function or built-in operator is resolved for the
+expression.
+
+The table below maps unary and binary operator expressions to equivalent member
+and non-member function call expressions. In the table `@` represents any
+spellable operator, and `a` and `b` represent arguments to the operator.
+
+| Expression | Member function   | Non-member function |
+| @a         | (a).operator@()   | operator@(a)        |
+| a@b        | (a).operator@(b)  | operator@(a,b)      |
+| a[b]       | (a).operator[](b) |                     |
+
+Given the table above, operand `a` is of type `T1`, and operand `b` is of type
+`T2`. `T1` must be of class or enumeration type, and `T2` may be of any type
+including `T1`. The candidate set for operator resolution is constructed by the
+process:
+
+* If `T1` is a class type, the result of qualified lookup of `operator@` is
+  added to the set.
+* The result of unqualified lookup of `operator@` in the context of the
+  expression excluding the results from step 1. If no operand is of class type,
+  only functions where `T1` or `T2` are enumerations are added to the set.
+* The built-in operators of `operator@` from the operators defined in
+  \ref{Overload.Builtin} are added to the set.
+
+The left operand to built-in assignment operators, may not have user-defined
+conversion applied to it, and no temporary may be introduced to hold it.
+
+If the operator is the `,` operator, and there are no viable functions, the
+built-in operator is used.
+
+**Initialization by Conversion `[Overload.Res.Convert]`**
+
+An object of class type or non-class type `T` may be initialized with an
+initializing expression of class type `S` invoking a user-defined conversion.
+
+The candidate set of conversion functions will be the non-explicit conversion
+functions of `S` and its base classes.
+
+The argument list has one argument which is the initializer expression.
+
+##### Viable Functions `[Overload.Res.Viable]`
+
+Given the candidate set and argument expressions as determined by the
+relevant context (\ref{Overload.Res.Sets}), a subset of viable functions can be
+selected from the candidate set.
+
+A function candidate $F(P_0 ... P_m)$ is not a viable function for a call
+with argument list $A_0 ... A_n$ if:
+
+* The function has fewer parameters than there are
+  arguments in the argument list ($m < n$).
+* The function has more parameters than there are arguments to the
+  argument list ($m > n$), and function parameters $ P_{n+1} ... P_m $ do not
+  all have default arguments.
+* There is not an implicit conversion sequence that converts each argument
+  $A_i$ to the type of the corresponding parameter $P_i$.
+
+##### Best Viable Function `[Overload.Res.Best]`
+
+For an overloaded call with arguments $A_0 ... A_n$, each viable function
+$F(P_0 ... P_m)$, has a set of implicit conversion sequences $ICS_0(F) ... ICS_m(F)$
+defining the conversion sequences for each argument $A_i$ to the
+type of parameter $P_i$.
+
+A viable function $F$ is defined to be a better function than another
+viable function $f\`$ if for all arguments $ICS_i(F)$ is not a worse
+conversion sequence than $ICS_i(f\`)$, and:
+
+* for some argument $j$, $ICS_j(F)$ is a better conversion than
+  $ICS_j(f\`)$ or,
+* in the context of an initialization by user-defined conversion, the
+  conversion sequence from the return type of $F$ to the destination type is a
+  better conversion sequence than the return type of $f\`$ to the destination
+  type or,
+* $F$ is a non-template function and $f\`$ is a function template
+  specialization, or
+* $F$ and $f\`$ are both function template specializations and $F$ is
+  more specialized than $f\`$ according to function template partial ordering
+  rules (\ref{Template.Func.Order}).
+
+If there is one viable function that is a better function than all the other
+viable functions, it is the selected function; otherwise the call is ill-formed.
+
+If the resolved overload is a function with multiple declarations, and if at
+least two of these declarations specify a default argument that made the
+function viable, the program is ill-formed.
+
+```hlsl
+void F(int X = 1);
+void F(float Y = 2.0f);
+
+void Fn() {
+  F(1);     // Okay.
+  F(3.0f);  // Okay.
+  F();      // Ill-formed.
+}
+```
+
+##### Implicit Conversion Sequences `[Overload.ICS]`
+
+An _implicit conversion sequence_ is a sequence of conversions which
+converts a source value to a prvalue of destination type. In overload resolution
+the source value is the argument expression in a function call, and the
+destination type is the type of the corresponding parameter of the function
+being called.
+
+When a parameter is a cxvalue an _inverted implicit conversion sequence_ is
+required to convert the parameter type back to the argument type
+for writing back to the argument expression lvalue. An inverted implicit
+conversion sequence must be a well-formed implicit conversion sequence where the
+source value is the implicit cxvalue of the parameter type, and the destination
+type is the argument expression's lvalue type.
+
+A well-formed implicit conversion sequence is either a _standard conversion
+sequence_, or a _user-defined conversion sequence_.
+
+In the following contexts, an implicit conversion sequence can only be a
+standard conversion sequence:
+
+  * Argument conversion for a user-defined conversion function.
+  * Copying a temporary for class copy-initialization.
+  * When passing an initializer-list as a single argument.
+  * Copy-initialization of a class by user-defined conversion.
+
+An implicit conversion sequence models a copy-initialization unless it is an
+inverted implicit conversion sequence when it models an assignment. Any
+difference in top-level cv-qualification is handled by the copy-initialization
+or assignment, and does not constitute a conversion.
+
+> Note: "Top-level" cv-qualification refers to the qualification of the value.
+> This means an parameter of type `T` can be initialized by a argument of type
+> `const T`. This does not mean that a parameter of type `inout T` can be
+> initialized with a argument of type `const T` because there is no valid
+> inverted conversion system to assign back to a value of type `const T`.
+
+When the source value type and the destination type are the same, the
+implicit conversion sequence is an _identity conversion_, which signifies
+no conversion.
+
+Only standard conversion sequences that do not create temporary objects are
+valid for implicit object parameters or left operand to assignment operators.
+
+If no sequence of conversions can be found to convert a source value to the
+destination type, an implicit conversion sequence cannot be formed.
+
+If several different sequences of conversions exist that convert the source
+value to the destination type, the implicit conversion sequence is defined to be
+the unique conversion sequence designated the _ambiguous conversion sequence_.
+For the purpose of ranking implicit conversion sequences, the
+ambiguous conversion sequence is treated as a user-defined sequence that is
+indistinguishable from any other user-defined conversion sequence. If overload
+resolution selects a function using the ambiguous conversion sequence as the
+best match for a call, the call is ill-formed.
+
+**Standard Conversion Sequences `[Overload.ICS.SCS]`**
+
+The conversions that comprise a standard conversion sequence and the
+composition of the sequence are defined in Chapter \ref{Conv}.
+
+Each standard conversion is given a category and rank as defined in the table
+below:
+
+| Conversion | Category | Rank | Reference |
+|------------|----------|------|-----------|
+| No conversion | Identity | Exact Match | |
+| Lvalue-to-rvalue | Lvalue Transformation | Exact Match | \ref{Conv.lval} |
+| Array-to-pointer | Lvalue Transformation | Exact Match | \ref{Conv.array} |
+| Qualification | Qualification Adjustment | Exact Match | \ref{Conv.qual} |
+| Vector Scalar splat (without conversion) | Scalar Extension | Extension | \ref{Conv.vsplat} |
+| Matrix Scalar splat (without conversion) | Scalar Extension | Extension | \ref{Conv.msplat} |
+| Integral promotion | Promotion | Promotion | \ref{Conv.iconv} & \ref{Conv.rank.int} |
+| Floating point promotion | Promotion | Promotion | \ref{Conv.fconv} & \ref{Conv.rank.float} |
+| Component-wise promotion | Promotion | Promotion | \ref{Conv.cwise} |
+| Vector Scalar splat promotion | Scalar Extension Promotion | Promotion Extension | \ref{Conv.vsplat} |
+| Matrix Scalar splat promotion | Scalar Extension Promotion | Promotion Extension | \ref{Conv.msplat} |
+| Integral conversion | Conversion | Conversion | \ref{Conv.iconv} |
+| Floating point conversion | Conversion | Conversion | \ref{Conv.fconv} |
+| Floating-integral conversion | Conversion | Conversion | \ref{Conv.fpint} |
+| Boolean conversion | Conversion | Conversion | \ref{Conv.bool} |
+| Component-wise conversion | Conversion | Conversion | \ref{Conv.cwise} |
+| Scalar splat conversion | Scalar Extension Conversion | Conversion Extension | \ref{Conv.vsplat} |
+| Vector Scalar splat conversion | Scalar Extension Conversion | Conversion Extension | \ref{Conv.vsplat} |
+| Matrix Scalar splat conversion | Scalar Extension Conversion | Conversion Extension | \ref{Conv.msplat} |
+| Vector truncation (without conversion) | Dimensionality Reduction | Truncation | \ref{Conv.vtrunc} |
+| Matrix truncation (without conversion) | Dimensionality Reduction | Truncation | \ref{Conv.vtrunc} |
+| Vector truncation promotion | Dimensionality Reduction Promotion | Promotion Truncation | \ref{Conv.vtrunc} |
+| Matrix truncation promotion | Dimensionality Reduction Promotion | Promotion Truncation | \ref{Conv.vtrunc} |
+| Vector truncation conversion | Dimensionality Reduction Conversion | Conversion Truncation | \ref{Conv.vtrunc} |
+| Matrix truncation conversion | Dimensionality Reduction Conversion | Conversion Truncation | \ref{Conv.vtrunc} |
+
+If a scalar splat conversion occurs in a conversion sequence where all other
+conversions are **Exact Match** rank, the conversion is ranked as
+**Extension**. If a scalar splat occurs in a conversion
+sequence with a **Promotion** conversion, the conversion is ranked as
+**Promotion Extension**. If a scalar splat occurs in a conversion
+sequence with a **Conversion** conversion, the conversion is ranked as
+**Conversion Extension**.
+
+If a vector or matrix truncation conversion occurs in a conversion sequence where all
+other conversions are **Exact Match** rank, the conversion is ranked as
+**Truncation**. If a vector or matrix truncation occurs in a conversion
+sequence with a **Promotion** conversion, the conversion is ranked as
+**Promotion Truncation**. If a vector or matrix truncation occurs in a conversion
+sequence with a **Conversion** conversion, the conversion is ranked as
+**Conversion Truncation**.
+
+Otherwise, the rank of a conversion sequence is determined by considering the
+rank of each conversion.
+
+ Conversion sequence ranks are ordered from better to worse as:
+
+  * **Exact Match**
+  * **Extension**
+  * **Promotion**
+  * **Promotion Extension**
+  * **Conversion**
+  * **Conversion Extension**
+  * **Truncation**
+  * **Promotion Truncation**
+  * **Conversion Truncation**
+
+**User-defined Conversion Sequences**
+
+A _user-defined conversion sequence_ is a standard conversion sequence
+followed by a user-defined conversion, followed by a second standard conversion
+sequence.
+
+The first standard conversion sequence converts the source type to the
+type of the object parameter of the conversion function of the user-defined
+conversion.
+
+The second standard conversion converts the result of the user-defined
+conversion to the target type for the conversion sequence.
+
+If the user-defined conversion is a template specialization, the second standard
+conversion sequence shall have the rank **Exact Match**.
+
+If the user-defined conversion specifies a conversion from a class type to the
+same class type, it shall have the rank **Exact Match** even if a conversion
+function is invoked and it produces temporaries or other side-effects.
+
+If the user-defined conversion converts from a class type to a base class of
+that type, it shall have the rank **Conversion** even if a conversion function
+is invoked and it produces temporaries or other side-effects.
+
+**Comparing Implicit Conversion Sequences `[Overload.ICS.Comparing]`**
+
+A partial ordering of implicit conversion sequences exists based on defining
+relationships for _better conversion sequence_, and _better conversion_. If an
+implicit conversion sequence $ICS(f)$ is a better conversion sequence than
+$ICS(f\`)$, then the inverse is also true: $ICS(f\`)$ is a _worse conversion
+sequence_ than $ICS(f)$. If $ICS(f)$ is neither better nor worse than
+$ICS(f\`)$, the conversion sequences are _indistinguishable conversion
+sequences_.
+
+A standard conversion sequence is always better than a user-defined conversion
+sequence.
+
+Standard conversion sequences are ordered by their ranks. Two conversion
+sequences with the same rank are indistinguishable unless one of the following
+rules applies:
+
+  * If class `B` is derived directly or indirectly from class
+  `A` and class `C` is derived directly or indirectly from class
+  `B`,
+    * binding of a expression of type `C` to a cxvalue of type
+    `B` is better than binding an expression of type `C` to a
+    cxvalue of type `A`,
+    * conversion of `C` to `B` is better than conversion or
+    `C` to `A`,
+    * binding of a expression of type `B` to a cxvalue of type
+    `A` is better than binding an expression of type `C` to a
+    cxvalue of type `A`,
+    * conversion of `B` to `A` is better than conversion of
+    `C` to `A`.
+
+#### Overloaded Operators `[Overload.Operators]`
+
+```
+operator-function-id:
+  `operator` operator
+operator: one of
+  `+` `-` `*` `/` `%` `^` `&` `|` `~` `!` `<` `>` `<<` `>>` `<=` `>=` `&&` `||` `,` `()` `[]`
+```
+
+The operators `+`, `-`, `*`, and `&` may only be overloaded in their binary
+form.
+
+The `.`, `::` and `?:` operators cannot be overloaded.
+
+Operator functions may be called directly by their name in the form `operator@`
+or through the resolution of an overload from an operator expression.
+
+An overloaded operator function must be either a non-static member function or a
+non-member function, and must have at least one parameter whose type is a class
+or enumeration.
+
+An overloaded operator may not change the number of operands of an operator,
+except the function call operator which may have any number of operands.
+
+The meaning of the `,` operator, which is pre-defined for all types, can be
+changed by operator overloading.
+
+Overloaded operator functions are inherited from base classes in the same way as
+other base class member functions.
+
+Only an overloaded call operator may have default arguments, no other operator
+functions may be defined with default arguments. All operator functions must
+take exactly the number of parameters of the corresponding operator as defined
+in this subclause.
+
+##### Unary Operators
+
+An overloaded prefix unary operator must be implemented by a non-static member
+function with no parameters or a non-member function with one parameter.
+
+Postfix unary operators are not overloadable.
+
+##### Binary Operators
+
+An overloaded binary operator must be implemented by a non-static member
+function with one parameter or a non-member function with two parameters.
+
+##### Function Call Operator
+
+An overloaded function call operator must be a non-static member function with
+an arbitrary number of parameters, and may have default arguments. Function call
+operator functions are overload candidates for the function call syntax when the
+_postfix-expression_ is an object of class type.
+
+##### Subscript operator
+
+An overloaded subscript operator must be a non-static member function with one
+parameter. Subscript operator functions are overload candidates for the
+subscript syntax when the _postfix-expression_ is an object of class type.
+
+#### Built-in Operators `[Overload.Builtin]`
+
+For binary operators on arithmetic types, the result type is called the
+_promoted expression type_ as determined by usual arithmetic conversions
+(\ref{Expr.Conv}).
+
+For all types `T` where `T` is an arithmetic type (\ref{Basic.Types.Arithmetic});
+operators will be defined of the forms:
+
+```
+T operator+(T );
+T operator-(T );
+T operator~(T );
+```
+
+For all types `L`, `R` and `LR`, where `L` and `R` are any arithmetic type
+(\ref{Basic.Types.Arithmetic}), and `LR` is the promoted expression type;
+operators will be defined of the forms:
+
+```
+LR operator*(L , R );
+LR operator/(L , R );
+LR operator+(L , R );
+LR operator-(L , R );
+bool operator<(L , R );
+bool operator>(L , R );
+bool operator<=(L , R );
+bool operator>=(L , R );
+bool operator==(L , R );
+bool operator!=(L , R );
+LR operator%(L , R );
+```
+
+For all types `T` where `T` is an enumeration type (\ref{Decl.Enum}); operators
+will be defined of the form:
+
+```
+bool operator<(T , T );
+bool operator>(T , T );
+bool operator<=(T , T );
+bool operator>=(T , T );
+bool operator==(T , T );
+bool operator!=(T , T );
+```
+
+For all types `T` where `T` is an integral type
+(\ref{Basic.Types.Arithmetic}); operators will be defined of the form:
+
+```
+LR operator&(L , R );
+LR operator^(L , R );
+LR operator|(L , R );
+L operator<<(L , R );
+L operator>>(L , R );
+```
+
+For all types `L` and `R` where `L` and `R` are arithmetic types
+(\ref{Basic.Types.Arithmetic}), and `CVQ` is a _cv-qualifier_; operators will be
+defined of the form:
+
+```
+CVQ L & operator=(CVQ L &, R );
+CVQ L & operator*=(CVQ L &, R );
+CVQ L & operator/=(CVQ L &, R );
+CVQ L & operator+=(CVQ L &, R );
+CVQ L & operator-=(CVQ L &, R );
+CVQ L & operator%=(CVQ L &, R );
+```
+
+For all types `L` and `R` where `L` and `R` are integral types
+(\ref{Basic.Types.Arithmetic}), and `CVQ` is a _cv-qualifier_; operators will be
+defined of the form:
+```
+CVQ L & operator<<=(CVQ L &, R );
+CVQ L & operator>>=(CVQ L &, R );
+CVQ L & operator&=(CVQ L &, R );
+CVQ L & operator^=(CVQ L &, R );
+CVQ L & operator|=(CVQ L &, R );
+```
+
+For the boolean type `bool` operators will be defined of the form:
+
+```
+bool operator!(bool);
+bool operator&&(bool, bool);
+bool operator||(bool, bool);
+```
+
+For all types `L`, `R` and `LR`, where `L` and `R` are any arithmetic type
+(\ref{Basic.Types.Arithmetic}), and `LR` is the promoted expression type;
+the ternary operator will be defined of the form:
+
+```
+LR operator?:(bool, L , R );
+```
+
+For all types `T`, a ternary operator will be defined of the form:
+
+```
+T operator?:(bool, T , T );
+```
