@@ -12,7 +12,7 @@ non-standard but are used throughout the standard library specification.
 
 \p Code blocks in the remaining clauses of the specification decribe a
 hypothetical implementation and are provided for clarity. A conforming
-implementation need not rely on the specifc code in any of the blocks. 
+implementation need not rely on the specifc code in any of the blocks.
 
 \Sub{Constructors}{Library.Notation.Constructors}
 
@@ -33,3 +33,80 @@ simplify this notation the syntax \textit{address-space\textsubscript{opt}}
 \p Some standard library template functions or objects have constraints to which
 types are valid as template arguments. To simplify this notation the concepts
 syntax from \gls{isoCPP20} is used.
+
+\Sec{Method of Description (Informative)}{Library.Method}
+
+\Sub{Clause Structure}{Libarry.Method.Structure}
+
+\p Each library clause will contain all applicable subclauses of the list:
+
+\begin{itemize}
+  \item Introduction
+  \item Optional features
+  \item Special semantics
+  \item Element subclauses
+\end{itemize}
+
+\p The clause introduction shall provide an overview of the contents of the
+clause. Some features detailed in a clause may be optional, a subclause
+describing the optional features will be included if applicable.
+
+\p Each library clause will optionally contain a subclause describing additional
+semantic behaviors required for the clause. This subclause is omitted if empty.
+
+\p Each library clause will contain one or more element subclauses detailing the
+declarations required in a conforming implementation of the specification, and
+any normative optional declarations based on optional features described in the
+clause.
+
+\SubSub{Element Subclauses}{Library.Method.Structure.Element}
+
+\p Each element subclause contain the following:
+
+\begin{itemize}
+  \item Summary
+  \item Detailed specifications
+\end{itemize}
+
+\SubSub{Summary}{Library.Method.Structure.Summary}
+
+\p The summary will include a description of the category as well as a listing
+of any introduced headers, macros, and declarations.
+
+\SubSub{Detailed Specification}{Library.Method.Structure.Detailed}
+
+\p The detailed specification for each entity will contain each of the below
+that apply:
+
+\begin{itemize}
+  \item name and description
+  \item class definition or function prototype
+  \item template argument constraints
+  \item class invariants
+  \item function semantics
+\end{itemize}
+
+\p Description of class member functions will follow the order, omitting
+sections that are empty:
+
+\begin{itemize}
+  \item Constructors
+  \item Copying and assignment
+  \item Modifying functions
+  \item Inspection functions
+  \item Operators
+  \item Other non-member functions
+\end{itemize}
+
+\p Descriptions of function semantics will contain all of the following elements
+that apply in the order as specified:
+
+\begin{itemize}
+  \item \textit{Requires:} the preconditions for calling the function.
+  \item \textit{Effects:} the actions performed by the function.
+  \item \textit{Synchronization:} the requirements for execution or memory
+  synchronization.
+  \item \textit{Returns:} a description of the value returned by the function.
+  \item \textit{Remarks:} additional normative information about the function.
+  \item \textit{Notes:} non-normative information provided about the function.
+\end{itemize}

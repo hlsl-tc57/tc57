@@ -17,31 +17,44 @@ evaluated as no-ops.
 \p An implementation may impose restrictions on how local resource objects may
 be used (\ref{AnnexB.LocalResources}).
 
+\Sec{Optional Features}{Resources.Optional}
+
+\p \textit{Dynamic resources} is an optional feature which allows resource
+objects to be initialized by indexing directly into a heap of descriptors. A
+conforming implementation must either support all interfaces related to dynamic
+resources or none, but may not partially support them.
+
+\p The \texttt{\_\_DynamicResourceHandle} type in the code examples in this
+clause is a placeholder for the implementation-specific type returned by
+subscript indexing into the \texttt{ResourceDescriptorHeap}
+(\ref{Resources.Binding.Dynamic}).
+
+\Sec{Special Semantics}{Resources.Special}
+
+\Sub{Resource Initialization}{Resources.Special.Initialization}
+
+\p A resource declaration in a global scope are called \textit{global
+resource declaration} and represents a binding for external data into a
+program. Global resource declarations are implicitly initialized in an
+implementation-defined.
+
+\p Use of an uninitialized resource is undefined.
+
 \Sec{Typed Buffers}{Resources.TypedBuffers}
 
 \p The typed buffer class template represents a one-dimensional resource
 containing an array of a single given type. Its contents are indexed by typed
-access to each element. Types may have their formats converted upon load in an
-implementation-defined way.
+access to each element. The memory backing a resource need not formatted in the
+same type as the resource's element type. If required, typed buffer elements are
+converted upon load in an implementation-defined way.
 
-\p The element type may be any type up to 16 bytes in size. Elements may be
-padded to 16 bytes if the element type is smaller than 16 bytes.
-
-\p All typed buffers can be read through subscript operators or Load methods.
-Writable typed buffers can be written through subscript operators.
-
-\p Where \texttt{T} can be any arithmetic type \ref{Basic.Types.Arithmetic}
-or a vector with a maximum of four elements containing such an arithmetic type.
-The total size of a single contained element must be less than 16 bytes.
-
-\p Typed buffers perform format conversions on load such that the underlying
-data gets converted to the destination type in an implementation-defined way.
-
-\p The \texttt{Buffer} type's template argument \texttt{T} has a default value
-of \texttt{float4}.
+\p There are two typed buffer class templates \texttt{Buffer} and
+\texttt{RWBuffer}, which respectively represent read-only and read-write typed
+buffer objects.
 
 \begin{HLSL}
-template <typename T = float4> requires hlsl::is_vector<T>::value || hlsl::is_arithmetic<T>::value
+template <typename T = float4>
+requires hlsl::is_vector<T>::value || hlsl::is_arithmetic<T>::value
 class Buffer {
   Buffer();
   Buffer(const Buffer &buf);
@@ -57,7 +70,8 @@ class Buffer {
 };
 
 
-template <typename T> requires hlsl::is_vector<T>::value || hlsl::is_arithmetic<T>::value
+template <typename T>
+requires hlsl::is_vector<T>::value || hlsl::is_arithmetic<T>::value
 class RWBuffer {
   RWBuffer();
   RWBuffer(RWBuffer buf);
@@ -74,77 +88,124 @@ class RWBuffer {
 };
 \end{HLSL}
 
-\Sub{Constructors}{Resources.TypedBuffers.Ctrs}
+\p The element type of a typed buffer, \texttt{T}, must be an arithmetic type
+(\ref{Basic.Types.Arithmetic}) or vector of arithmetic containing no more than 4
+elements, and the total size of the element (\texttt{sizeof(T)}) must not exceed
+16-bytes in size.
 
-\p When defined at global scope, typed buffers are bound to externally-defined
-backing stores using the explicit binding location if provided or the implicit
-binding if not (\ref{Resources.Binding}).
+\p The \texttt{Buffer} type's template argument \texttt{T} has a default value
+of \texttt{float4}.
 
-\p When defined at local scope, typed buffers represent local references that
-can be associated with global buffers when assigned. Use of an uninitialized
-typed buffer is undefined.
+\Sub{Typed Buffer Constructors}{Resources.TypedBuffers.Ctrs}
 
 \begin{HLSL}
-Buffer<int> grobuf;
-RWBuffer<int> grwbuf;
-void main() {
-  Buffer<int> lrobuf = grobuf;
-  RWBuffer<int> lrwbuf = grwbuf;
-}
+Buffer();
+RWBuffer();
 \end{HLSL}
 
-\p Buffers cannot be implicitly nor explicitly cast from one type to another.
+\begin{itemize}
+  \item \textit{Effects:} Constructs an uninitialized resource handle.
+\end{itemize}
 
-\p Buffers may be created from dynamic resources. The
-\texttt{\_\_DynamicResourceHandle} type in the examples above is a placeholder
-for the implementation-specific type returned by subscript indexing into the
-\texttt{ResourceDescriptorHeap} (\ref{Resources.Binding.Dynamic}).
+\begin{HLSL}
+Buffer(const Buffer &buf);
+RWBuffer(const RWBuffer &buf);
+\end{HLSL}
 
-\Sub{Dimensions}{Resources.TypedBuffers.Dims}
+\begin{itemize}
+  \item \textit{Effects:} Initializes a resource to refer to the same resource
+  as the input argument \texttt{buf}.
+\end{itemize}
 
-\p The size of a typed buffer can be retrieved using the \texttt{GetDimensions}
-method.
+\begin{HLSL}
+Buffer(const __DynamicResourceHandle &handle);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Feature:} Dependent on dynamic resources (\ref{Resources.Binding.Dynamic}).
+  \item \textit{Effects:} Initializes a resource to refer to the dynamic
+  resource handle provided as the input argument \texttt{handle}.
+\end{itemize}
+
+\Sub{Typed Buffer Copying and Assignment}{Resources.TypedBuffers.Copy}
+
+\begin{HLSL}
+Buffer &operator=(Buffer &buf);
+RWBuffer &operator=(RWBuffer &buf);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Effects:} Initializes a resource to refer to the same resource
+  as the input argument \texttt{buf}.
+  \item \textit{Returns:} \texttt{this}.
+\end{itemize}
+
+\Sub{Typed Buffer Inspecting Functions}{Resources.TypedBuffers.Inspect}
 
 \begin{HLSL}
 void GetDimensions(out uint width) const;
 \end{HLSL}
 
-\p This returns the full length, in elements of the buffer through the
-\texttt{width} output parameter.
-
-\Sub{Element Access}{Resources.TypedBuffers.Access}
-
-\p The contents of typed buffers can be retrieved using the \texttt{Load} methods
-or the subscript operator.
+\begin{itemize}
+  \item \textit{Effects:} Writes the total number of elements contained in the
+  typed buffer to the \texttt{width} argument.
+\end{itemize}
 
 \begin{HLSL}
 T Load(uint index) const;
-T operator[](uint index) const;
 \end{HLSL}
 
-\p These each return the element of the buffer's type at the given index
-\texttt{index}.
-
-\p An additional \texttt{Load} method returns the indicated element just as the
-other, but also takes a second \texttt{status} parameter that returns
-information about the accessed resource.
+\begin{itemize}
+  \item \textit{Requires:} \texttt{index} < the number of elements in the
+  typed buffer.
+  \item \textit{Returns:} The element in the typed buffer at the index specified
+  by \texttt{index}.
+\end{itemize}
 
 \begin{HLSL}
 T Load(int index, out uint status) const;
 \end{HLSL}
 
-\p The \texttt{status} parameter returns an indication of whether all of the
-retrieved value came from fully mapped parts of the resource. This parameter
-must be passed to the built-in function \texttt{CheckAccessFullyMapped}
-(\ref{Resources.Mapcheck}) in order to interpret it.
+\begin{itemize}
+  \item \textit{Requires:} \texttt{index} \textless the number of elements in the
+  typed buffer.
+  \item \textit{Returns:} The element in the typed buffer at the index specified
+  by \texttt{index}.
+  \item \textit{Effects:} Initializes the \texttt{status} argument to an
+  implementation-defined status signal (\ref{Resources.Mapcheck}).
+  \item \textit{Remarks:} The \texttt{status} parameter returns an
+  implementation-defined value that indicates if the loaded value came from
+  fully mapped parts of the resource. This parameter must be passed to the
+  built-in function \texttt{CheckAccessFullyMapped} (\ref{Resources.Mapcheck})
+  in order to interpret it.
+\end{itemize}
 
-\p Writable buffers have an additional subscript operator that allows assignment
-to an element of the buffer. It behaves as if it returns a reference to that
-element as stored in device memory.
+\Sub{Typed Buffer Operators}{Resources.TypedBuffers.Operators}
+
+\begin{HLSL}
+T operator[](uint index) const;
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Requires:} \texttt{index} < the number of elements in the
+  typed buffer.
+  \item \textit{Returns:} The element in the typed buffer at the index specified
+  by \texttt{index}.
+\end{itemize}
 
 \begin{HLSL}
 device T &operator[](int index);
 \end{HLSL}
+
+\begin{itemize}
+  \item \textit{Preconditions:} \texttt{index} < the number of elements in the
+  typed buffer.
+  \item \textit{Returns:} An lvalue-reference to the element in the typed buffer
+  at the index specified by \texttt{index}.
+  \item \textit{Remarks:} Writing to typed buffer elements overwrite the entire
+  element, even if only part of the data is written. A partial write to a typed
+  buffer is a load-insert-store operation.
+\end{itemize}
 
 \begin{note}
   Accurately modeling the memory operations for writable typed buffers would
@@ -153,19 +214,19 @@ device T &operator[](int index);
   implementation.
 \end{note}
 
-\p Writes to typed buffer elements overwrite the entire element, even if only
-part of the data is written. A partial write to a typed buffer is a load of the
-full value, an insert of the partial elements, then a write of the full value.
+\Sec{CheckAccessFullyMapped}{Resources.Mapcheck}
 
-\Sec{CheckAccessFullyMapped}{Resources.mapcheck}
-
-\p The mapped status value returned by certain texture and buffer methods can be
-intrepreted by a built-in function:
+\p The implementation-defined status value returned by texture and buffer load
+methods is interpreted by a built-in function:
 
 \begin{HLSL}
 bool CheckAccessFullyMapped(uint status);
 \end{HLSL}
 
-\p This function returns true if the value was accessed from memory that was
-mapped by the runtime implementation. If any part of the return value was from
-unmapped memory, false is returned.
+\begin{itemize}
+  \item \textit{Preconditions:} \texttt{status} is an initialized value from a
+  resource \texttt{Load} function's \texttt{status} output parameter.
+  \item \textit{Returns:} \texttt{true} if the value was accessed from memory
+  that was fully mapped by the runtime implementation; otherwise returns
+  \texttt{false}.
+\end{itemize}
