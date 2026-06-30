@@ -216,7 +216,28 @@ period.
 
 %TODO: \Sec{Identifiers}{Lex.Ident}
 
-%TODO: \Sec{Keywords}{Lex.Keywords}
+\Sec{Keywords}{Lex.Keywords}
+
+\begin{grammar}
+  \define{keyword} \textnormal{any of}\br
+  \terminal{auto bool break case cbuffer center centroid class column\_major}\br
+  \terminal{const constexpr continue discard do double else enum export}\br
+  \terminal{false float for globallycoherent groupshared if in indices}\br
+  \terminal{inline inout int interface line lineadj linear namespace nointerpolation}\br
+  \terminal{noperspective operator out packoffset payload point precise}\br
+  \terminal{primitives reordercoherent return row\_major sampler\_state shared sizeof}\br
+  \terminal{snorm static struct switch tbuffer template this triangle}\br
+  \terminal{triangleadj true typedef typename uniform unorm unsigned using vertices}\br
+  \terminal{void while}
+\end{grammar}
+
+% The above list includes the interface, shared, and uniform keywords which are
+% proposed to be removed in 0004.
+
+\p The identifiers defined in the grammar above are reserved as keywords.
+During the phases of translation when preprocessing tokens are converted to
+tokens, keywords are unconditionally treated as keywords except when they appear
+in attribute specifiers (\ref{Decl.Attributes}).
 
 %TODO: \Sec{Operators and Punctuators}{Lex.Operators}
 
