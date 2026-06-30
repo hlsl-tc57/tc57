@@ -3,7 +3,7 @@ title: 0010 - Modern C++ Features
 params:
   authors:
   - llvm-beanz: Chris Bieneman
-  status: Under Consideration
+  status: Refinement
 ---
 
 * Issues:
