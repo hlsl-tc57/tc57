@@ -42,17 +42,26 @@ type `T`, the keyword alters the qualified type of the parameter to a `groupshar
 void fn(groupshared uint4 A) {}
 ```
 
-No implicit or explicit conversion can change the memory space of an object. To
-perform such a conversion, a user must declare a new object in the destination
-memory space and initialize it appropriately. For overload resolution, the
-parameter type must be an exact match in order for overload resolution to
-succeed since no conversions will be valid.
+No implicit or explicit conversion can change the memory space of an object.
+LValue-to-RValue conversions load a value out of its specified address space
+into a temporary value in the default address space. This is an implicit copy,
+not an address space conversion. To perform such a conversion, a user must
+declare a new object in the destination memory space and initialize it
+appropriately. For overload resolution, the parameter type must be an exact
+match in order for overload resolution to succeed since no conversions will be
+valid.
 
 Allowed:
-```c++
+```hlsl
+void doesSomething(inout uint4);
+void doesNothing(uint4);
+
 void fn(groupshared uint4 A) {
   float4 LocalA = (float4) A;
   doesSomething(LocalA);
+  doesSomething(A);
+  doesNothing(LocalA);
+  doesNothing(A);
   A = (uint4) LocalA;
 }
 ```
@@ -66,10 +75,6 @@ void fn2() {
 }
 ```
 
-DXC and Clang have implemented this feature in their 202x language modes, and
-allowed it to be used as an extension (with diagnostic issued) in earlier
-language modes.
-
 The feature supports any type that is valid to store in groupshared memory to be
 used as groupshared arguments, including user-defined data types.
 
@@ -81,8 +86,10 @@ is an obvious alternative. This proposal introduces a slightly conflicting
 syntax from what we would prefer with reference types available.
 
 This more minimal feature has material benefit today for both DXC and Clang, and
-can avoid Clang requiring special case handling for library functions. As such,
-this proposal is preferred to waiting until references can be finalized.
+can avoid Clang requiring special case handling for library functions that
+operate on `groupshared` memory such as the `Interlocked` intrinsics for atomic
+operations. As such, this proposal is preferred to waiting until references can
+be finalized.
 
 ### Overloading behavior
 
