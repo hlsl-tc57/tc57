@@ -56,15 +56,15 @@ alternatives have been considered to the feature itself. Reflecting on the
 problems caused by HLSL 2021 removing boolean operators from vector types other
 options were considered.
 
-One considered option was to roll back the HLSL 2021 removal of vector
+One considered option was to roll back the HLSL 2021 removal of vector boolean
 operators. Operator short circuiting was introduced in HLSL 2021 to reduce
-behavioral differences between HLSL and C/C++. With operator short circuiting
-vector operator aren't intuitive because they can't short circuit.
+behavioral differences between HLSL and C/C++. With operator short circuiting,
+vector operators aren't intuitive because they can't short circuit.
 
 Having scalar operators short circuit and vector operators not was also
 considered. The argument against that approach is that having two code
 representations that look the same but behave differently is unintuitive. This
-gets more unintuitive when you consider that with the introduction of templates
+gets more unintuitive when you consider that, with the introduction of templates,
 the same literal line of code could be used for both vector and scalar
 conditionals with different behavior.
 
