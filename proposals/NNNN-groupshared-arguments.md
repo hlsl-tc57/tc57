@@ -13,8 +13,7 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| `groupshared` arguments (DXIL) | Complete | Complete |
-| `groupshared` arguments (SPIRV) | Complete | Complete |
+| `groupshared` arguments | Complete | Complete |
 
 ## Introduction
 
@@ -36,11 +35,10 @@ blocks of groupshared memory.
 ## Proposed solution
 
 HLSL 202x will allow the `groupshared` type annotation keyword on function
-parameter declarations. The keyword when applied to a parameter declaration of
-type `T`, alters the qualified type of the parameter to a `groupshared T &`
+parameter declarations. When applied to a parameter declaration of
+type `T`, the keyword alters the qualified type of the parameter to a `groupshared T &`
 (a reference to `groupshared` memory of type `T`).
 
-```c++
 void fn(groupshared uint4 A) {}
 ```
 
@@ -60,12 +58,11 @@ void fn(groupshared uint4 A) {
 ```
 
 Not Allowed:
-```c++
 void fn(groupshared uint4 A) {}
 void fn2() {
   float4 B = 1.0.xxxx;
-  fn(B); // Error:
-  fn((uint4)B); // Error:
+  fn(B); // error: no matching function for call to 'fn'
+  fn((uint4)B); // error: no matching function for call to 'fn'
 }
 ```
 
@@ -89,7 +86,6 @@ this proposal is preferred to waiting until references can be finalized.
 
 ### Overloading behavior
 
-```c++
 void fn(groupshared uint shared);
 void fn(inout uint u);
 
@@ -103,7 +99,6 @@ void caller() {
 }
 ```
 
-```c++
 void fn(groupshared uint shared);
 void fn(uint u);
 
