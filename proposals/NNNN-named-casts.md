@@ -35,7 +35,7 @@ difference from C++ is that HLSL's `static_cast<T>` will always produce an
 rvalue since HLSL does not have spellable lvalue reference types, and may not be
 used for polymorphic casts for the same reason.
 
-The `hlsl::elementwise_cast<T>(V)`, will perform an element-wise conversion
+The `hlsl::elementwise_cast<T>(V)` will perform an element-wise conversion
 (\ref{Conv.Flat}). The type of the expression `V` and the result type `T` must
 be scalar layout compatible (\ref{Basic.Types.Scalarized}).
 
