@@ -39,6 +39,7 @@ parameter declarations. When applied to a parameter declaration of
 type `T`, the keyword alters the qualified type of the parameter to a `groupshared T &`
 (a reference to `groupshared` memory of type `T`).
 
+```
 void fn(groupshared uint4 A) {}
 ```
 
@@ -67,6 +68,7 @@ void fn(groupshared uint4 A) {
 ```
 
 Not Allowed:
+```
 void fn(groupshared uint4 A) {}
 void fn2() {
   float4 B = 1.0.xxxx;
@@ -93,19 +95,10 @@ be finalized.
 
 ### Overloading behavior
 
-void fn(groupshared uint shared);
-void fn(inout uint u);
+Overload sets including value types and `groupshared` arguments of the same
+underlying type are ambiguous if the call site argument is `groupshared`.
 
-groupshared uint Shared;
-
-void caller() {
-  fn(Shared); // ambiguous
-
-  uint Local;
-  fn(Local); // Not ambiguous
-}
 ```
-
 void fn(groupshared uint shared);
 void fn(uint u);
 
@@ -119,11 +112,6 @@ void caller() {
   fn(5); // Not ambiguous
 }
 ```
-
-The above overload sets will result in an error that the call is ambiguous
-when the call site argument is a `groupshared` variable.  They will not result
-in an error at the call site if the argument is a local varible or a literal
-value.
 
 ### Limitations
 
