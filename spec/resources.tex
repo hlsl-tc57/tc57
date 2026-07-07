@@ -34,7 +34,7 @@ subscript indexing into the \texttt{ResourceDescriptorHeap}
 
 \Sub{Resource Initialization}{Resources.Special.Initialization}
 
-\p A resource declaration in a global scope are called \textit{global
+\p A resource declaration in a global scope is called a \textit{global
 resource declaration} and represents a binding for external data into a
 program. Global resource declarations are implicitly initialized in an
 implementation-defined way.
@@ -45,7 +45,7 @@ implementation-defined way.
 
 \p The typed buffer class template represents a one-dimensional resource
 containing an array of a single given type. Its contents are indexed by typed
-access to each element. The memory backing a resource need not formatted in the
+access to each element. The memory backing a resource need not be formatted in the
 same type as the resource's element type. If required, typed buffer elements are
 converted upon load in an implementation-defined way.
 
@@ -199,7 +199,7 @@ device T &operator[](int index);
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Preconditions:} \texttt{index} \textless the number of elements in the
+  \item \textit{Requires:} \texttt{index} \textless the number of elements in the
   typed buffer.
   \item \textit{Returns:} An lvalue-reference to the element in the typed buffer
   at the index specified by \texttt{index}.
@@ -225,7 +225,7 @@ bool CheckAccessFullyMapped(uint status);
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Preconditions:} \texttt{status} is an initialized value from a
+  \item \textit{Requires:} \texttt{status} is an initialized value from a
   resource \texttt{Load} function's \texttt{status} output parameter.
   \item \textit{Returns:} \texttt{true} if the value was accessed from memory
   that was fully mapped by the runtime implementation; otherwise returns
