@@ -157,8 +157,8 @@ T Load(uint index) const;
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Requires:} \texttt{index} \textless the number of elements in the
-  typed buffer.
+  \item \textit{Requires:} \texttt{index} \textless\enspace the number of
+  elements in the typed buffer.
   \item \textit{Returns:} The element in the typed buffer at the index specified
   by \texttt{index}.
 \end{itemize}
@@ -168,8 +168,8 @@ T Load(int index, out uint status) const;
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Requires:} \texttt{index} \textless the number of elements in the
-  typed buffer.
+  \item \textit{Requires:} \texttt{index} \textless\enspace the number of
+  elements in the typed buffer.
   \item \textit{Returns:} The element in the typed buffer at the index specified
   by \texttt{index}.
   \item \textit{Effects:} Initializes the \texttt{status} argument to an
@@ -188,8 +188,8 @@ T operator[](uint index) const;
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Requires:} \texttt{index} \textless the number of elements in the
-  typed buffer.
+  \item \textit{Requires:} \texttt{index} \textless\enspace the number of
+  elements in the typed buffer.
   \item \textit{Returns:} The element in the typed buffer at the index specified
   by \texttt{index}.
 \end{itemize}
@@ -199,8 +199,8 @@ device T &operator[](int index);
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Requires:} \texttt{index} \textless the number of elements in the
-  typed buffer.
+  \item \textit{Requires:} \texttt{index} \textless\enspace the number of
+  elements in the typed buffer.
   \item \textit{Returns:} An lvalue-reference to the element in the typed buffer
   at the index specified by \texttt{index}.
   \item \textit{Remarks:} Writing to typed buffer elements overwrite the entire
