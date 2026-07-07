@@ -16,6 +16,11 @@ to address minor defects are also welcome.
 For larger non-trivial changes please review the [process
 documentation](docs/Process.md) before making contributions.
 
+## Events Calendar
+
+TC57 maintains a [HLSL Community Calendar](https://calendar.google.com/calendar/u/0?cid=YzY5MDRmNzk1NGVlMTE5OGYyZjdhN2EwOTNmN2JlMTU4YzU3MzFjNTJhNzhkMjAyZjM1NThkMTMwMzRmOGUwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t)
+which collects public and some non-public events in the HLSL Community.
+
 ## Required legal agreements
 
 People associated with Ecma member organizations have a legal agreement in place

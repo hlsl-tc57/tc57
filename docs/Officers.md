@@ -35,11 +35,21 @@ delegate responsibilities as necessary.
 
 TC57 shall annually select a set of volunteers to serve as editors.
 
+Current Editors:
+Chris Bieneman (Microsoft, GitHub: @llvm-beanz)
+Alexander Johnston (AMD, GitHub: @Alexander-Johnston)
+Greg Roth (NVIDIA, GitHub: @pow2clk)
+
 Editors are responsible for facilitating the [defect process](DefectProcess.md). A core responsibility of editors is to determine if an issue or pull request addressing a defect is actually a defect or a behavioral change that should go through the [proposal process](ProposalProcess.md).
 
 The Editor Group will provide an update at each meeting of the TC summarizing
 the editorial changes made between meetings of the TC, and highlighting any
 areas of interest that may warrant wider discussion.
+
+The editors hold a fortnightly meeting on the off-weeks of the main TC meeting.
+The editors meeting is listed on the [HLSL Community Calendar](https://calendar.google.com/calendar/u/0?cid=YzY5MDRmNzk1NGVlMTE5OGYyZjdhN2EwOTNmN2JlMTU4YzU3MzFjNTJhNzhkMjAyZjM1NThkMTMwMzRmOGUwY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t)
+and is open to all Ecma members and, as-appropriate, may include participants
+from the community who are not Ecma members.
 
 ## Designated Liaisons
 
