@@ -5,7 +5,7 @@ params:
   - llvm-beanz: Chris Bieneman
   sponsors:
   - llvm-beanz: Chris Bieneman
-  status: Refinement
+  status: Under Consideration
 ---
 
 ## Implementation Status
