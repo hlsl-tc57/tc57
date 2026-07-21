@@ -8,6 +8,8 @@ params:
   status: Under Consideration
 ---
 
+## Implementation Status
+
 |   | DXC     | Clang    |
 |---|---------|----------|
 | user-defined conversions | [Prototype implementation](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/7f0754e2cd8c29859807c9f0b37983ed62e67934) | Complete |
