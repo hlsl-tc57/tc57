@@ -154,7 +154,132 @@ either;
 \p Scopes nest within each other. A \textit{containing scope}, is a scope that
 fully contains another scope which is said to be \textit{contained}.
 
+\p The \textit{outermost scope} of all declarations is the global scope, while
+the \textit{innermost scope} of a declaration is the scope the declaration
+appears within.
+
 \Sec{Name Lookup}{Basic.Lookup}
+
+\p Name lookup unambiguously identifies one or more declarations associated with
+a name, the name may only refer to more than one declaration if the name is a
+function name in which case the set of declarations form an overload set
+(\ref{Overload.Decl}). When applicable, overload resolution takes place after
+name lookup.
+
+\p Name lookup in the context of an expression is unqualified name lookup in the
+enclosing scope of the expression.
+
+\Sub{Unqualified Name Lookup}{Basic.Lookup.Unqualified}
+
+\p For unqualified name lookup, scopes are searched in a specified order from
+the innermost scope to the outermost scope, and lookup ends as soon as a
+matching declaration is found. If no declaration is found, the program is
+ill-formed.
+
+\p Declarations of a namespace named in a \textit{using-directive} are visible
+in the enclosing namespace, and for the purposes of name lookup they are
+considered to be members of that enclosing namespace.
+
+\p An unqualified name used as a function name in a function call expression is
+resolved using \textit{argument dependent name lookup} (\ref{Basic.Lookup.Argument}).
+
+\p A name used in global scope or namespace scope outside the body of any
+function or class shall be declared before its use in the scope it is declared
+in or any enclosing scope.
+
+\p A name used in the definition of a non-member function shall be declared
+before its use, and the declaration must be in the block in which the name is
+used, an enclosing block, or an enclosing scope of the function declaration
+(enclosing namespace or global scope).
+
+\p A name used in the definition of a class shall be declared either before its
+use in the class or as a member of a base class or before the definition of the
+class in an enclosing scope or enclosing class declaration.
+
+\p A name used in the definition of a member function of a class shall be
+declared in one of the following ways:
+
+\begin{itemize}
+\item before its use in the block in which it is used or an enclosing block, or
+\item shall be a member of the class being declared or a member of a base class
+of that class, or
+\item if the class being declared is a nested class of another class, the name
+shall be a member of the enclosing class or a base class of the enclosing class,
+or
+\item if the class being declared is a local class or is declared within the
+scope of an enclosing local class, the name shall be declared before the
+definition of the class in an enclosing block, or
+\item the name shall be declared before the use of the name in an enclosing
+namespace or at global scope.
+\end{itemize}
+
+\p During name lookup for a name used as a default argument for a function
+parameter declaration, the names of previously declared function parameters are
+visible.
+
+\p During name lookup of a name used as the initializer of an enumerator, the
+names of previously declared enumerators are visible.
+
+\p During name lookup of a name used as the initializer for a variable member of
+a namespace that is defined outside the namespace, name lookup behaves as if the
+definition occurs inside the namespace.
+
+\Sub{Argument Dependent Name Lookup}{Basic.Lookup.Argument}
+
+\p When a function is named as an unqualified name, a set of associated classes
+and namespaces for each function argument will be searched. The set of
+associated classes and namespaces for a given argument is constructed by the
+following:
+
+\begin{itemize}
+\item If the type of the argument is a fundamental type the set of classes and
+the set of namespaces are empty.
+\item If the argument is of class type, the set of associated classes will
+include the class of the argument, it's direct and indirect base classes, and
+any classes it is a member of. The set of associated namespaces will include the
+enclosing namespaces of all the associated classes. If the argument's type is a
+template specialization it will also include the associated classes and
+namespaces of template type parameters, but will not recurse into further
+template specializations.
+\item If the argument is of enumeration type, the associated classes will be any
+enclosing classes of the enumeration declaration, and the namespaces will be any
+enclosing namespaces of the enumeration declaration.
+\end{itemize}
+
+\p If unqualified lookup of a function name returns a declaration of a class
+member, a block-scope function declaration that is not a using declaration, or a
+declaration that is neither a function nor a function template, argument
+dependent name lookup is skipped. Otherwise, the union of the declarations found
+with unqualified name lookup and the declarations found with argument dependent
+lookup are the full set of declarations with that name.
+
+\p When looking up names in associated namespaces, \textit{using-directives} are
+ignored, and all names except functions and function templates are ignored.
+
+\Sub{Qualified Name Lookup}{Basic.Lookup.Qualified}
+
+\p A member of a class, a member of a namespace, or an enumerator may be
+specified by name after a \textit{nested-name-specifier} followed by the scope
+resolution operator (\texttt{::}).
+
+\p If the \textit{declarator-id} of a declaration is a qualified name, names
+looked up before the qualified name are looked up in the defining scope; names
+looked up after the qualified name are looked up in the scope of the qualified
+name's class or namespace.
+
+\p The unary scope operator (\texttt{::}) denotes that a name should be looked
+up in the global scope of the translation unit where it is used. Only names
+declared in the global namespace or visible to the global namespace will be
+resolved.
+
+\p If the \textit{nested-name-specifier} of a scope resolution operator names an
+enumeration, the name shall name an enumerator of that enumeration.
+
+\SubSub{Class Members}{Basic.Lookup.Qualified.Class}
+
+\Sub{Elaborated Type Specifiers}{Basic.Lookup.Elaborated}
+
+\Sub{Using-directives}{Basic.Lookup.Using}
 
 \Sec{Storage Duration}{Basic.Storage}
 
