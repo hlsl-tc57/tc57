@@ -284,7 +284,33 @@ During the phases of translation when preprocessing tokens are converted to
 tokens, keywords are unconditionally treated as keywords except when they appear
 in attribute specifiers (\ref{Decl.Attributes}).
 
-%TODO: \Sec{Operators and Punctuators}{Lex.Operators}
+\Sec{Operators and Punctuators}{Lex.Operators}
+
+\begin{grammar}
+  \define{preprocessing-op-or-punc}\br
+    preprocessing-operator\br
+    operator-or-punctuator
+    
+  \define{preprocessing-operator}\br
+    \terminal{\#}\br
+    \terminal{\#\#}
+    
+  \define{operator-or-punctuator} \textnormal{one of}\br
+    \terminal{\{ \} [ ] ( ) ; : ...}\br
+    \terminal{? :: . ~}\br
+    \terminal{! + - * / \% \^ \& |}\br
+    \terminal{= += -= *= /= \%= \^= \&= |=}\br
+    \terminal{== += < > <= >= \&\& ||}\br
+    \terminal{<< >> <<= >>= ++ -- ,}
+\end{grammar}
+
+\p HLSL inherits a set of operators and punctuators from \gls{isoCPP}. The set
+of tokens in the \textit{preprocessing-op-or-punc} grammar formation are either
+interpreted by the preprocessor (\ref{Preprocessing}), or they are converted to
+tokens.
+
+\p Each \textit{operator-or-punctuator} that is not handled completely by the
+preprocessor is converted to a single token.
 
 \Sec{Literals}{Lex.Literals}
 
