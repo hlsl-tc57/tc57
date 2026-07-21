@@ -5,7 +5,7 @@ params:
   - llvm-beanz: Chris Bieneman
   sponsors:
   - llvm-beanz: Chris Bieneman
-  status: Accepted
+  status: Completed
 ---
 
 * Planned Version: HLSL 202x
