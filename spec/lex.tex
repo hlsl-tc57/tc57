@@ -214,7 +214,52 @@ next token is a \textit{scalar-element-sequence} (\ref{Lex.Literal.Vector}). In
 this situation the \textit{pp-number} token is truncated to end before the
 period.
 
-%TODO: \Sec{Identifiers}{Lex.Ident}
+\Sec{Identifiers}{Lex.Ident}
+
+\begin{grammar}
+  \define{identifier}\br
+  identifier-start\br
+  identifier identifier-continue
+
+  \define{identifier-start}\br
+  nondigit\br
+  \textnormal{an element of the translation character set of class XID\_Start}
+
+  \define{identifier-continue}\br
+  digit\br
+  nondigit\br
+  \textnormal{an element of the translation character set of class XID\_Continue}
+
+  \define{nondigit} \textnormal{one of}\br
+  \terminal{a b c d e f g h i j k l m}\br
+  \terminal{n o p q r s t u v w z y z}\br
+  \terminal{A B C D E F G H I J K L M}\br
+  \terminal{N O P Q R S T U V W X Y Z \_}
+
+  \define{digit} \textnormal{one of}\br
+  \terminal{0 1 2 3 4 5 6 7 8 9}
+\end{grammar}
+
+\p The XID\_Start and XID\_Continue properties are Derived core properties defined
+in \gls{UAX44}. The characters which have the property are defined in
+\gls{UAX31}.
+
+\p An XID\_Start character is a character of the translation character set whose
+corresponding code point in \gls{UTF} has the XID\_Start property. An
+XID\_Continue character is a character of the translation character set whose
+corresponding code point in \gls{UTF} has the XID\_Continue property. An identifier
+shall conform to Normalization Form C as specified in \gls{UTF}.
+
+\p Some identifiers are reserved for use by implementations of this standard,
+but are not required to emit a diagnostic:
+
+\begin{itemize}
+  \item Any identifier that contains a double underscore (\texttt{\_\_}), or
+  begins with an underscore (\texttt{\_}) followed by a capital letter is
+  reserved for any use by an implementation.
+  \item Any identifier that begins with an underscore (\texttt{\_}) is reserved
+  for any implementation to use as a name in the global namespace.
+\end{itemize}
 
 %TODO: \Sec{Keywords}{Lex.Keywords}
 
