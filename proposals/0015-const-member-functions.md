@@ -69,10 +69,12 @@ call `()` operator:
 struct Pupper {
   void Wag() const { /* body omitted */ }
   void operator() const { /* body omitted */ }
-  void Walk() mutable { /* body omitted */ }
-  mutable int Speed;
 };
 ```
+
+This proposal also introduces the `mutable` keyword as a storage class for
+non-static member variables. Variables declared as `mutable` may be modified
+within `const` instances both inside and outside `const` instance methods.
 
 ### Semantic Changes
 
@@ -156,3 +158,66 @@ since the handle is treated as const while the data it references is not.
 
 > NOTE: DXC already generates methods on built-in objects as `const` in the
 > hardcoded AST generation code.
+
+## Detailed Design
+
+### Additions to [Lex.Keywords]
+
+Add `mutable` keyword to the grammar for keywords.
+
+### Additions to Lvalues and rvalues [Basic.lval]
+
+The value referred to by a `const`-qualified expression shall not be modified
+except if the value is of class type and contains a `mutable` member, the
+mutable member may be modified.
+
+### Storage Class Specifiers [Decl.Specifiers.Storage]
+
+```latex
+\define{storage-class-specifier}\br
+  \terminal{static}\br
+  \terminal{mutable}
+```
+
+A _decl-specifier-seq_ shall contain at most one _storage-class-specifier_. Any
+_decl-specifier-seq_ that contains a _storage-class-specifier_ shall not contain
+a `typedef` _decl-specifier_, and it shall contain an _init-declarator-list_
+that contains at least one _declarator_. The specified _storage-class-specifier_
+applies to the names declared by each _declarator_ in the
+_init-declarator-list_. An explicit specialization of a template declaration may
+not have a _storage-class-specifier_.
+
+The `static` specifier may be applied to names of variables at global,
+namespace, class and function scope and to names of functions at global,
+namespace, and class scope. A variable declared with the `static` storage class
+has static storage duration (\ref{{Basic.Storage}}).
+
+The `mutable` specifier may be applied to names of class data members and cannot
+be applied to names declared `const`.
+
+
+### Function Definitions [Decl.Functions]
+
+Function definitions have the form
+
+```latex
+\define{function-definition}\br
+   \opt{attribute-specifier-seq} \opt{decl-specifier-seq} declarator function-body
+
+\define{function-body}\br
+  compound-statement
+```
+
+If present, the _attribute-specifier-seq_ applies to the function.
+
+The declarator shall be of the form
+
+  _identifier_ `(` _parameter-declaration-clause_ `)` `const`<sub>opt</sub> _attribute-specifier-seq_<sub>opt</sub>
+
+The `const` qualifier shall only be allowed on non-static member functions.
+
+### Partial Text for: Nonstatic member functions [Class.MemberFunctions.NonStatic]
+
+A non-static member function may be declared `const`, such a function is called
+a _const member function_. The `const` qualifier of a const member function
+applies to the `this` reference, and affects the type of the member function.
