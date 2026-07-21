@@ -1,5 +1,5 @@
 ---
-title: NNNN - HLSL Ternary Operator Behavior
+title: 0017 - HLSL Ternary Operator Behavior
 params:
     authors:
     - bob80905: Joshua Batista
