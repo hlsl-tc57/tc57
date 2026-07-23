@@ -154,7 +154,316 @@ either;
 \p Scopes nest within each other. A \textit{containing scope}, is a scope that
 fully contains another scope which is said to be \textit{contained}.
 
+\p The \textit{outermost scope} of all declarations is the global scope, while
+the \textit{innermost scope} of a declaration is the scope the declaration
+appears within.
+
 \Sec{Name Lookup}{Basic.Lookup}
+
+\p Name lookup unambiguously identifies one or more declarations associated with
+a name, the name may only refer to more than one declaration if the name is a
+function name in which case the set of declarations form an overload set
+(\ref{Overload.Decl}). When applicable, overload resolution takes place after
+name lookup.
+
+\p Name lookup in the context of an expression is unqualified name lookup in the
+enclosing scope of the expression.
+
+\Sub{Unqualified Name Lookup}{Basic.Lookup.Unqualified}
+
+\p For unqualified name lookup, scopes are searched in a specified order from
+the innermost scope to the outermost scope, and lookup ends as soon as a
+matching declaration is found. If no declaration is found, the program is
+ill-formed.
+
+\p Declarations of a namespace named in a \textit{using-directive} are visible
+in the enclosing namespace, and for the purposes of name lookup they are
+considered to be members of that enclosing namespace.
+
+\p An unqualified name used as a function name in a function call expression is
+resolved using \textit{argument dependent name lookup} (\ref{Basic.Lookup.Argument}).
+
+\p A name used in global scope or namespace scope outside the body of any
+function or class shall be declared before its use in the scope it is declared
+in or any enclosing scope.
+
+\p A name used in the definition of a non-member function shall be declared
+before its use, and the declaration must be in the block in which the name is
+used, an enclosing block, or an enclosing scope of the function declaration
+(enclosing namespace or global scope).
+
+\p A name used in the definition of a class shall be declared either before its
+use in the class or as a member of a base class or before the definition of the
+class in an enclosing scope or enclosing class declaration.
+
+\p A name used in the definition of a member function of a class shall be
+declared in one of the following ways:
+
+\begin{itemize}
+\item before its use in the block in which it is used or an enclosing block, or
+\item shall be a member of the class being declared or a member of a base class
+of that class, or
+\item if the class being declared is a nested class of another class, the name
+shall be a member of the enclosing class or a base class of the enclosing class,
+or
+\item if the class being declared is a local class or is declared within the
+scope of an enclosing local class, the name shall be declared before the
+definition of the class in an enclosing block, or
+\item the name shall be declared before the use of the name in an enclosing
+namespace or at global scope.
+\end{itemize}
+
+\p During name lookup for a name used as a default argument for a function
+parameter declaration, the names of previously declared function parameters are
+visible.
+
+\p During name lookup of a name used as the initializer of an enumerator, the
+names of previously declared enumerators are visible.
+
+\p During name lookup of a name used as the initializer for a variable member of
+a namespace that is defined outside the namespace, name lookup behaves as if the
+definition occurs inside the namespace.
+
+\Sub{Argument Dependent Name Lookup}{Basic.Lookup.Argument}
+
+\p When a function is named as an unqualified name, a set of associated classes
+and namespaces for each function argument will be searched. The set of
+associated classes and namespaces for a given argument is constructed by the
+following:
+
+\begin{itemize}
+\item If the type of the argument is a fundamental type the set of classes and
+the set of namespaces are empty.
+\item If the argument is of class type, the set of associated classes will
+include the class of the argument, it's direct and indirect base classes, and
+any classes it is a member of. The set of associated namespaces will include the
+enclosing namespaces of all the associated classes. If the argument's type is a
+template specialization it will also include the associated classes and
+namespaces of template type parameters, but will not recurse into further
+template specializations.
+\item If the argument is of enumeration type, the associated classes will be any
+enclosing classes of the enumeration declaration, and the namespaces will be any
+enclosing namespaces of the enumeration declaration.
+\end{itemize}
+
+\p If unqualified lookup of a function name returns a declaration of a class
+member, a block-scope function declaration that is not a using declaration, or a
+declaration that is neither a function nor a function template, argument
+dependent name lookup is skipped. Otherwise, the union of the declarations found
+with unqualified name lookup and the declarations found with argument dependent
+lookup are the full set of declarations with that name.
+
+\p When looking up names in associated namespaces, \textit{using-directives} are
+ignored, and all names except functions and function templates are ignored.
+
+\Sub{Qualified Name Lookup}{Basic.Lookup.Qualified}
+
+\p A member of a class, a member of a namespace, or an enumerator may be
+specified by name after a \textit{nested-name-specifier} followed by the scope
+resolution operator (\texttt{::}).
+
+\p If the \textit{declarator-id} of a declaration is a qualified name, names
+looked up before the qualified name are looked up in the defining scope; names
+looked up after the qualified name are looked up in the scope of the qualified
+name's class or namespace.
+
+\p The unary scope operator (\texttt{::}) denotes that a name should be looked
+up in the global scope of the translation unit where it is used. Only names
+declared in the global namespace or visible to the global namespace will be
+resolved.
+
+\p If the \textit{nested-name-specifier} of a scope resolution operator names an
+enumeration, the name shall name an enumerator of that enumeration.
+
+\SubSub{Class Members}{Basic.Lookup.Qualified.Class}
+
+\p In a \textit{qualified-id} when the \textit{nested-name-specifier} names a
+class the \textit{unqualified-id}, the name is looked up in the scope of the
+class except that:
+
+\begin{itemize}
+% TODO: There are special rules for conversion function lookups. This will
+% matter if https://github.com/hlsl-tc57/tc57/pull/127 is adopted.
+\item the names in any template arguments are looked up in the context of the
+containing expression.
+\item if the name is specified in a \textit{using-declaration}, class and
+enumeration names hidden within the same scope are found.
+\end{itemize}
+
+\p Class members hidden by names of derived classes or names declared in nested
+scopes can still be found if fully qualified with the scope resolution operator.
+
+\SubSub{Namespace Members}{Basic.Lookup.Qualified.Namespace}
+
+\p In a \textit{qualified-id} when the \textit{nested-name-specifier} names a
+namespace as the \textit{unqualified-id|}, the name is looked up in the scope of
+the namespace. If the \textit{qualified-id} starts with \texttt{::}, the name
+following the unary scope resolution operator is looked up in the global
+namespace. The names in any template arguments are looked up in the context of
+the containing expression.
+
+\p Namespace-qualified lookup for a name will first identify all names directly
+declared in the specified namespace ignoring namespaces specified by a
+\textit{using-directive}. If a non-zero number of names are found that is the
+result of name lookup, otherwise any namespaces nominated by a
+\textit{using-directive} are searched.
+
+\begin{HLSL}
+namespace Bird {
+    void Quack() {}
+    void Chirp() {}
+}
+
+namespace Duck {
+    void Quack() {}
+    using namespace Bird;
+}
+
+export void f() {
+    Duck::Quack();  // resolves Duck::Quack
+    Duck::Chirp();  // resolves Bird::Chirp
+}
+\end{HLSL}
+
+\begin{note}
+In the example above, both \textit{qualified-id} expressions in the function
+\texttt{f} denote the namespace \texttt{Duck}, the \texttt{Quack} call resolves
+in the \texttt{Duck} namespace because it is declared directly there, and the
+function in the \texttt{Bird} namespace is not considered or added to any
+overload candidate set. Meanwhile, the \texttt{Chirp} call resolves against the
+\texttt{Bird} namespace because the namespace is exposed via a
+\textit{using-directive} but the name is not declared in the \texttt{Duck}
+namespace directly.
+\end{note}
+
+\p Referenced namespaces are only searched once allowing programs that have
+namespaces cyclicly referencing each other to be well-formed.
+
+\p During qualified lookup of namespace member names, if lookup finds multiple
+declarations of a name all declared in the same namespace, and one of the
+declarations introduces a class or enumeration name, while the other
+declarations refer to the same variable; the non-type name hides the type name.
+If lookup identifies multiple different type names (from different namespaces),
+or names that name different variables, the program is ill-formed.
+
+\p In a declaration for a namespace member, the \textit{declarator-id} must
+directly name a member of the namespace specified by the
+\textit{nested-name-specifier}, no names exposed in the namespace through a
+\textit{using-directive} are considered. The name lookup may rely on a
+\textit{using-directive} to resolve the \textit{declarator-id}.
+
+\begin{HLSL}
+namespace Fluffy {
+  void fluff();
+}
+
+namespace Cats {
+  using namespace Fluffy;
+  namespace Snowball {
+    void pet();
+  }
+}
+
+void Cats::fluff() {} // ill-formed, fluff is not a member of Cats.
+
+using namespace Cats;
+void Snowball::pet() {} // well-formed, Snowball is looked up in Cats.
+\end{HLSL}
+
+\Sub{Elaborated Type Specifiers}{Basic.Lookup.Elaborated}
+
+\p An \textit{elaborated-type-specifier} may refer to a \textit{class-name} or
+\textit{enum-name} that is hidden by a non-type declaration.
+
+\p An \textit{elaborated-type-specifier} of the form:
+\begin{innergrammar}
+class-key \opt{attribute-specifier-seq} identifier \terminal{;}
+\end{innergrammar}
+is called a \textit{class forward declaration}. A class forward declaration may
+appear before or after the named class is defined, and may appear multiple times
+referring to the same class.
+
+\p If an \textit{elaborated-type-specifier} has no
+\textit{nested-name-specifier} and is not a class forward declaration, the name
+is looked up as an unqualified name (\ref{Basic.Lookup.Unqualified}) except that
+any non-type names are ignored.
+
+\p If an \textit{elaborated-type-specifier} is specified with the \texttt{enum}
+keyword and the lookup does not find a previously declared type name, the
+program is ill-formed.
+
+\p If an \textit{elaborated-type-specifier} is specified with a
+\textit{class-key} and unqualified lookup does not find a previously declared
+name, or if the specifier is a forward class declaration, the
+\textit{elaborated-type-specifier} introduces the \textit{class-name}.
+
+\p If an \textit{elaborated-type-specifier} has a
+\textit{nested-name-specifier}, the name is looked up as a qualified name
+(\ref{Basic.Lookup.Qualified}) except that any non-type names are ignored. In
+this form, if the name lookup does not find a previously declared name, the
+\textit{elaborated-type-specifier} is ill-formed.
+
+\Sub{Class Member Access}{Basic.Lookup.ClassMember}
+
+\p In a class member access expression (\ref{Expr.Post.Member}), if the
+expression matches the form:
+\begin{innergrammar}
+  postfix-expression \terminal{.} identifier
+\end{innergrammar}
+and the next token is a \texttt{<}, the \textit{identifier} must be looked up to
+determine if the \texttt{<} token is the start of a template argument list or
+the binary less-than operator. The lookup is performed first in the context of
+the class type of the \textit{postfix-expression} to the left of the \texttt{.}
+operator, then in the context of the complete \textit{postfix-expression}.
+
+\p If the \textit{id-expression} of a class member access expression is an
+\textit{unqualified-id}, the name is looked up in the scope of the class type of
+the expression on the left of the \texttt{.} operator.
+
+\p If the \textit{id-expression} of a class member access expression is a
+\textit{qualified-id}, the qualified name is first looked up in the scope of the
+class type of the expression on the left of the \texttt{.} operator, and if not
+found it is looked up in the context of the complete
+\textit{postfix-expression}.
+
+\begin{HLSL}
+namespace Animal {
+    struct Dog {
+        int Fur;
+    };
+}
+
+namespace Pet {
+    struct Dog : Animal::Dog {
+        int Fur;
+    };
+}
+
+export void fn() {
+    Pet::Dog s;
+    s.Fur = 2;               // Refers to Pet::Dog::Fur
+    s.Dog::Fur = 3;          // Refers to Pet::Dog::Fur
+    s.Animal::Dog::Fur = 5;  // Refers to Animal::Dog::Fur
+}
+\end{HLSL}
+
+\begin{note}
+  The example above demonstrates qualified and unqualified name lookup for class
+  members. The first and second references to \texttt{Fur} refer to the
+  \texttt{Pet} namespace. The first through unqualified lookup, the second
+  through qualified lookup in the context of \texttt{s}. The third demonstrates
+  qualified lookup of a fully-qualified name.
+\end{note}
+
+\p If the \textit{nested-name-specifier} contains a \textit{simple-template-id},
+the names of any \textit{template-arguments} are looked up in the context of the
+complete \textit{postfix-expression}.
+
+\Sub{Using-directives}{Basic.Lookup.Using}
+
+\p In a \textit{using-directive} when looking up a \textit{namespace-name} or
+the name in a \textit{nested-name-specifier}, only namespace names are
+considered.
 
 \Sec{Storage Duration}{Basic.Storage}
 
