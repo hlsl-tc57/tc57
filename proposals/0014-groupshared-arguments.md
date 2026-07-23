@@ -6,7 +6,7 @@ params:
     - spall: Sarah Spall
   sponsors:
     - spall: Sarah Spall
-  status: Under Consideration
+  status: Refinement
 ---
 
 ## Implementation Status
