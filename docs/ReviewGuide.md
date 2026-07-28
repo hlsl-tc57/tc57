@@ -94,8 +94,15 @@ When leaving feedback consider the importance. From the reviewer's perspective
 some feedback may be a "nitpick" that is ignorable or a general comment that
 could be addressed in a follow-up neither of which need to block progress.
 Other feedback may be "critical" and progress should blocked until it
-is resolved. Clearly identifying the importance of feedback allows authors and
-sponsors to focus on the highest priority feedback and keep forward progress.
+is resolved.
+
+Most authors default to assuming that all comments must be resolved before
+merging a PR.
+
+Clearly identifying the importance of feedback allows authors and sponsors to
+focus on the highest priority feedback and keep forward progress. One easy way
+to do this is to prefix your comment with a clear indicator of its priority. A
+common practice is to prefix nitpicking comments with "nit:" or "nitpick:".
 
 ## Technical PRs
 
