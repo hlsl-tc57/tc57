@@ -5,7 +5,7 @@ params:
     - farzonl: Farzon Lotfi
   sponsors:
     - farzonl: Farzon Lotfi
-  status: Under Consideration
+  status: Refinement
 ---
 
 * Planned Version: 202x

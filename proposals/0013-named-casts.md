@@ -25,13 +25,13 @@ values from a source type to a destination type with tight validation.
 
 ## Proposed solution
 
-HLSL will introduce three new named cast templates, `static_cast<T>`,
+HLSL will introduce three new named cast templates, `hlsl::static_cast<T>`,
 `hlsl::elementwise_cast<T>` and `hlsl::bit_cast<T>`.
 
-The `static_cast<T>(V)` will behave similar to the C++ `static_cast<T>(V)`
+The `hlsl::static_cast<T>(V)` will behave similar to the C++ `static_cast<T>(V)`
 expression, except as changes are required due to other differences between C++
 and HLSL. It will convert the expression `V` to the result type `T`. The main
-difference from C++ is that HLSL's `static_cast<T>` will always produce an
+difference from C++ is that HLSL's `hlsl::static_cast<T>` will always produce an
 rvalue since HLSL does not have spellable lvalue reference types, and may not be
 used for polymorphic casts for the same reason.
 
@@ -44,7 +44,8 @@ The `hlsl::bit_cast<T>(V)` cast function template will convert the expression
 the expression `V` and the result type `T` must not be intangible types
 (\ref{Basic.Types.Intangible}), and must be of the same size.
 
-The `bit_cast` and `elementwise_cast` templates are put in the hlsl namespace
-aligning with modern C++ conventions to avoid additions to the global namespace.
-Conversely the `static_cast` construct is defined as a global casting operator
-conforming to the historical C++ definition which remains in modern C++.
+The HLSL `static_cast`, `bit_cast` and `elementwise_cast` templates are defined
+in the `hlsl` namespace aligning with modern C++ conventions to avoid additions
+to the global namespace. Additionally the `static_cast` construct will be
+exposed via a using declaration into the global namespace allowing compatibility
+with the historical C++ definition which remains in modern C++.
