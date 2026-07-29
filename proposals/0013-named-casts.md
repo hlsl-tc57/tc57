@@ -1,6 +1,5 @@
 ---
 title: "0013 - Named Casts"
-draft: true
 params:
   authors:
     - llvm-beanz: Chris Bieneman
