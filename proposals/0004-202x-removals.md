@@ -124,3 +124,96 @@ initializer clauses are ignored, and DXC does not issue a diagnostic. In HLSL
 Conforming implementations shall reject initializers on declarations inside
 `cbuffer` declarations and on declarations added to the implicit global
 `cbuffer`.
+
+## Detailed Design
+
+The features referenced in this proposal are all removals, as such they do not
+have any associated normative language. Each of the following documentation
+sections will be added as subclauses of Annex B to explain the historical
+implementations.
+
+### Removals from [Lex.Keywords]
+
+The keywords `sampler_state`, `interface`, `shared` and `uniform` should be
+removed from the grammar for keywords.
+
+### Legacy DirectX Features [AnnexB.LegacyDX]
+
+The existing reference compilers support a set of features that worked in tandem
+with the Direct3D runtime or other support libraries which are no longer
+supported in the latest versions of Direct3D.
+
+These features are not included in the standard, nor are they conforming
+extensions, as such conforming implementation will not support these features.
+
+#### Effects For Direct3D [AnnexB.LegacyDX.Effects]
+
+The Effects runtime support in Direct3D 9 through Direct3D 11 relied on a set of
+syntax extensions for HLSL. The latest documentation for the Direct3D 11 Effects
+APIs and shader syntax is available on [Microsoft's public documentation
+site](https://learn.microsoft.com/en-us/windows/win32/direct3d10/d3d10-graphics-reference-effect).
+
+The main additions to HLSL for the Effects feature are the [annotation
+syntax](https://learn.microsoft.com/en-us/windows/win32/direct3d10/d3d10-effect-annotation-syntax)
+and technique declarations.
+
+```hlsl
+int MyVar <int SomeVal=42;>; // Annotated variable.
+sampler S : register(s1) = sampler_state {texture=tex;};
+
+technique10 MyRender // Technique declaration.
+{
+	pass RenderPass
+	{
+		SetVertexShader(CompileShader(vs_2_0, VSMain()));
+		SetPixelShader(CompileShader(ps_2_0, PSMain()));
+	}
+}
+```
+
+The effects syntax has three keywords: `sampler_state`, `technique10`, and
+`pass`.
+
+#### Shader Interfaces [AnnexB.LegacyDX.Interfaces]
+
+Direct3D 11 supported a limited level of dynamic symbol resolution based on
+`interface` declarations. A shader would declare an interface containing a set
+of function declarations, and any class that inherited from that interface was
+required to provide definitions of all functions declared in the interface.
+
+This functionality used in conjunction with functionality exposed in DXBC and
+the Direct3D runtime could swap interface implementations at runtime enabling
+code reuse and specialization.
+
+This feature is not supported in Direct3D 12, Vulkan, nor any actively
+supported shader bytecode. DXC's implementation of the `interface` keyword is
+limited to static verification that objects inheriting from the interface
+provide definitions for all interface members.
+
+A conforming implementation of this standard will not support the `interface`
+keyword..
+
+### Legacy HLSL Features [AnnexB.LegacyHLSL]
+
+The actively supported reference compiler DXC has support for parsing some HLSL
+constructs that had meaning and impact in FXC's implementation, but do nothing
+in DXC. These legacy language features are omitted from this standard.
+
+#### cbuffer initializers [AnnexB.LegacyHLSL.cbuffer]
+
+The FXC compiler captured initializers for variables in `cbuffer` declarations
+into shader reflection information. This information was used by the [Effects
+for Direct3D](https://github.com/Microsoft/FX11) runtime, but could also be used
+directly by users.
+
+The DXC compiler supported parsing initializers but did not capture them into
+the shader reflection or any other metadata. This standard disallows
+initializing variables in `cbuffer` declarations, an initializer in such a
+declaration is ill-formed and a conforming implementation must issue a
+diagnostic.
+
+#### `uniform` and `shared` keyword [AnnexB.LegacyHLSL.Keywords]
+
+The current implementation of DXC parses but ignores the `uniform` and `shared`
+keywords which had meaning in earlier versions of HLSL. A conforming
+implementation will not support these keywords.
