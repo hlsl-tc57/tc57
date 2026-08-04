@@ -152,7 +152,143 @@ either;
 \end{itemize}
 
 \p Scopes nest within each other. A \textit{containing scope}, is a scope that
-fully contains another scope which is said to be \textit{contained}.
+fully contains another scope which is said to be \textit{contained}. The
+smallest containing scope of a \texttt{S} is the \textit{parent scope} of
+\texttt{S}, except for template parameter scopes, where the parent scope will be
+the smallest containing scope that is not a template parameter scope.
+
+\p A declaration's \textit{target scope} is the scope its point of declaration
+is contained in. Any names introduced by a declaration are bound to its target
+scope.
+
+\Sub{Point of Declaration}{Basic.Scope.Point}
+
+\p The \textit{point of declaration} for a name marks the location in a program
+where the name is introduced. Any use of the name after the point of declaration
+before the end of the scope the declaration is introduced in may refer to the
+declared entity.
+
+\p Except for the cases identified in the remainder of this subclause, the point
+of a declaration for a name is immediately after its declarator, and before its
+initializer.
+
+\p The point of declaration for a class name or class template name introduced
+with a \textit{class-specifier} is immediately after the \textit{identifier} or
+\textit{simple-template-id}.
+
+\p The point of declaration for an enumeration name is immediately after the
+\textit{identifier} in the enumeration declaration. The point of declaration for
+an enumerator is immediately after its definition.
+
+\p The name of a class member may be looked up in a class immediately after its
+point of declaration, even if the containing class is incomplete.
+
+\p The point of declaration for a name introduced in an
+\textit{elaborated-type-specifier} that is a forward declaration is immediately
+after the \textit{identifier}, and the name is declared to be a
+\textit{class-name} in the scope containing the forward declaration. Otherwise,
+if the \textit{elaborated-type-specifier} is used in a
+\textit{decl-specifier-seq} or \textit{parameter-declaration-clause} during a
+function declaration, the the name is declared to be a \textit{class-name} in
+the namespace that contains the function declaration.
+
+\p The point of declaration for an \textit{injected-class-name} is immediately
+following the opening brace of the definition of the class definition.
+
+\p The point of declaration of a template parameter is immediately after it's
+\textit{template-parameter}.
+
+\Sub{Block Scope}{Basic.Scope.Block}
+
+\p A block scope is introduced by either a \textit{compound-statement}, or a
+selection or iteration statement (\ref{Stmt.If}, \ref{Stmt.Switch},
+\ref{Stmt.For}, \ref{Stmt.While}), or a substatement such a statement.
+
+\p A name declared inside a block is said to have \textit{block-scope} and is
+local to that block. Its potential scope begins at its point of definition and
+ends at the end of the block. A variable declared within a block is called a
+\textit{local variable}.
+
+\p The potential scope of a function parameter name begins at its point of
+declaration. A parameter name shall not be redeclared in the outermost block of
+the function definition.
+
+\p Names declared in selection and iteration statements are local to the
+statement they are declared in, and shall not be redeclared in any subsequent
+conditions of the statement or the outermost block of the statement.
+
+\Sub{Function Prototype Scope}{Basic.Scope.Prototype}
+
+\p In a function declarator that has no function definition, the names of
+parameters are optional and have function prototype scope, which ends at the end
+of the declarator.
+
+\Sub{Namespace Scope}{Basic.Scope.Namespace}
+
+\p The declarative region of a namespace defined by a
+\textit{namespace-definition} is its \textit{namespace-body}. The potential
+scope referenced by a \textit{namespace-name} is the concatenation of all
+declarative regions for each \textit{namespace-definition} with that name.
+
+\p Declarations within a \textit{namespace-body} declare entities that are said
+to be \textit{members} of the namespace. Any names introduced by these
+declarations are said to be \textit{member names} of the namespace, and they
+have namespace scope.
+
+\p The potential scope of a namespace member name begins at its point of
+declaration and contains the remainder of the namespace scope through the end of
+the translation unit. Each \textit{using-declaration} nominating a namespace
+extends the potential scope of namespace members in the nominated namespace to
+include the portion of the potential scope containing the
+\textit{using-declaration} following the member's point of declaration.
+
+\p A member of a namespace may also be referred to as a qualified name any point
+after its point of declaration via the rules defined in
+\ref{Basic.Lookup.Qualified.Namespace}.
+
+\p The outermost declarative region of a translation unit is the implicit
+\textit{global namespace}. All entities declared in the global namespace are
+said to be \textit{global declarations}. The names of global declarations are
+said to have \textit{global namespace scope}, and are said to be \textit{global
+names}.
+
+\p The potential scope of a name with global namespace scope begins at the
+name's point of declaration and extends to the end of the translation unit.
+
+\Sub{Class Scope}{Basic.Scope.Class}
+
+\p The declarative region of a class is defined by the curly braces (\texttt{\{
+\}}) enclosing it's optional \textit{member-specialization}. Declarations within
+a class's \textit{member-specialization} are said to be \textit{members} of that
+class. Any names introduced by these declarations are said to be \textit{member
+names} of the class, and they have class scope.
+
+\p The potential scope of a member name of a class includes the declarative
+region of the class after the name's point of declaration, and the function
+bodies, default arguments, and initializers of non-static data members in the
+class.
+
+\p A name used in a class shall refer to the same declaration at the point of
+its use as when re-evaluated with the completed class.
+
+\Sub{Enumeration Scope}{Basic.Scope.Enumeration}
+
+\p The name of a scoped enumerator (\ref{Decl.Enum}), has enumeration scope.
+It's potential scope begins at its point of declaration and terminates at the
+end of the enumerator's declaration.
+
+\Sub{Template Parameter Scope}{Basic.Scope.Template}
+
+\p Each \textit{template-parameter} and \textit{template-declaration} introduces
+a template parameter scope. A \textit{template-parameter}'s introduced scope
+contains the smallest \textit{template-parameter-list} containing the
+\textit{template-parameter}. A \textit{template-declaration}'s introduced scope
+begins at its \textit{template-parameter-list} and extends to the end of the
+\textit{template-declaration}.
+
+\p Any declaration outside the \textit{template-parameter-list} of a
+\textit{template-declaration} targets the parent scope of the
+\textit{template-declaration}.
 
 \Sec{Name Lookup}{Basic.Lookup}
 
