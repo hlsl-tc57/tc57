@@ -191,7 +191,7 @@ limited to static verification that objects inheriting from the interface
 provide definitions for all interface members.
 
 A conforming implementation of this standard will not support the `interface`
-keyword..
+keyword.
 
 ### Legacy HLSL Features [AnnexB.LegacyHLSL]
 
