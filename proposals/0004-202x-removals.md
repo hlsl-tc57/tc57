@@ -216,4 +216,6 @@ diagnostic.
 
 The current implementation of DXC parses but ignores the `uniform` and `shared`
 keywords which had meaning in earlier versions of HLSL. A conforming
-implementation will not support these keywords.
+implementation will not support these keywords, will treat them as identifier
+tokens, and will error if they are encountered in grammar formations where
+identifiers are disallowed.
