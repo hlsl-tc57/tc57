@@ -8,10 +8,9 @@ params:
 
 * Issues:
    * auto: [#24](https://github.com/microsoft/hlsl-specs/issues/24)
-   * decltype: (#82)[https://github.com/microsoft/hlsl-specs/issues/82)
+   * decltype: [#82](https://github.com/microsoft/hlsl-specs/issues/82)
    * constexpr: [#21](https://github.com/microsoft/hlsl-specs/issues/21)
-(#74)[https://github.com/microsoft/hlsl-specs/issues/74]
-   * scoped enums: [#284](https://github.com/microsoft/hlsl-specs/issues/284)
+[#74](https://github.com/microsoft/hlsl-specs/issues/74)
    * variadic templates: [#21](https://github.com/microsoft/hlsl-specs/issues/21)
    * static assert: [#33](https://github.com/microsoft/hlsl-specs/issues/33)
    * simplified nested namespace: [#68](https://github.com/microsoft/hlsl-specs/issues/68)
@@ -26,7 +25,6 @@ params:
 | constexpr | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb) | Complete |
 | scoped enum | Partial | Complete |
 | static_assert | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702) | Complete |
-| nested namespace | Not Started | Complete |
 | variadic templates | Not Started | Complete |
 
 ## Introduction
@@ -47,6 +45,71 @@ their career after modern C++ was widely adopted.
 
 ## Proposed solution
 
+This proposal introduces a small number of targeted modern C++ features for HLSL
+which improve and extend the capabilities of HLSL 2021 while reducing friction
+bridging between HLSL and C++.
+
+### Modern Template
+
+C++11 and C++14 introduced several valuable extensions to C++'s template
+support which HLSL will adopt.
+
+HLSL will adopt the template parsing rules allowing closing template brackets
+(`>>`) to be adjacent without whitespace separating the tokens. This feature was
+adopted to C++11 in the paper [Right Angle Brakcets
+(n1757)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1757.html).
+
+HLSL will adopt C++'s variadic templates. This feature was adopted to C++11 in
+the paper [Proposed Wording for Variadic Templates
+(n2242)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2242.pdf).
+
+HLSL will adopt C++'s variable templates. This feature was adopted to C++14 in
+the paper [Variable Templates
+(n3651)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3651.pdf).
+
+Collectively these features allow modernization of C++ template meta-programming
+patterns to align mostly with modern C++ in terms of expressiveness and
+capabilities.
+
+### Type deduction with `auto` and `decltype`
+
+HLSL will adopt C++'s `auto` and `decltype` keywords. These features were
+adopted to C++11 in the paper [Decltype and auto
+(n1607)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1607.pdf).
+
+HLSL will also adopt C++'s simplifications of return type deduction for
+functions. This feature was adpoted to C++14 in the paper [Return type deduction
+for normal functions
+(n3638)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3638.html).
+
+These features enable additional patterns of meta-programming building off C++
+templates and allowing for more concise readable code.
+
+### Compile-time evaluation
+
+C++11 introduced a set of features which subsequent versions have built on to
+enable compile-time evaluation of portions of programs and compile-time
+verification.
+
+HLSL will adopt the `constexpr` keyword and the associated behaviors introduced
+to C++11 in the paper [Generalized constant expressions
+(n2235)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2235.pdf).
+
+To allow using generalized constant expressions for compile-time correctness
+testing HLSL will adopt the `static_assert` feature adopted to C++11 in the
+paper [Proposal to Add Static Assertions to the Core Language
+(n1720)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1720.html).
+
+Additionally we adopt the additions to `static_assert` adopted to C++17 in the
+paper [Extending `static_assert`
+(n3928)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3928.pdf).
+
+These features enable robust compile-time expressions and testability of
+assumptions which will enable developers to detect errors earlier and write more
+maintainable code without hard-coded assumptions.
+
+## Appendix A: Listing of C++ Features Considered
+
 ### C++11
 
 HLSL should integrate the following C++11 features ([Source](https://en.cppreference.com/cpp/11)):
@@ -55,9 +118,7 @@ HLSL should integrate the following C++11 features ([Source](https://en.cpprefer
 * decltype
 * constexpr
   * [DXC Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb)
-* C++11 scoped enumerations
 * variadic templates
-* user-defined literals
 * Static assert
   * [DXC Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702)
 * Template parsing rules (no required space in `>>`)
@@ -72,6 +133,10 @@ HLSL should integrate the following C++11 features ([Source](https://en.cpprefer
 * `alignof` and `alignas` (requires target bytecode changes)
 * Lambda expressions (will require a separate larger proposal due to type system
   changes)
+* C++11 scoped enumerations (will be a separate proposal)
+* user-defined literals (deferred)
+  * User-defined literals prompted numerous defect reports to WG21, addressing
+    those is out-of-scope for HLSL 202x.
 
 ### C++14
 
