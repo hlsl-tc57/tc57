@@ -19,13 +19,13 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| `auto` keyword | Complete  | Complete |
 | C++11 template closing `>>` | Complete  | Complete |
+| variadic templates | Not Started | Complete |
+| variable templates | Not Started | Not Started |
+| `auto` keyword | Complete  | Complete |
 | decltype | Not Started | Complete |
 | constexpr | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb) | Complete |
-| scoped enum | Partial | Complete |
 | static_assert | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702) | Complete |
-| variadic templates | Not Started | Complete |
 
 ## Introduction
 
