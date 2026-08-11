@@ -24,6 +24,7 @@ params:
 | variable templates | Not Started | Not Started |
 | `auto` keyword | Complete  | Complete |
 | decltype | Not Started | Complete |
+| Return type deduction for normal functions | Not Started | Not Started |
 | constexpr | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb) | Complete |
 | static_assert | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702) | Complete |
 
