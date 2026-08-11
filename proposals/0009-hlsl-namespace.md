@@ -40,3 +40,15 @@ and other lookup hooks. This would apply to all built-in types (`vector`,
 `matrix`, textures, buffers, etc), as well as to their typedefs (`float3`,
 `float3x3`, etc), and to all built-in functions (`DeviceMemoryBarrier`,
 `WaveIsFirstLane`, etc) including math operations (`abs`, `sin`, etc).
+
+## Detailed Design
+
+### **New:** Library-wide requirements [Library.Requirements]
+
+The requirements documented in this subclause apply to all the library clauses.
+
+An implementation of the standard library provides definitions for macros,
+values, types, templates, classes, functions, objects.
+
+All entities except macros are defined within the namespace `hlsl` or namespaces
+nested within namespace `hlsl` except when explicitly noted otherwise.
