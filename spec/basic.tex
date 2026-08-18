@@ -153,7 +153,7 @@ either;
 
 \p Scopes nest within each other. A \textit{containing scope}, is a scope that
 fully contains another scope which is said to be \textit{contained}. The
-smallest containing scope of a \texttt{S} is the \textit{parent scope} of
+smallest containing scope of \texttt{S} is the \textit{parent scope} of
 \texttt{S}, except for template parameter scopes, where the parent scope will be
 the smallest containing scope that is not a template parameter scope.
 
@@ -189,20 +189,20 @@ after the \textit{identifier}, and the name is declared to be a
 \textit{class-name} in the scope containing the forward declaration. Otherwise,
 if the \textit{elaborated-type-specifier} is used in a
 \textit{decl-specifier-seq} or \textit{parameter-declaration-clause} during a
-function declaration, the the name is declared to be a \textit{class-name} in
+function declaration, then the name is declared to be a \textit{class-name} in
 the namespace that contains the function declaration.
 
 \p The point of declaration for an \textit{injected-class-name} is immediately
 following the opening brace of the definition of the class definition.
 
-\p The point of declaration of a template parameter is immediately after it's
+\p The point of declaration of a template parameter is immediately after its
 \textit{template-parameter}.
 
 \Sub{Block Scope}{Basic.Scope.Block}
 
 \p A block scope is introduced by either a \textit{compound-statement}, or a
 selection or iteration statement (\ref{Stmt.If}, \ref{Stmt.Switch},
-\ref{Stmt.For}, \ref{Stmt.While}), or a substatement such a statement.
+\ref{Stmt.For}, \ref{Stmt.While}), or a substatement of such a statement.
 
 \p A name declared inside a block is said to have \textit{block-scope} and is
 local to that block. Its potential scope begins at its point of definition and
@@ -237,10 +237,10 @@ have namespace scope.
 
 \p The potential scope of a namespace member name begins at its point of
 declaration and contains the remainder of the namespace scope through the end of
-the translation unit. Each \textit{using-declaration} nominating a namespace
+the translation unit. Each \textit{using-directive} nominating a namespace
 extends the potential scope of namespace members in the nominated namespace to
 include the portion of the potential scope containing the
-\textit{using-declaration} following the member's point of declaration.
+\textit{using-directive} following the member's point of declaration.
 
 \p A member of a namespace may also be referred to as a qualified name any point
 after its point of declaration via the rules defined in
@@ -258,7 +258,7 @@ name's point of declaration and extends to the end of the translation unit.
 \Sub{Class Scope}{Basic.Scope.Class}
 
 \p The declarative region of a class is defined by the curly braces (\texttt{\{
-\}}) enclosing it's optional \textit{member-specialization}. Declarations within
+\}}) enclosing its optional \textit{member-specialization}. Declarations within
 a class's \textit{member-specialization} are said to be \textit{members} of that
 class. Any names introduced by these declarations are said to be \textit{member
 names} of the class, and they have class scope.
@@ -274,7 +274,7 @@ its use as when re-evaluated with the completed class.
 \Sub{Enumeration Scope}{Basic.Scope.Enumeration}
 
 \p The name of a scoped enumerator (\ref{Decl.Enum}), has enumeration scope.
-It's potential scope begins at its point of declaration and terminates at the
+Its potential scope begins at its point of declaration and terminates at the
 end of the enumerator's declaration.
 
 \Sub{Template Parameter Scope}{Basic.Scope.Template}
@@ -464,7 +464,7 @@ object may be different based on the \textit{memory space} it is stored in
 (\ref{Intro.Memory.Spaces}).
 
 \begin{note}
-  \texttt{sizeof(T)} returns the size of the object as if it's stored in device
+  \texttt{sizeof(T)} returns the size of the object as if it is stored in device
   memory, and determining the size of an object stored in another memory space
   is not currently possible.
 \end{note}
