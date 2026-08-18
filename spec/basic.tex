@@ -282,9 +282,10 @@ end of the \textit{enumerator-list} in the enumeration's declaration.
 \p Each \textit{template-parameter} and \textit{template-declaration} introduces
 a template parameter scope. A \textit{template-parameter}'s introduced scope
 contains the smallest \textit{template-parameter-list} containing the
-\textit{template-parameter}. A \textit{template-declaration}'s introduced scope
-begins at its \textit{template-parameter-list} and extends to the end of the
-\textit{template-declaration}.
+\textit{template-parameter}, and extends to include the
+\textit{template-declaration}'s scope. A \textit{template-declaration}'s
+introduced scope begins at its \textit{template-parameter-list} and extends to
+the end of the \textit{template-declaration}.
 
 \p Any declaration outside the \textit{template-parameter-list} of a
 \textit{template-declaration} targets the parent scope of the
