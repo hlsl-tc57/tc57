@@ -95,6 +95,8 @@ verification.
 HLSL will adopt the `constexpr` keyword and the associated behaviors introduced
 to C++11 in the paper [Generalized constant expressions
 (n2235)](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2007/n2235.pdf).
+This feature will not support the full breadth of C++14's `constexpr` function
+capabilities, and will be limited to just the C++11 functionality.
 
 To allow using generalized constant expressions for compile-time correctness
 testing HLSL will adopt the `static_assert` feature adopted to C++11 in the
