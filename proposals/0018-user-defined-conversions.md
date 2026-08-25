@@ -47,3 +47,47 @@ applied to a user-defined conversion function. When a conversion function is
 annotated with the `explicit` keyword the conversion function will be excluded
 from any overload set constructed for implicit conversions, allowing the
 function to only be resolved in explicit cast expressions.
+
+## Detailed Design
+
+### Addition to [Lex.Keywords]
+
+The keyword `explicit` is added to the grammar.
+
+### Additions to Function Specifiers [Decl.Spec.Fct]
+
+> Editors note: `explicit` is added to the grammar formation.
+
+```latex
+\begin{grammar}
+  \define{function-specifier}\br
+  \texttt{export}\br
+  \texttt{explicit}
+\end{grammar}
+```
+
+The `explicit` specifier may only be used on the declaration of a conversion
+function within a class declaration.
+
+### Conversion Functions [Class.Conv.Function]
+
+```latex
+\begin{grammar}
+  \define{conversion-function-id}\br
+  \terminal{operator} conversion-type-id\br
+\end{grammar}
+```
+
+A member function of a class named as a _conversion-function-id_ specifies a
+conversion from the class type to the type specified by the
+_conversion-type-id_. Such functions are called _conversion functions_. No
+return type is specified. The type of the function is a function taking no
+parameters returning _conversion-type-id_.
+
+A conversion function may never be used to convert an object to the same type,
+to a base class of the type, or to void.
+
+The `explicit` keyword may be applied to a conversion function declaration
+(\ref{Decl.Spec.Fct}). Such functions are said to be _explicit conversion
+functions_, which are only considered as a user-defined conversion for
+direct-initialization or explicit cast expressions.
