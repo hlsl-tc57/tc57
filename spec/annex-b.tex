@@ -85,3 +85,87 @@ resource objects are not actually stored in the \texttt{cbuffer}, but instead
 the resource is treated as a global resource declaration and name lookup
 resolves the value inside the structure declaration to the implied global
 resource declaration.
+
+\Sec{Legacy DirectX Features}{AnnexB.LegacyDX}
+
+\p The existing reference compilers support a set of features that worked in
+tandem with the Direct3D runtime or other support libraries which are no longer
+supported in the latest versions of Direct3D.
+
+\p These features are not included in the standard, nor are they conforming
+extensions, as such conforming implementation will not support these features.
+
+\Sub{Effects For Direct3D}{AnnexB.LegacyDX.Effects}
+
+\p The Effects runtime support in Direct3D 9 through Direct3D 11 relied on a set of
+syntax extensions for HLSL. The latest documentation for the Direct3D 11 Effects
+APIs and shader syntax is available on Microsoft's public documentation
+site (\url{https://learn.microsoft.com/en-us/windows/win32/direct3d10/d3d10-graphics-reference-effect}).
+
+\p The main additions to HLSL for the Effects feature are the annotation
+syntax (\url{https://learn.microsoft.com/en-us/windows/win32/direct3d10/d3d10-effect-annotation-syntax})
+and technique declarations.
+
+\begin{HLSL}
+int MyVar <int SomeVal=42;>; // Annotated variable.
+sampler S : register(s1) = sampler_state {texture=tex;};
+
+technique10 MyRender // Technique declaration.
+{
+	pass RenderPass
+	{
+		SetVertexShader(CompileShader(vs_2_0, VSMain()));
+		SetPixelShader(CompileShader(ps_2_0, PSMain()));
+	}
+}
+\end{HLSL}
+
+\p The effects syntax has three keywords: \texttt{sampler\_state},
+\texttt{technique10}, and \texttt{pass}.
+
+\Sub{Shader Interfaces}{AnnexB.LegacyDX.Interfaces}
+
+\p Direct3D 11 supported a limited level of dynamic symbol resolution based on
+\textit{interface declarations}. A shader would declare an interface containing
+a set of function declarations, and any class that inherited from that interface
+was required to provide definitions of all functions declared in the interface.
+
+\p This functionality used in conjunction with functionality exposed in DXBC and
+the Direct3D runtime could swap interface implementations at runtime enabling
+code reuse and specialization.
+
+\p This feature is not supported in Direct3D 12, Vulkan, nor any actively
+supported shader bytecode. DXC's implementation of the \texttt{interface}
+keyword is limited to static verification that objects inheriting from the
+interface provide definitions for all interface members.
+
+\p A conforming implementation of this standard will not support the
+\textit{interface} keyword.
+
+\Sec{Legacy HLSL Features}{AnnexB.LegacyHLSL}
+
+\p The actively supported reference compiler DXC has support for parsing some
+HLSL constructs that had meaning and impact in FXC's implementation, but do
+nothing in DXC. These legacy language features are omitted from this standard.
+
+\Sub{cbuffer initializers}{AnnexB.LegacyHLSL.cbuffer}
+
+\p The FXC compiler captured initializers for variables in
+\textit{cbuffer-declarations} into shader reflection information. This
+information was used by the Effects for Direct3D
+(\url{https://github.com/Microsoft/FX11}) runtime, but could also be used
+directly by users.
+
+\p The DXC compiler supported parsing initializers but did not capture them into
+the shader reflection or any other metadata. This standard disallows
+initializing variables in \textit{cbuffer-declarations}, an initializer in such
+a declaration is ill-formed and a conforming implementation must issue a
+diagnostic.
+
+\Sub{\texttt{uniform} and \texttt{shared} keyword}{AnnexB.LegacyHLSL.Keywords}
+
+\p The current implementation of DXC parses but ignores the \texttt{uniform} and
+\texttt{shared} keywords which had meaning in earlier versions of HLSL. A
+conforming implementation will not support these keywords, will treat them as
+identifier tokens, and will error if they are encountered in grammar formations
+where identifiers are disallowed.
