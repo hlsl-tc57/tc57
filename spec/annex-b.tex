@@ -100,10 +100,10 @@ extensions, as such conforming implementation will not support these features.
 \p The Effects runtime support in Direct3D 9 through Direct3D 11 relied on a set of
 syntax extensions for HLSL. The latest documentation for the Direct3D 11 Effects
 APIs and shader syntax is available on Microsoft's public documentation
-site (\url{https://learn.microsoft.com/en-us/windows/win32/direct3d10/d3d10-graphics-reference-effect}).
+site (\url{https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d11-graphics-programming-guide-effects}).
 
 \p The main additions to HLSL for the Effects feature are the annotation
-syntax (\url{https://learn.microsoft.com/en-us/windows/win32/direct3d10/d3d10-effect-annotation-syntax})
+syntax (\url{https://learn.microsoft.com/en-us/windows/win32/direct3d11/d3d11-effect-annotation-syntax})
 and technique declarations.
 
 \begin{HLSL}
@@ -120,8 +120,9 @@ technique10 MyRender // Technique declaration.
 }
 \end{HLSL}
 
-\p The effects syntax has three keywords: \texttt{sampler\_state},
-\texttt{technique10}, and \texttt{pass}.
+\p The effects syntax has five keywords: \texttt{sampler\_state},
+\texttt{technique}, \texttt{technique10}, \texttt{technique11}, and
+\texttt{pass}.
 
 \Sub{Shader Interfaces}{AnnexB.LegacyDX.Interfaces}
 
