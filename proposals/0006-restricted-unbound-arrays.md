@@ -46,10 +46,9 @@ This proposal suggests limiting declarators of arrays of unknown size to:
 
 A _postfix-expression_ followed by an expression in square brackets
 (`[ ]`) is a subscript expression. In an array subscript expression of
-the form `E1[E2]`, `E1` must either be a variable of array,
-vector, or matrix of `T[]`, or an object of type `T` where
-`T` provides an overloaded implementation of  `operator[]`
-(\ref{Overload}).
+the form `E1[E2]`, `E1` must have array, vector, or matrix of `T[]`
+type, or type `T` where `T` provides an overloaded implementation of
+`operator[]` (\ref{Overload}).
 
 If the postfix expression `E1` is of array, vector or matrix type, the
 expression `E2` must be a value of integer type, or of a type that is
