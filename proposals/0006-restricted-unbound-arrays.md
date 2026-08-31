@@ -90,6 +90,7 @@ range at runtime, the behavior is undefined.
 
 \end{grammar}
 ```
+![Latex Rendering](0006-assets/Decl.Decl.Grammar.png)
 
 #### Arrays [Decl.Array]
 
