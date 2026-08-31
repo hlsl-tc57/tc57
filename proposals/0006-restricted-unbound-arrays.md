@@ -54,7 +54,7 @@ If the postfix expression `E1` is of array, vector or matrix type, the
 expression `E2` must be a value of integer type, or of a type that is
 implicitly convertible to integer type. If the value is known at compile
 time to be outside the range `[0, N-1]` where `N` is the number of
-elements in the vector, the program is ill-formed. If the value is outside the
+elements in the vector, array, or matrix, the program is ill-formed. If the value is outside the
 range at runtime, the behavior is undefined.
 
 
@@ -104,9 +104,9 @@ In a declaration $T D$ where $D$ has the form:
 The type of the entity declared in a declaration $T D1$ is $T\prime$, the derived type
 $T$. The type of the entity declared in the declarator $D$ is $T\prime[N]$. The
 _constant-expression_ shall be a converted constant expression of unsigned
-integer type. It's value $N$ specifies the number of elements in the array,
+integer type. Its value $N$ specifies the number of elements in the array,
 called the _array bound_.
 
 If present, $N$ must be greater than zero. If not present, the declaration must
-be a global declaration of an object of resource a type (\ref{Resources});
+be a global declaration of an object of a resource type (\ref{Resources});
 otherwise the program is ill-formed.
