@@ -30,7 +30,7 @@ HLSL will introduce three new named cast templates, `static_cast<T>`,
 The `hlsl::static_cast<T>(V)` will behave similar to the C++ `static_cast<T>(V)`
 expression, except as changes are required due to other differences between C++
 and HLSL. It will convert the expression `V` to the result type `T`. The main
-difference from C++ is that HLSL's `tatic_cast<T>` will always produce an
+difference from C++ is that HLSL's `static_cast<T>` will always produce an
 rvalue since HLSL does not have spellable lvalue reference types, and may not be
 used for polymorphic casts for the same reason.
 
