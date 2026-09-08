@@ -1,0 +1,31 @@
+needs-triage:
+- changed-files:
+  - any-glob-to-any-file: 'proposals/**/*'
+
+language-spec:
+- changed-files:
+  - any-glob-to-any-file: 'spec/**/*'
+
+documentation:
+- changed-files:
+  - any-glob-to-any-file: ['docs/*.md', 'README.md', 'CONTRIBUTING.md']
+
+website:
+- changed-files:
+    - any-glob-to-any-file: ['assets/**/*', 'websites/**/*']
+
+agenda:
+- changed-files:
+  - any-glob-to-any-file: 'docs/Meetings/*-agenda.md'
+
+minutes:
+- changed-files:
+  - any-glob-to-any-file: 'docs/Meetings/*-minutes.md'
+
+infrastructure:
+- changed-files:
+  - any-glob-to-any-file: ['.github/**/*',
+                           'scripts/**/*',
+                           'Dockerfile',
+                           'docker-compose.yml',
+                           'CODEOWNERS']
