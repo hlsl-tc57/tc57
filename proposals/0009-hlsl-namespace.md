@@ -1,5 +1,6 @@
 ---
 title: 0009 - HLSL Namespace
+slug: "0009"
 params:
     authors:
     - llvm-beanz: Chris Bieneman

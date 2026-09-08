@@ -1,5 +1,6 @@
 ---
 title: 0010 - Modern C++ Features
+slug: "0010"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

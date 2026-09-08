@@ -1,5 +1,6 @@
 ---
 title: "0019 - Size type"
+slug: "0019"
 params:
   authors:
     - llvm-beanz: Chris Bieneman

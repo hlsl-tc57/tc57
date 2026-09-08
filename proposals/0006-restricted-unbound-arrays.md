@@ -1,5 +1,6 @@
 ---
 title: "0006 - Restricted Unbounded Arrays"
+slug: "0006"
 params:
   authors:
     - llvm-beanz: Chris Bieneman

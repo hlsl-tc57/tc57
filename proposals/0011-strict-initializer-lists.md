@@ -1,5 +1,6 @@
 ---
 title: 0011 - Strict Initializer Lists
+slug: "0011"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

@@ -1,5 +1,6 @@
 ---
 title: 0008 - Numeric Constants
+slug: "0008"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

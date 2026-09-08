@@ -1,5 +1,6 @@
 ---
 title: 0016 - Non-member Operator Overloading
+slug: "0016"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

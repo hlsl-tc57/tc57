@@ -1,5 +1,6 @@
 ---
 title: 0007 - Formalized Memory and Execution Model
+slug: "0007"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

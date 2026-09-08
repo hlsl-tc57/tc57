@@ -1,5 +1,6 @@
 ---
 title: "NNNN - Feature name"
+slug: "NNNN"
 draft: true
 params:
   authors:

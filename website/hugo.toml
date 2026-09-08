@@ -20,6 +20,9 @@ ignoreLogs = ['warning-goldmark-raw-html']
     endLevel = 3
     ordered = false
 
+[permalinks]
+  proposals = '/proposal/:slug/'
+
 [module]
   [[module.mounts]]
     source = './content'

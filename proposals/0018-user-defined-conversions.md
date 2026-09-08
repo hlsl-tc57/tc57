@@ -1,5 +1,6 @@
 ---
 title: "0018 - User-defined Conversion Functions"
+slug: "0018"
 params:
   authors:
     - llvm-beanz: Chris Bieneman

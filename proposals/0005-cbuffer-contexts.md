@@ -1,5 +1,6 @@
 ---
 title: 0005 - Refined cbuffer Contexts
+slug: "0005"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

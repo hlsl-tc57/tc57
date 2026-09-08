@@ -1,5 +1,6 @@
 ---
 title: 0002 - Conforming Literals
+slug: "0002"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

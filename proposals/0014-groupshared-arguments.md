@@ -1,5 +1,6 @@
 ---
 title: "0014 - `groupshared` Arguments"
+slug: "0014"
 params:
   authors:
     - llvm-beanz: Chris Bieneman

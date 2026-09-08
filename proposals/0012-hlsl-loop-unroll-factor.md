@@ -1,5 +1,6 @@
 ---
 title: "0012 - HLSL Loop Unroll Factor"
+slug: "0012"
 params:
   authors:
     - farzonl: Farzon Lotfi

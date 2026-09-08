@@ -1,5 +1,6 @@
 ---
 title: 0017 - HLSL Ternary Operator Behavior
+slug: "0017"
 params:
     authors:
     - bob80905: Joshua Batista

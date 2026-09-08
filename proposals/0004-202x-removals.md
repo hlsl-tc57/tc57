@@ -1,5 +1,6 @@
 ---
 title: 0004 - 202x Feature Removals
+slug: "0004"
 params:
   authors:
   - llvm-beanz: Chris Bieneman

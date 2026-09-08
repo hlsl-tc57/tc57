@@ -1,5 +1,6 @@
 ---
 title: 0015 - const-qualified Non-static Member Functions
+slug: "0015"
 params:
   authors:
   - llvm-beanz: Chris Bieneman
