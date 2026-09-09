@@ -12,23 +12,26 @@ normative:
 - changed-files:
   - any-glob-to-any-file: 'spec/**/*.tex'
   - any-globs-to-all-files:
-    - !'spec/**/annex-*.tex'
-    - !'spec/macros.tex'
-    - !'spec/hlsl.tex'
+    - '!spec/**/annex-*.tex'
+    - '!spec/macros.tex'
+    - '!spec/hlsl.tex'
 
 documentation:
-- changed-files:
-  - any-glob-to-any-file:
-    - 'docs/**/*.md'
-    - 'README.md'
-    - 'CONTRIBUTING.md'
-  - all-globs-to-all-files: '!docs/Meetings/*.md' # Ignore meetings files
+- any:
+  - changed-files:
+    - all-globs-to-any-file:
+      - 'docs/**/*.md'
+      - '!docs/Meetings/*.md' # Ignore meeting files
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'README.md'
+      - 'CONTRIBUTING.md'
 
 website:
 - changed-files:
     - any-glob-to-any-file:
       - 'assets/**/*'
-      - 'websites/**/*'
+      - 'website/**/*'
 
 agenda:
 - changed-files:
