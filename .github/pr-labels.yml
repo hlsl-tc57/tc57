@@ -11,10 +11,6 @@ language-spec:
 normative:
 - changed-files:
   - any-glob-to-any-file: 'spec/**/*.tex'
-  - any-globs-to-all-files:
-    - '!spec/**/annex-*.tex'
-    - '!spec/macros.tex'
-    - '!spec/hlsl.tex'
 
 documentation:
 - any:
