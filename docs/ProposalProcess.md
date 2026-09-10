@@ -58,6 +58,19 @@ following one of the templates in the `proposals/templates` directory.
 Add new proposals directly in the `proposals` directory. In the initial PR the
 proposal should be numbered `NNNN` to signify it has not yet been numbered.
 
+Proposal documents can be validated locally after installing PyYAML:
+
+```sh
+python3 -m pip install PyYAML
+python3 scripts/validate_proposal.py proposals/NNNN-feature-name.md
+python3 scripts/validate_proposal.py proposals
+```
+
+The validator accepts either one proposal file or a directory of proposal files.
+It prints a Markdown report and exits with a nonzero status when it finds a
+problem. A proposal using the `NNNN` placeholder will continue to report a
+numbering error until the committee assigns its proposal number.
+
 Proposals that follow the most simplified path from idea to finalization will
 move through the following states in order:
 

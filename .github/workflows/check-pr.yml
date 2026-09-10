@@ -1,0 +1,44 @@
+name: Check Pull Request
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Install dependencies
+        run: python3 -m pip install PyYAML
+      - name: Check pull request
+        env:
+          CHECK_PR_REPORT_PATH: ${{ runner.temp }}/pr-check/report.md
+        run: python3 scripts/check_pr.py
+      - name: Prepare report metadata
+        if: always()
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPORT_DIRECTORY: ${{ runner.temp }}/pr-check
+        run: |
+          mkdir -p "$REPORT_DIRECTORY"
+          if [[ ! -f "$REPORT_DIRECTORY/report.md" ]]; then
+            printf '## Pull request checks\n\nThe checker failed before producing a report. See the workflow log for details.\n' > "$REPORT_DIRECTORY/report.md"
+          fi
+          printf '%s\n' "$PR_NUMBER" > "$REPORT_DIRECTORY/pr-number.txt"
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-check-report-${{ github.run_id }}
+          path: ${{ runner.temp }}/pr-check
+          retention-days: 1
