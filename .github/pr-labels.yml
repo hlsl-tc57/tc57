@@ -6,12 +6,6 @@ language-spec:
 - changed-files:
   - any-glob-to-any-file: 'spec/**/*'
 
-# Apply the normative label to any change to latex that extends beyond an annex
-# or the macros file.
-normative:
-- changed-files:
-  - any-glob-to-any-file: 'spec/**/*.tex'
-
 documentation:
 - any:
   - changed-files:
