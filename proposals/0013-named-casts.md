@@ -145,7 +145,7 @@ constexpr DestTy bit_cast(const SrcTy Src);
 
 _Requires:_ `sizeof(DestTy) == sizeof(SrcTy)` is `true`;
 _Returns:_ An object of type `DestTy`. Each bit in the the object representation
-of the `Src` argument is replicated into the cooresponding bit in the value
+of the `Src` argument is replicated into the corresponding bit in the value
 representation of the newly created `DestTy` object. Padding bits in the result
 are unspecified. If an object or subobject of the returned value has a bit
 pattern that does not map to a value of that type, the behavior is undefined.
