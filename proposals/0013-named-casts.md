@@ -60,9 +60,24 @@ reduces the scope of `static_cast`.
 
 ### Addition to [Lex.Keywords]
 
-> The keyword `static_cast` is added to the grammar of keywords. Updated
-> rendering below, with addition highlighted.
-![Latex Rendering](0013-assets/KeywordsUpdates.png)
+> The keyword `static_cast` is added to the grammar of keywords. Diff below.
+
+```diff
+diff --git a/spec/lex.tex b/spec/lex.tex
+index 7fbef9d..d454e2f 100644
+--- a/spec/lex.tex
++++ b/spec/lex.tex
+@@ -271,7 +271,7 @@ but are not required to emit a diagnostic:
+   \terminal{inline inout int interface line lineadj linear namespace nointerpolation}\br
+   \terminal{noperspective operator out packoffset payload point precise}\br
+   \terminal{primitives reordercoherent return row\_major sampler\_state shared sizeof}\br
+-  \terminal{snorm static struct switch tbuffer template this triangle}\br
++  \terminal{snorm static static_cast struct switch tbuffer template this triangle}\br
+   \terminal{triangleadj true typedef typename uniform unorm unsigned using vertices}\br
+   \terminal{void while}
+ \end{grammar}
+
+```
 
 ### Static cast [Expr.StaticCast]
 
