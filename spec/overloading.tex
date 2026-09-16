@@ -1,0 +1,682 @@
+\Ch{Overloading}{Overload}
+
+\p When a single name is declared with two or more different declarations in the
+same scope, the name is \textit{overloaded}. A declaration that declares an
+overloaded name is called an \textit{overloaded declaration}. The set of
+overloaded declarations that declare the same overloaded name are that name's
+\textit{overload set}.
+
+\p Only function and function template declarations can be overloaded; variable and type
+declarations cannot be overloaded.
+
+\Sec{Overloadable Declarations}{Overload.Decl}
+
+\p This section specifies the cases in which a function declaration cannot be
+overloaded. Any program that contains an invalid overload set is ill-formed.
+
+\p An overload set is invalid if:
+\begin{itemize}
+  \item One or more declaration in the overload set only differ by return type.
+
+\begin{HLSL}
+int Yeet();
+uint Yeet(); // ill-formed: decls differ only by return type
+\end{HLSL}
+
+  \item An overload set contains more than one member function declarations with
+  the same \textit{parameter-type-list}, and one of those declarations is a
+  \texttt{static} member function declaration (\ref{Classes.Static}).
+
+  \begin{HLSL}
+class Doggo {
+  static void pet();
+  void pet();              // ill-formed: cannot be overloaded with `static void pet()`
+
+  static void wagTail();
+  void wagTail();          // valid
+
+  void bark(int);
+  static void bark(int);   // ill-formed: cannot be overloaded with `void bark(int)`
+};
+\end{HLSL}
+
+  \item An overload set contains more than one entry function declaration (\ref{Decl.Attr.Entry}).
+
+\begin{HLSL}
+[shader("vertex")]
+void VS();
+void VS(int);              // valid: only one entry point.
+
+[shader("vertex")]
+void Entry();
+
+[shader("compute")]
+void Entry(int);           // ill-formed: an overload set cannot have more than one entry function
+\end{HLSL}
+
+\item An overload set contains more than one function declaration which only
+  differ in \texttt{const} parameter specifiers.
+\begin{HLSL}
+void G(int);
+void G(const int);         // ill-formed: redeclaration of G(int)
+void G(int) {}
+void G(const int) {}       // ill-formed: redefinition of G(int)
+\end{HLSL}
+
+\item An overload set contains more than one function declaration which only
+differ in parameters mismatching `out` and `inout`.
+
+\begin{HLSL}
+void H(int);
+void H(in int);            // valid: redeclaration of H(int)
+void H(inout int);         // valid: overloading between in and inout is allowed
+
+void I(in int);
+void I(out int);           // valid: overloading between in and out is allowed
+
+void J(out int);
+void J(inout int);         // ill-formed: Cannot overload based on out/inout mismatch
+\end{HLSL}
+\end{itemize}
+
+\Sec{Declaration Matching}{Overload.Match}
+
+\p Two function declarations with the same name and same parameter lists refer to
+the same function if they are in the same scope (\ref{Basic.Scope}). A function
+declaration in a containing scope is not the same as a function of the same
+name and parameter list in a contained scope.
+
+\Sec{Overload Resolution}{Overload.Res}
+
+\p \textit{Overload resolution} is process by which a function call is mapped to
+a the best overloaded function declaration. Overload resolution uses set of
+functions called the \textit{candidate set}, and a list of expressions that
+comprise the argument list for the call.
+
+\p Overload resolution selects the function to call in the following
+contexts:
+
+\begin{itemize}
+  \item invocation of a function named in a function call expression;
+  \item invocation of a function call operator on a class object named in
+  function call syntax;
+  \item invocation of the operator referenced in an expression;
+  \item invocation of a user-defined conversion function for copy-initialization
+    of an object of class type; and
+  \item invocation of a user-defined conversion function for initializing an
+    object of non-class type from an expression of class type.
+\end{itemize}
+
+\p In each of these contexts a unique method is used to construct the overload
+candidate set and argument expression list.
+
+\Sub{Candidate Functions and Argument Lists}{Overload.Res.Sets}
+
+\p At each point where an overload must be resolved an implementation will generate
+a candidate set, containing all possible candidate functions, and the argument
+list for the overloaded call. The subclauses under this clause
+define the process by which the candidate set and argument lists are constructed
+in each context where overload resolution occurs.
+
+\p A candidate set may include both member and non-member functions to be resolved
+against the same argument set. Member functions have an extra \textit{implicit object
+parameter}, representing the object the function is called on. For the purposes
+of overload resolution a static member function is considered to have an
+implicit object parameter.
+
+\p When appropriate the context shall construct an \textit{implied object argument}
+referring to the object operated on.
+
+\p Any implicit object parameter or implied object argument is always
+the first parameter or argument.
+
+\p The type of the implicit object parameter is: lvalue reference \texttt{cv T}; where \texttt{T}
+is the class containing the declaration of the function, and \texttt{cv} is the
+\textit{cv-qualification} on the function declaration.
+
+\p Implied object arguments behave the same as any explicit argument except that no temporary
+object shall be created to hold the argument for the implicit object parameter
+except when the implicit object parameter is a member of a
+\textit{cbuffer-declaration}.
+
+\p If a candidate is a function template, candidate specializations are generated
+through template argument deduction (\ref{Template.Deduction}), candidates are
+then handled as any other candidate. A name may refer to more than one function
+template, in which case candidate functions shall be generated for each function
+template to form the full candidate set.
+
+\SubSub{Function Call Syntax}{Overload.Res.Call}
+
+\begin{innergrammar}
+postfix-expression \terminal{(} \opt{expression-list} \terminal{)}
+\end{innergrammar}
+
+\p In a function call (\ref{Expr.Post.Call}), if the \textit{postfix-expression} names a
+candidate set comprised of overloaded functions and/or function templates, the
+overload resolves as to a named function (\ref{Overload.Res.Call.Named}). If the
+\textit{postfix-expression} names an object of class type, the overload is resolved as a
+call to an object of class type (\ref{Overload.Res.Call.Object}).
+
+\SubSub{Call to a Named Function}{Overload.Res.Call.Named}
+
+\p In a call to a named function, the \textit{postfix-expression} must be one of the
+forms:
+
+\begin{innergrammar}
+\define{postfix-expression}\br
+  postfix-expression \terminal{.} id-expression\br
+  primary-expression
+\end{innergrammar}
+
+\p In the first grammar production, the \textit{id-expression} is the name of the function
+to be called, and the \textit{postfix-expression} preceding the \texttt{.} operator. This
+formation represents a \textit{qualified} function call, where the \textit{postfix-expression}
+must be an object of class type, and the call is looked up as a member function
+of that object. The function names found by that lookup constitute the overload
+candidate set for the call. The argument list for the call is the
+\textit{expression-list} in the call with the left operand of the \texttt{.} operator
+prepended as the implicit object parameter (\ref{Overload.Res.Sets}).
+
+\p In the second grammar production, the name is not qualified by an object
+parameter, so it is an unqualified call. Name lookup occurs as normal for name
+lookup of a function call (\ref{Basic.Lookup}). Function declarations found
+constitute the candidate set. The candidate set for an unqualified call will be
+comprised either entirely of non-member functions or entirely of member
+functions of some class \texttt{T}. If the candidate set is entirely non-member
+functions, the argument list is the \textit{expression-list}. If the candidate set is
+entirely member functions of class \texttt{T}, the argument list is the
+\textit{expression-list} with an implied object argument prepended. If the call
+expression occurs in a context where an implicit object \texttt{this} is in scope and
+of class type \texttt{T} or a type \texttt{T$^\prime$}, the \texttt{this} object will be the implicit object
+argument, otherwise a contrived argument of type \texttt{T} will become the implied
+object argument. If overload resolution selects a non-static member function,
+and the implicit object argument is a contrived argument, the call is
+ill-formed.
+
+\SubSub{Call to a Object of Class Type}{Overload.Res.Call.Object}
+
+\p If the \textit{primary-expression} in the function call expression is a class object of
+type \texttt{T}, then the set of candidate functions will include the call operators of
+\texttt{T} obtained by name lookup of the name \texttt{operator()} (\ref{Basic.Lookup}).
+
+\p For this formulation, the argument list consists of the \textit{expression-list} from
+the call syntax with the implicit object argument prefixed. The implicit object
+argument in this form is the object produced from the evaluated
+\textit{postfix-expression}.
+
+\SubSub{Operators in Expressions}{Overload.Res.Oper}
+
+\p Operators in an expression where no operands have a class or enumeration type
+are assumed to be built-in operators and interpreted following \ref{Expr}.
+
+\p If either operand is of class or enumeration type, overload resolution
+determines which operator function or built-in operator is resolved for the
+expression.
+
+\p The table below maps unary and binary operator expressions to equivalent member
+and non-member function call expressions. In the table \texttt{@} represents any
+spellable operator, and \texttt{a} and \texttt{b} represent arguments to the operator.
+
+\begin{center}
+\begin{tabular}{|| c | c | c ||}
+\hline
+  Expression & Member function   & Non-member function \\
+\hline
+  \texttt{@a}   & \texttt{(a).operator@()}   & \texttt{operator@(a)}   \\
+  \texttt{a@b}  & \texttt{(a).operator@(b)}  & \texttt{operator@(a,b)} \\
+  \texttt{a[b]} & \texttt{(a).operator[](b)} &  \\
+\hline
+\end{tabular}
+\end{center}
+
+\p Given the table above, operand \texttt{a} is of type \texttt{T1}, and operand \texttt{b} is of type
+\texttt{T2}. \texttt{T1} must be of class or enumeration type, and \texttt{T2} may be of any type
+including \texttt{T1}. The candidate set for operator resolution is constructed by the
+process:
+
+\begin{itemize}
+\item If \texttt{T1} is a class type, the result of qualified lookup of \texttt{operator@} is
+  added to the set.
+\item The result of unqualified lookup of \texttt{operator@} in the context of the
+  expression excluding the results from step 1. If no operand is of class type,
+  only functions where \texttt{T1} or \texttt{T2} are enumerations are added to the set.
+\item The built-in operators of \texttt{operator@} from the operators defined in
+  \ref{Overload.Builtin} are added to the set.
+\end{itemize}
+
+\p The left operand to built-in assignment operators, may not have user-defined
+conversion applied to it, and no temporary may be introduced to hold it.
+
+\p If the operator is the comma (\texttt{,}) operator, and there are no viable functions, the
+built-in operator is used.
+
+\SubSub{Initialization by Conversion}{Overload.Res.Convert}
+
+\p An object of class type or non-class type \texttt{T} may be initialized with an
+initializing expression of class type \texttt{S} invoking a user-defined conversion.
+
+\p The candidate set of conversion functions will be the non-explicit conversion
+functions of \texttt{S} and its base classes.
+
+\p The argument list has one argument which is the initializer expression.
+
+\Sub{Viable Functions}{Overload.Res.Viable}
+
+\p Given the candidate set and argument expressions as determined by the
+relevant context (\ref{Overload.Res.Sets}), a subset of viable functions can be
+selected from the candidate set.
+
+\p A function candidate $F(P_0 ... P_m)$ is not a viable function for a call
+with argument list $A_0 ... A_n$ if:
+
+\begin{itemize}
+\item The function has fewer parameters than there are
+  arguments in the argument list ($m < n$).
+\item The function has more parameters than there are arguments to the
+  argument list ($m > n$), and function parameters $ P_{n+1} ... P_m $ do not
+  all have default arguments.
+\item There is not an implicit conversion sequence that converts each argument
+  $A_i$ to the type of the corresponding parameter $P_i$.
+\end{itemize}
+
+\Sub{Best Viable Function}{Overload.Res.Best}
+
+\p For an overloaded call with arguments $A_0 ... A_n$, each viable function
+$F(P_0 ... P_m)$, has a set of implicit conversion sequences $ICS_0(F) ... ICS_m(F)$
+defining the conversion sequences for each argument $A_i$ to the
+type of parameter $P_i$.
+
+\p A viable function $F$ is defined to be a better function than another
+viable function $f^\prime$ if for all arguments $ICS_i(F)$ is not a worse
+conversion sequence than $ICS_i(f^\prime)$, and:
+
+\begin{itemize}
+\item for some argument $j$, $ICS_j(F)$ is a better conversion than
+  $ICS_j(f^\prime)$ or,
+\item in the context of an initialization by user-defined conversion, the
+  conversion sequence from the return type of $F$ to the destination type is a
+  better conversion sequence than the return type of $f^\prime$ to the destination
+  type or,
+\item $F$ is a non-template function and $f^\prime$ is a function template
+  specialization, or
+\item $F$ and $f^\prime$ are both function template specializations and $F$ is
+  more specialized than $f^\prime$ according to function template partial ordering
+  rules (\ref{Template.Func.Order}).
+\end{itemize}
+
+\p If there is one viable function that is a better function than all the other
+viable functions, it is the selected function; otherwise the call is ill-formed.
+
+\p If the resolved overload is a function with multiple declarations, and if at
+least two of these declarations specify a default argument that made the
+function viable, the program is ill-formed.
+
+\begin{HLSL}
+void F(int X = 1);
+void F(float Y = 2.0f);
+
+void Fn() {
+  F(1);     // Okay.
+  F(3.0f);  // Okay.
+  F();      // Ill-formed.
+}
+\end{HLSL}
+
+\Sub{Implicit Conversion Sequences}{Overload.ICS}
+
+\p An \textit{implicit conversion sequence} is a sequence of conversions which
+converts a source value to a prvalue of destination type. In overload resolution
+the source value is the argument expression in a function call, and the
+destination type is the type of the corresponding parameter of the function
+being called.
+
+\p When a parameter is a cxvalue an \textit{inverted implicit conversion sequence} is
+required to convert the parameter type back to the argument type
+for writing back to the argument expression lvalue. An inverted implicit
+conversion sequence must be a well-formed implicit conversion sequence where the
+source value is the implicit cxvalue of the parameter type, and the destination
+type is the argument expression's lvalue type.
+
+\p A well-formed implicit conversion sequence is either a \textit{standard conversion
+sequence}, or a \textit{user-defined conversion sequence}.
+
+\p In the following contexts, an implicit conversion sequence can only be a
+standard conversion sequence:
+
+\begin{itemize}
+  \item Argument conversion for a user-defined conversion function.
+  \item Copying a temporary for class copy-initialization.
+  \item When passing an initializer-list as a single argument.
+  \item Copy-initialization of a class by user-defined conversion.
+\end{itemize}
+
+\p An implicit conversion sequence models a copy-initialization unless it is an
+inverted implicit conversion sequence when it models an assignment. Any
+difference in top-level cv-qualification is handled by the copy-initialization
+or assignment, and does not constitute a conversion.
+
+\begin{note}
+"Top-level" cv-qualification refers to the qualification of the value. This
+means an parameter of type \texttt{T} can be initialized by a argument of type
+\texttt{const T}. This does not mean that a parameter of type \texttt{inout T}
+can be initialized with a argument of type \texttt{const T} because there is no
+valid inverted conversion system to assign back to a value of type \texttt{const
+T}.
+\end{note}
+
+\p When the source value type and the destination type are the same, the
+implicit conversion sequence is an \textit{identity conversion}, which signifies
+no conversion.
+
+\p Only standard conversion sequences that do not create temporary objects are
+valid for implicit object parameters or left operand to assignment operators.
+
+\p If no sequence of conversions can be found to convert a source value to the
+destination type, an implicit conversion sequence cannot be formed.
+
+\p If several different sequences of conversions exist that convert the source
+value to the destination type, the implicit conversion sequence is defined to be
+the unique conversion sequence designated the \textit{ambiguous conversion sequence}.
+For the purpose of ranking implicit conversion sequences, the
+ambiguous conversion sequence is treated as a user-defined sequence that is
+indistinguishable from any other user-defined conversion sequence. If overload
+resolution selects a function using the ambiguous conversion sequence as the
+best match for a call, the call is ill-formed.
+
+\SubSub{Standard Conversion Sequences}{Overload.ICS.SCS}
+
+\p The conversions that comprise a standard conversion sequence and the
+composition of the sequence are defined in Chapter \ref{Conv}.
+
+\p Each standard conversion is given a category and rank as defined in the table
+below:
+
+\begin{center}
+  \begin{tabular}{|| c | c | c | c ||}
+    \hline
+Conversion & Category & Rank & Reference \\
+\hline
+No conversion  & Identity  &  & \\ \cline{1-2}\cline{4-4}
+Lvalue-to-rvalue  & Lvalue Transformation  &  & \ref{Conv.LVal} \\
+Array-to-pointer  & Lvalue Transformation  &  & \ref{Conv.Array} \\ \cline{1-2}
+Qualification  & Qualification Adjustment  & Exact Match  & \ref{Conv.Qual} \\ \cline{1-4}
+Vector Scalar splat (without conversion)  &  &  & \ref{Conv.VSplat} \\
+Matrix Scalar splat (without conversion)  & Scalar Extension  & Extension  & \ref{Conv.MSplat} \\ \cline{1-4}
+Integral promotion  &  &  & \ref{Conv.IConv} \& \ref{Conv.Rank.Int} \\
+Floating point promotion  &  &  & \ref{Conv.FConv} \& \ref{Conv.Rank.Float} \\
+Component-wise promotion  & Promotion  & Promotion  & \ref{Conv.CWise} \\ \cline{1-4}
+Vector Scalar splat promotion  &   &  & \ref{Conv.VSplat} \\
+Matrix Scalar splat promotion  & Scalar Extension Promotion  & Promotion Extension  & \ref{Conv.MSplat} \\ \cline{1-4}
+Integral conversion  &  &  & \ref{Conv.IConv} \\
+Floating point conversion  &  &  & \ref{Conv.FConv} \\
+Floating-integral conversion  &  &  & \ref{Conv.FPInt} \\
+Boolean conversion  &  &  & \ref{Conv.Bool} \\
+Component-wise conversion  & Conversion  & Conversion  & \ref{Conv.CWise} \\ \cline{1-4}
+Scalar splat conversion  &  &  & \ref{Conv.VSplat} \\
+Vector Scalar splat conversion  &  & & \ref{Conv.VSplat} \\
+Matrix Scalar splat conversion  & Scalar Extension Conversion  & Conversion Extension  & \ref{Conv.MSplat} \\ \cline{1-4}
+Vector truncation (without conversion)  &  &  & \ref{Conv.VTrunc} \\
+Matrix truncation (without conversion)  & Dimensionality Reduction  & Truncation  & \ref{Conv.VTrunc} \\ \cline{1-4}
+Vector truncation promotion  & &  & \ref{Conv.VTrunc} \\
+Matrix truncation promotion  & Dimensionality Reduction Promotion  & Promotion Truncation  & \ref{Conv.VTrunc} \\ \cline{1-4}
+Vector truncation conversion  & & & \ref{Conv.VTrunc} \\
+Matrix truncation conversion  & Dimensionality Reduction Conversion  & Conversion Truncation  & \ref{Conv.VTrunc} \\ \cline{1-4}
+\hline
+  \end{tabular}
+\end{center}
+
+\p If a scalar splat conversion occurs in a conversion sequence where all other
+conversions are \textbf{Exact Match} rank, the conversion is ranked as
+\textbf{Extension}. If a scalar splat occurs in a conversion
+sequence with a \textbf{Promotion} conversion, the conversion is ranked as
+\textbf{Promotion Extension}. If a scalar splat occurs in a conversion
+sequence with a \textbf{Conversion} conversion, the conversion is ranked as
+\textbf{Conversion Extension}.
+
+\p If a vector or matrix truncation conversion occurs in a conversion sequence where all
+other conversions are \textbf{Exact Match} rank, the conversion is ranked as
+\textbf{Truncation}. If a vector or matrix truncation occurs in a conversion
+sequence with a \textbf{Promotion} conversion, the conversion is ranked as
+\textbf{Promotion Truncation}. If a vector or matrix truncation occurs in a conversion
+sequence with a \textbf{Conversion} conversion, the conversion is ranked as
+\textbf{Conversion Truncation}.
+
+\p Otherwise, the rank of a conversion sequence is determined by considering the
+rank of each conversion.
+
+\p Conversion sequence ranks are ordered from better to worse as:
+
+\begin{itemize}
+  \item \textbf{Exact Match}
+  \item \textbf{Extension}
+  \item \textbf{Promotion}
+  \item \textbf{Promotion Extension}
+  \item \textbf{Conversion}
+  \item \textbf{Conversion Extension}
+  \item \textbf{Truncation}
+  \item \textbf{Promotion Truncation}
+  \item \textbf{Conversion Truncation}
+\end{itemize}
+
+\SubSub{User-defined Conversion Sequences}{Overload.ICS.User}
+
+\p A \textit{user-defined conversion sequence} is a standard conversion sequence
+followed by a user-defined conversion, followed by a second standard conversion
+sequence.
+
+\p The first standard conversion sequence converts the source type to the
+type of the object parameter of the conversion function of the user-defined
+conversion.
+
+\p The second standard conversion converts the result of the user-defined
+conversion to the target type for the conversion sequence.
+
+\p If the user-defined conversion is a template specialization, the second standard
+conversion sequence shall have the rank \textbf{Exact Match}.
+
+\p If the user-defined conversion specifies a conversion from a class type to the
+same class type, it shall have the rank \textbf{Exact Match} even if a conversion
+function is invoked and it produces temporaries or other side-effects.
+
+\p If the user-defined conversion converts from a class type to a base class of
+that type, it shall have the rank \textbf{Conversion} even if a conversion function
+is invoked and it produces temporaries or other side-effects.
+
+\SubSub{Comparing Implicit Conversion Sequences}{Overload.ICS.Comparing}
+
+\p A partial ordering of implicit conversion sequences exists based on defining
+relationships for \textit{better conversion sequence}, and \textit{better conversion}. If an
+implicit conversion sequence $ICS(f)$ is a better conversion sequence than
+$ICS(f\prime)$, then the inverse is also true: $ICS(f\prime)$ is a \textit{worse conversion
+sequence} than $ICS(f)$. If $ICS(f)$ is neither better nor worse than
+$ICS(f\prime)$, the conversion sequences are \textit{indistinguishable conversion
+sequences}.
+
+\p A standard conversion sequence is always better than a user-defined conversion
+sequence.
+
+\p Standard conversion sequences are ordered by their ranks. Two conversion
+sequences with the same rank are indistinguishable unless one of the following
+rules applies:
+
+\begin{itemize}
+  \item If class \texttt{B} is derived directly or indirectly from class
+  \texttt{A} and class \texttt{C} is derived directly or indirectly from class
+  \texttt{B},
+  \item binding of a expression of type \texttt{C} to a cxvalue of type
+    \texttt{B} is better than binding an expression of type \texttt{C} to a
+    cxvalue of type \texttt{A},
+  \item conversion of \texttt{C} to \texttt{B} is better than conversion or
+    \texttt{C} to \texttt{A},
+  \item binding of a expression of type \texttt{B} to a cxvalue of type
+    \texttt{A} is better than binding an expression of type \texttt{C} to a
+    cxvalue of type \texttt{A},
+  \item conversion of \texttt{B} to \texttt{A} is better than conversion of
+    \texttt{C} to \texttt{A}.
+\end{itemize}
+
+\Sec{Overloaded Operators}{Overload.Operators}
+
+\begin{grammar}
+\define{operator-function-id}\br
+  \terminal{operator} operator
+
+\define{operator} \textnormal{one of}\br
+  \terminal{+ - * / \% \^\/ \& | ~ ! < > << >> <= >= \&\& || , \(\) \[\]}
+\end{grammar}
+
+\p The operators \texttt{+}, \texttt{-}, \texttt{*}, and \texttt{\&} may only be
+overloaded in their binary form.
+
+\p The dot (\texttt{.}), \texttt{::} and \texttt{?:} operators cannot be
+overloaded.
+
+\p Operator functions may be called directly by their name in the form
+\texttt{operator@} or through the resolution of an overload from an operator
+expression.
+
+\p An overloaded operator function must be either a non-static member function
+or a non-member function, and must have at least one parameter whose type is a
+class or enumeration.
+
+\p An overloaded operator may not change the number of operands of an operator,
+except the function call operator which may have any number of operands.
+
+\p The meaning of the comma (\texttt{,}) operator, which is pre-defined for all
+types, can be changed by operator overloading.
+
+\p Overloaded operator functions are inherited from base classes in the same way
+as other base class member functions.
+
+\p Only an overloaded call operator may have default arguments, no other
+operator functions may be defined with default arguments. All operator functions
+must take exactly the number of parameters of the corresponding operator as
+defined in this subclause.
+
+\Sub{Unary Operators}{Overload.Operators.Unary}
+
+\p An overloaded prefix unary operator must be implemented by a non-static member
+function with no parameters or a non-member function with one parameter.
+
+\p Postfix unary operators are not overloadable.
+
+\Sub{Binary Operators}{Overload.Operators.Binary}
+
+\p An overloaded binary operator must be implemented by a non-static member
+function with one parameter or a non-member function with two parameters.
+
+\Sub{Function Call Operator}{Overload.Operators.Call}
+
+\p An overloaded function call operator must be a non-static member function with
+an arbitrary number of parameters, and may have default arguments. Function call
+operator functions are overload candidates for the function call syntax when the
+\textit{postfix-expression} is an object of class type.
+
+\Sub{Subscript Operator}{Overload.Operators.Subscript}
+
+\p An overloaded subscript operator must be a non-static member function with one
+parameter. Subscript operator functions are overload candidates for the
+subscript syntax when the \textit{postfix-expression} is an object of class type.
+
+\Sub{Built-in Operators}{Overload.Operators.BuiltIn}
+
+\p For binary operators on arithmetic types, the result type is called the
+\textit{promoted expression type} as determined by usual arithmetic conversions
+(\ref{Expr.Conv}).
+
+\p For all types \texttt{T} where \texttt{T} is an arithmetic type (\ref{Basic.Types.Arithmetic});
+operators will be defined of the forms:
+
+\begin{HLSL}
+T operator+(T );
+T operator-(T );
+T operator~(T );
+\end{HLSL}
+
+\p For all types \texttt{L}, \texttt{R} and \texttt{LR}, where \texttt{L} and \texttt{R} are any arithmetic type
+(\ref{Basic.Types.Arithmetic}), and \texttt{LR} is the promoted expression type;
+operators will be defined of the forms:
+
+\begin{HLSL}
+LR operator*(L , R );
+LR operator/(L , R );
+LR operator+(L , R );
+LR operator-(L , R );
+bool operator<(L , R );
+bool operator>(L , R );
+bool operator<=(L , R );
+bool operator>=(L , R );
+bool operator==(L , R );
+bool operator!=(L , R );
+LR operator%(L , R );
+\end{HLSL}
+
+\p For all types \texttt{T} where \texttt{T} is an enumeration type (\ref{Decl.Enum}); operators
+will be defined of the form:
+
+\begin{HLSL}
+bool operator<(T , T );
+bool operator>(T , T );
+bool operator<=(T , T );
+bool operator>=(T , T );
+bool operator==(T , T );
+bool operator!=(T , T );
+\end{HLSL}
+
+\p For all types \texttt{T} where \texttt{T} is an integral type
+(\ref{Basic.Types.Arithmetic}); operators will be defined of the form:
+
+\begin{HLSL}
+LR operator&(L , R );
+LR operator^(L , R );
+LR operator|(L , R );
+L operator<<(L , R );
+L operator>>(L , R );
+\end{HLSL}
+
+\p For all types \texttt{L} and \texttt{R} where \texttt{L} and \texttt{R} are arithmetic types
+(\ref{Basic.Types.Arithmetic}), and \texttt{CVQ} is a \textit{cv-qualifier}; operators will be
+defined of the form:
+
+\begin{HLSL}
+CVQ L & operator=(CVQ L &, R );
+CVQ L & operator*=(CVQ L &, R );
+CVQ L & operator/=(CVQ L &, R );
+CVQ L & operator+=(CVQ L &, R );
+CVQ L & operator-=(CVQ L &, R );
+CVQ L & operator%=(CVQ L &, R );
+\end{HLSL}
+
+\p For all types \texttt{L} and \texttt{R} where \texttt{L} and \texttt{R} are integral types
+(\ref{Basic.Types.Arithmetic}), and \texttt{CVQ} is a \textit{cv-qualifier}; operators will be
+defined of the form:
+
+\begin{HLSL}
+CVQ L & operator<<=(CVQ L &, R );
+CVQ L & operator>>=(CVQ L &, R );
+CVQ L & operator&=(CVQ L &, R );
+CVQ L & operator^=(CVQ L &, R );
+CVQ L & operator|=(CVQ L &, R );
+\end{HLSL}
+
+\p For the boolean type \texttt{bool} operators will be defined of the form:
+
+\begin{HLSL}
+bool operator!(bool);
+bool operator&&(bool, bool);
+bool operator||(bool, bool);
+\end{HLSL}
+
+\p For all types \texttt{L}, \texttt{R} and \texttt{LR}, where \texttt{L} and \texttt{R} are any arithmetic type
+(\ref{Basic.Types.Arithmetic}), and \texttt{LR} is the promoted expression type;
+the ternary operator will be defined of the form:
+
+\begin{HLSL}
+LR operator?:(bool, L , R );
+\end{HLSL}
+
+\p For all types \texttt{T}, a ternary operator will be defined of the form:
+
+\begin{HLSL}
+T operator?:(bool, T , T );
+\end{HLSL}
