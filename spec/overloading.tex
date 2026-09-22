@@ -32,8 +32,8 @@ class Doggo {
   static void pet();
   void pet();              // ill-formed: cannot be overloaded with `static void pet()`
 
-  static void wagTail();
-  void wagTail();          // valid
+  void wagTail();
+  void wagTail() const;    // valid
 
   void bark(int);
   static void bark(int);   // ill-formed: cannot be overloaded with `void bark(int)`
