@@ -1,0 +1,15 @@
+\Ch{Templates}{Templates}
+
+\p A \textit{template} defines a set of related classes or functions or an alias
+for a set of related types, all of which are \textit{instances} of a template
+or its specializations.
+
+\begin{grammar}
+  \define{template-declaration}\br
+  \terminal{template} \terminal{<} template-parameter-list \terminal{>} declaration\br
+
+  \define{template-parameter-list}\br
+    template-parameter\br
+    template-parameter-list \terminal{,} template-parameter
+\end{grammar}
+
