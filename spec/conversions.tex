@@ -161,7 +161,7 @@ an implicit conversion from \texttt{A$^\prime$[I]} to \texttt{B$^\prime$[I]}.
 \p A glvalue of type \texttt{vector<T,N>} can be converted to a cxvalue of type
 \texttt{T[M]}, if \texttt{N} is greater than or equal to \texttt{M}.
 
-\Sec{Vector splat conversion}{Conv.vsplat}
+\Sec{Vector splat conversion}{Conv.VSplat}
 
 \p A glvalue of type \texttt{T} can be converted to a cxvalue of type
 \texttt{vector<T,N>} or a prvalue of type \texttt{T} can be converted to a
@@ -172,11 +172,12 @@ replicated into each element of the destination.
 \texttt{vector<T,N>}. The destination value is the value in the source vector
 replicated into each element of the destination.
 
-\Sec{Matrix splat conversion}{Conv.msplat} \p A glvalue of type \texttt{T} can
-be converted to a cxvalue of type \texttt{matrix<T,M,N>} or a prvalue of type
-\texttt{T} can be converted to a prvalue of type \texttt{matrix<T,M,N>}. The
-destination value is the source value replicated into each element of the
-destination.
+\Sec{Matrix splat conversion}{Conv.MSplat}
+
+\p A glvalue of type \texttt{T} can be converted to a cxvalue of type
+\texttt{matrix<T,M,N>} or a prvalue of type \texttt{T} can be converted to a
+prvalue of type \texttt{matrix<T,M,N>}. The destination value is the source
+value replicated into each element of the destination.
 
 \Sec{Array and Class splat conversion}{Conv.ASplat}
 
