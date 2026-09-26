@@ -52,6 +52,32 @@
   decl-specifier decl-specifier-seq\br
 \end{grammar}
 
+\Sub{Storage Class Specifiers}{Decl.Spec.Storage}
+
+\begin{grammar}
+\define{storage-class-specifier}\br
+  \terminal{static}\br
+  \terminal{mutable}
+\end{grammar}
+
+\p A \textit{decl-specifier-seq} shall contain at most one
+\textit{storage-class-specifier}. Any \textit{decl-specifier-seq} that contains
+a \textit{storage-class-specifier} shall not contain a \texttt{typedef}
+\textit{decl-specifier}, and it shall contain an \textit{init-declarator-list}
+that contains at least one \textit{declarator}. The specified
+\textit{storage-class-specifier} applies to the names declared by each
+\textit{declarator} in the \textit{init-declarator-list}. An explicit
+specialization of a template declaration may not have a
+\textit{storage-class-specifier}.
+
+\p The \texttt{static} specifier may be applied to names of variables at global,
+namespace, class and function scope and to names of functions at global,
+namespace, and class scope. A variable declared with the \texttt{static} storage
+class has static storage duration (\ref{{Basic.Storage}}).
+
+\p The \texttt{mutable} specifier may be applied to names of class data members
+and cannot be applied to names declared \texttt{const}.
+
 \Sub{Function specifiers}{Decl.Spec.Fct}
 
 \p A \textit{function-specifier} can be used only in a function declaration.
@@ -68,8 +94,6 @@
 \p Functions with program linkage can also be specified in \textit{export-declaration-group} (\ref{Decl.Export}).
 
 \p If a function is declared with an \texttt{export} specifier then all redeclarations of the same function must also use the \texttt{export} specifier or be part of \textit{export-declaration-group} (\ref{Decl.Export}).
-
-\Sec{Declarators}{Decl.Decl}
 
 \Sec{Declarators}{Decl.Decl}
 
@@ -184,6 +208,29 @@ multiple of the array's base element type.
 more or fewer elements than the target object's flattened ordering, or if any
 initializer \(I_n\) cannot be implicitly converted to the corresponding element
 \(E_n\)'s type.
+
+\Sec{Function Definitions}{Decl.Functions}
+
+Function definitions have the form:
+
+\begin{grammar}
+  \define{function-definition}\br
+   \opt{attribute-specifier-seq} \opt{decl-specifier-seq} declarator function-body
+
+  \define{function-body}\br
+    compound-statement
+\end{grammar}
+
+\p If present, the \textit{attribute-specifier-seq} applies to the function.
+
+\p The declarator shall be of the form:
+
+\begin{innergrammar}
+  identifier \terminal{(} parameter-declaration-clause \terminal{)} \opt{\terminal{const}}` \opt{attribute-specifier-seq}
+\end{innergrammar}
+
+\p The \texttt{const} qualifier shall only be allowed on non-static member
+functions.
 
 \Sec{Constant Buffer Declarations}{Decl.cbuffer}
 
