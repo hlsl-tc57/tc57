@@ -141,7 +141,13 @@ the array, called the \textit{array bound}.
 
 \p If present, \texttt{N} must be greater than zero. If not present, the
 declaration must be a global declaration of an object of a resource type
-(\ref{Resources}); otherwise the program is ill-formed.
+(\ref{Resources}), or the declarator must be followed by an initializer;
+otherwise the program is ill-formed. When the array bound is omitted and the
+declarator is followed by an initializer the bound is calculated from the number
+of initial elements. If a previous declaration of the entity declares a bound, a
+subsequent definition may omit the bound, and its bound will be the same as the
+earlier declaration. If a static data member of a class declares an array bound,
+the definition may omit it, and the bound of the declaration will be used.
 
 \Sec{Initializers}{Decl.Init}
 
