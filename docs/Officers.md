@@ -2,21 +2,15 @@
 title: TC57 Officers
 ---
 
-## Provisional Management
+## Management
 
-The Executive Committee nominated a provisional chair and vice chair at the
-October 2025 meeting. According to Ecma's rules these individuals will serve a
-term of no less than 6 months.
-
-Provisional Chair: Chris Bieneman (@llvm-beanz)
-Provisional Vice-Chair: Farzon Lotfi (@farzonl)
+Chair: Chris Bieneman (@llvm-beanz)
+Vice-Chair: Justin Bogner (@bogner)
 
 ## Chair Group
 
-At the first meeting of the Technical Committee after the initial period new
-chair(s) will be elected by TC57 via consensus. Since chairs must be elected
-on a specified schedule, a vote of Ecma members will be used if consensus is not
-reached.
+Every year in September a new Chair and Vice-Chair will be elected by the
+committee. A vote of Ecma members will be used if consensus is not reached.
 
 ### Responsibilities of the Chairs
 
