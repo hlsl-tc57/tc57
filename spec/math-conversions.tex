@@ -15,19 +15,19 @@ template<uint N> vector<float, N> asfloat(vector<float, N> input);
 template<uint N> vector<float, N> asfloat(vector<int, N> input);
 template<uint N> vector<float, N> asfloat(vector<uint, N> input);
 
-float16\_t asfloat16(float16\_t input);
-float16\_t asfloat16(int16\_t input);
-float16\_t asfloat16(uint16\_t input);
-template<uint N> vector<float16\_t, N> asfloat16(vector<float16\_t, N> input);
-template<uint N> vector<float16\_t, N> asfloat16(vector<int16\_t, N> input);
-template<uint N> vector<float16\_t, N> asfloat16(vector<uint16\_t, N> input);
+float16_t asfloat16(float16_t input);
+float16_t asfloat16(int16_t input);
+float16_t asfloat16(uint16_t input);
+template<uint N> vector<float16_t, N> asfloat16(vector<float16_t, N> input);
+template<uint N> vector<float16_t, N> asfloat16(vector<int16_t, N> input);
+template<uint N> vector<float16_t, N> asfloat16(vector<uint16_t, N> input);
 
-int16\_t asint16(float16\_t input);
-int16\_t asint16(int16\_t input);
-int16\_t asint16(uint16\_t input);
-template<uint N> vector<int16\_t, N> asint16(vector<float16\_t, N> input);
-template<uint N> vector<int16\_t, N> asint16(vector<int16\_t, N> input);
-template<uint N> vector<int16\_t, N> asint16(vector<uint16\_t, N> input);
+int16_t asint16(float16_t input);
+int16_t asint16(int16_t input);
+int16_t asint16(uint16_t input);
+template<uint N> vector<int16_t, N> asint16(vector<float16_t, N> input);
+template<uint N> vector<int16_t, N> asint16(vector<int16_t, N> input);
+template<uint N> vector<int16_t, N> asint16(vector<uint16_t, N> input);
 
 int asint(float input);
 int asint(int input);
@@ -46,12 +46,12 @@ template<uint N> vector<uint, N> asuint(vector<float, N> input);
 template<uint N> vector<uint, N> asuint(vector<int, N> input);
 template<uint N> vector<uint, N> asuint(vector<uint, N> input);
 
-uint16\_t asuint16(float16\_t input);
-uint16\_t asuint16(int16\_t input);
-uint16\_t asuint16(uint16\_t input);
-template<uint N> vector<uint16\_t, N> asuint16(vector<float16\_t, N> input);
-template<uint N> vector<uint16\_t, N> asuint16(vector<int16\_t, N> input);
-template<uint N> vector<uint16\_t, N> asuint16(vector<uint16\_t, N> input);
+uint16_t asuint16(float16_t input);
+uint16_t asuint16(int16_t input);
+uint16_t asuint16(uint16_t input);
+template<uint N> vector<uint16_t, N> asuint16(vector<float16_t, N> input);
+template<uint N> vector<uint16_t, N> asuint16(vector<int16_t, N> input);
+template<uint N> vector<uint16_t, N> asuint16(vector<uint16_t, N> input);
 
 float f16tof32(uint input);
 template<uint N> vector<float, N> f16tof32(vector<uint, N> input);
@@ -97,12 +97,12 @@ template<uint N> vector<float, N> asfloat(vector<uint, N> input);
 \end{itemize}
 
 \begin{HLSL}
-float16\_t asfloat16(float16\_t input);
-float16\_t asfloat16(int16\_t input);
-float16\_t asfloat16(uint16\_t input);
-template<uint N> vector<float16\_t, N> asfloat16(vector<float16\_t, N> input);
-template<uint N> vector<float16\_t, N> asfloat16(vector<int16\_t, N> input);
-template<uint N> vector<float16\_t, N> asfloat16(vector<uint16\_t, N> input);
+float16_t asfloat16(float16_t input);
+float16_t asfloat16(int16_t input);
+float16_t asfloat16(uint16_t input);
+template<uint N> vector<float16_t, N> asfloat16(vector<float16_t, N> input);
+template<uint N> vector<float16_t, N> asfloat16(vector<int16_t, N> input);
+template<uint N> vector<float16_t, N> asfloat16(vector<uint16_t, N> input);
 \end{HLSL}
 
 \begin{itemize}
@@ -115,12 +115,12 @@ template<uint N> vector<float16\_t, N> asfloat16(vector<uint16\_t, N> input);
 \end{itemize}
 
 \begin{HLSL}
-int16\_t asint16(float16\_t input);
-int16\_t asint16(int16\_t input);
-int16\_t asint16(uint16\_t input);
-template<uint N> vector<int16\_t, N> asint16(vector<float16\_t, N> input);
-template<uint N> vector<int16\_t, N> asint16(vector<int16\_t, N> input);
-template<uint N> vector<int16\_t, N> asint16(vector<uint16\_t, N> input);
+int16_t asint16(float16_t input);
+int16_t asint16(int16_t input);
+int16_t asint16(uint16_t input);
+template<uint N> vector<int16_t, N> asint16(vector<float16_t, N> input);
+template<uint N> vector<int16_t, N> asint16(vector<int16_t, N> input);
+template<uint N> vector<int16_t, N> asint16(vector<uint16_t, N> input);
 \end{HLSL}
 
 \begin{itemize}
@@ -177,12 +177,12 @@ template<uint N> vector<uint, N> asuint(vector<uint, N> input);
 \end{itemize}
 
 \begin{HLSL}
-uint16\_t asuint16(float16\_t input);
-uint16\_t asuint16(int16\_t input);
-uint16\_t asuint16(uint16\_t input);
-template<uint N> vector<uint16\_t, N> asuint16(vector<float16\_t, N> input);
-template<uint N> vector<uint16\_t, N> asuint16(vector<int16\_t, N> input);
-template<uint N> vector<uint16\_t, N> asuint16(vector<uint16\_t, N> input);
+uint16_t asuint16(float16_t input);
+uint16_t asuint16(int16_t input);
+uint16_t asuint16(uint16_t input);
+template<uint N> vector<uint16_t, N> asuint16(vector<float16_t, N> input);
+template<uint N> vector<uint16_t, N> asuint16(vector<int16_t, N> input);
+template<uint N> vector<uint16_t, N> asuint16(vector<uint16_t, N> input);
 \end{HLSL}
 
 \begin{itemize}
