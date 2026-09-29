@@ -404,6 +404,68 @@ is ill-formed.
 \p An implementation may support the integer suffixes \texttt{ll} and
 \texttt{ull} as equivalent to \texttt{l} and \texttt{ul} respectively.
 
+\Sub{Character Literals}{Lex.Literal.Char}
+
+\begin{grammar}
+  \define{character-literal}\br
+  \terminal{'} char-sequence \terminal{'}
+
+  \define{char-sequence}\br
+  char\br
+  char-sequence char
+
+  \define{char}\br
+  \textnormal{any member of the source character set except the single quote
+  (\texttt{'}), backslash (\texttt{\textbackslash}), or new-line.}\br
+  escape-sequence\br
+  universal-character-name
+
+  \define{escape-sequence}\br
+  simple-escape-sequence\br
+  octal-escape-sequence\br
+  hexadecimal-escape-sequence
+
+  \define{simple-escape-sequence} \textnormal{one of}\br
+  \terminal{\textbackslash ' \textbackslash " \textbackslash ? \textbackslash\textbackslash \textbackslash a}\br
+  \terminal{\textbackslash b \textbackslash f \textbackslash n \textbackslash r \textbackslash t \textbackslash v}
+
+  \define{octal-escape-sequence}\br
+  \terminal{\textbackslash } octal-digit\br
+  \terminal{\textbackslash } octal-digit octal-digit\br
+  \terminal{\textbackslash } octal-digit octal-digit octal-digit
+
+  \define{hexadecimal-escape-sequence}\br
+  \terminal{\textbackslash x} hexadecimal-digit\br
+  \terminal{\textbackslash x} hexadecimal-digit hexadecimal-digit\br
+\end{grammar}
+
+\p A character literal is one or more character enclosed in single quotes
+(\texttt{'}). Character literals must be representable in 8-bit integers. A
+character literal has the numeric value of the referenced character in the
+translation character set.
+
+\p The characters specified by a \textit{simple-excape-sequence} are as follows:
+
+\begin{center}
+  \begin{tabular}{|| c | c | c ||}
+    \hline
+    Hex Value & Character Name & \textit{simple-escape-sequence} \\
+    \hline
+    0x07 & Alert & \texttt{\textbackslash a} \\
+    0x08 & Backspace & \texttt{\textbackslash b} \\
+    0x09 & Character Tabulation & \texttt{\textbackslash t} \\
+    0x0A & Line Feed & \texttt{\textbackslash n} \\
+    0x0B & Line Tabulation & \texttt{\textbackslash v} \\
+    0x0C & Form Feed & \texttt{\textbackslash f} \\
+    0x0D & Carriage Return & \texttt{\textbackslash r} \\
+    0x22 & Quotation Mark & \texttt{\textbackslash "} \\
+    0x27 & Apostrophe & \texttt{\textbackslash '} \\
+    0x3F & Question Mark & \texttt{\textbackslash ?} \\
+    0x5C & Reverse Solidus & \texttt{\textbackslash\textbackslash} \\
+    \hline
+  \end{tabular}
+\end{center}
+
 \Sub{Floating-point Literals}{Lex.Literal.Float}
 
 \begin{grammar}
