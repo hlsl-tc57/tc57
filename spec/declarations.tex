@@ -85,6 +85,7 @@ and cannot be applied to names declared \texttt{const}.
 \begin{grammar}
   \define{function-specifier}\br
   \texttt{export}\br
+  \texttt{explicit}
 \end{grammar}
 
 \p The \texttt{export} specifier denotes that the function has program linkage (\ref{Basic.Linkage.Program}).
@@ -94,6 +95,9 @@ and cannot be applied to names declared \texttt{const}.
 \p Functions with program linkage can also be specified in \textit{export-declaration-group} (\ref{Decl.Export}).
 
 \p If a function is declared with an \texttt{export} specifier then all redeclarations of the same function must also use the \texttt{export} specifier or be part of \textit{export-declaration-group} (\ref{Decl.Export}).
+
+\p The \texttt{explicit} specifier may only be used on the declaration of a
+conversion function within a class declaration.
 
 \Sec{Declarators}{Decl.Decl}
 
