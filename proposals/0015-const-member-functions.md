@@ -13,7 +13,7 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| `const` member functions | [Prototype implementation](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/aa44718f81c58d6aca7d53d0705c897bd2c7eae4) | Complete |
+| `const` member functions | [Complete]([microsoft/DirectXShaderCompiler#8964](https://github.com/microsoft/DirectXShaderCompiler/issues/8964)) | Complete |
 
 ## Introduction
 
