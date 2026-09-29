@@ -21,13 +21,13 @@ params:
 |   | DXC     | Clang    |
 |---|---------|----------|
 | C++11 template closing `>>` | Complete  | Complete |
-| variadic templates | Not Started | Complete |
-| variable templates | Not Started | Not Started |
+| variadic templates | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8905) | Complete |
+| variable templates | [Not Started](https://github.com/microsoft/DirectXShaderCompiler/issues/8906) | Not Started |
 | `auto` keyword | Complete  | Complete |
-| decltype | Not Started | Complete |
-| Return type deduction for normal functions | Not Started | Not Started |
-| constexpr | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/c78e5916454521714f182b55abc48df0f3e96edb) | Complete |
-| static_assert | [Prototype](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/db275103054bf8ac2336f4ea2e693e610de70702) | Complete |
+| decltype | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8907) | Complete |
+| Return type deduction for normal functions | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8903) | Not Started |
+| constexpr | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8909) | Complete |
+| static_assert | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8910) | Complete |
 
 ## Introduction
 

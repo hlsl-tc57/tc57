@@ -25,10 +25,11 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| Effects Syntax | https://github.com/microsoft/DirectXShaderCompiler/issues/8480 | Completed |
-| Remove `interface` keyword | https://github.com/microsoft/DirectXShaderCompiler/issues/8481 | Completed |
-| Remove `uniform` keyword | https://github.com/microsoft/DirectXShaderCompiler/issues/8482 | Completed |
-| Error on cbuffer initializer | https://github.com/microsoft/DirectXShaderCompiler/issues/8483 | https://github.com/llvm/llvm-project/issues/200021 |
+| Effects Syntax | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8480) | Complete |
+| Remove `interface` keyword | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8481) | Complete |
+| Remove `uniform` keyword | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8482) | Complete |
+| Remove `shared` keyword | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8482) | Complete |
+| Error on cbuffer initializer | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8483) | https://github.com/llvm/llvm-project/issues/200021 |
 
 ## Introduction
 

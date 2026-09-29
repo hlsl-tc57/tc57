@@ -15,7 +15,7 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| Disallow `namespace` in `cbuffer` | https://github.com/microsoft/DirectXShaderCompiler/issues/8484 | Completed |
+| Disallow `namespace` in `cbuffer` | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8484) | Complete |
 
 ## Introduction
 
