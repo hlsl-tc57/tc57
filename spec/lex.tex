@@ -448,3 +448,33 @@ suffix. The \texttt{f16} and \texttt{F16} suffixes will only be supported when
 an implementation supports native 16-bit types. If a value specified in the
 source is not in the range of representable values for its type, the program is
 ill-formed.
+
+\Sub{Vector Literals}{Lex.Literal.Vector}
+
+\begin{grammar}
+  \define{vector-literal}\br
+  integer-literal \texttt{.} scalar-element-sequence\br
+  floating-literal \texttt{.} scalar-element-sequence
+
+  \define{scalar-element-sequence}\br
+  scalar-element-sequence-x\br
+  scalar-element-sequence-r
+
+  \define{scalar-element-sequence-x}\br
+  \texttt{x}\br
+  scalar-element-sequence-x \texttt{x}
+
+  \define{scalar-element-sequence-r}\br
+  \texttt{r}\br
+  scalar-element-sequence-r \texttt{r}
+\end{grammar}
+
+\p A \textit{vector-literal} is an \textit{integer-literal} or
+\textit{floating-point} literal followed by a period (\texttt{.}) and a
+\textit{scalar-element-sequence}.
+
+\p A \textit{scalar-element-sequence} is a \textit{vector-swizzle-sequence}
+where only the first vector element accessor is valid (\texttt{x} or
+\texttt{r}). A \textit{scalar-element-sequence} is equivalent to a vector splat
+conversion performed on the \textit{integer-literal} or
+\textit{floating-literal} value (\ref{Conv.vsplat}).
