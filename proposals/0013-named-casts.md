@@ -9,6 +9,12 @@ params:
   status: Accepted
 ---
 
+|   | DXC     | Clang    |
+|---|---------|----------|
+| `static_cast` | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8977)  | Complete |
+| `hlsl::bit_cast` | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8978)  | Not Started |
+| `hlsl::elementwise_cast` | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8979)  | Not Started |
+
 ## Introduction
 
 This proposal introduces C++-like named casts which perform specific defined

@@ -13,7 +13,7 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| `hlsl` namespace | In Progress ([prototype implementation](https://github.com/llvm-beanz/DirectXShaderCompiler/commit/60a2bd17f9dc485a2b779f7319ac77fcf38cd82f)) | In Progress |
+| `hlsl` namespace | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8918) | In Progress |
 
 ## Introduction
 

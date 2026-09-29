@@ -17,7 +17,7 @@ params:
 
 |   | DXC     | Clang    |
 |---|---------|----------|
-| [unroll] doesn't truncate | Not Started | Complete |
+| [unroll] doesn't truncate | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/7219) | Complete |
 
 ## Introduction
 
