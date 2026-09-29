@@ -27,7 +27,7 @@ params:
 | decltype | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8907) | Complete |
 | Return type deduction for normal functions | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8903) | Not Started |
 | constexpr | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8909) | Complete |
-| static_assert | [In Progress](https://github.com/microsoft/DirectXShaderCompiler/issues/8910) | Complete |
+| static_assert | [Complete](https://github.com/microsoft/DirectXShaderCompiler/issues/8910) | Complete |
 
 ## Introduction
 
