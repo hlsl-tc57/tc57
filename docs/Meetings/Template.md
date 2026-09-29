@@ -12,7 +12,7 @@ draft: true
 |                 |                                                                    |
 |:----------------|:-------------------------------------------------------------------|
 | **Chair:**      | Chris Bieneman (Microsoft)                                         |
-| **Vice-chair:** | Farzon Lotfi (Microsoft)                                           |
+| **Vice-chair:** | Justin Bogner (Microsoft)                                          |
 | **Secretary:**  | Aki Braun (Ecma International), Samina Husain (Ecma International) |
 
 # 1 Welcome, opening and meeting logistics
