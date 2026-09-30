@@ -6,7 +6,7 @@ params:
     - llvm-beanz: Chris Bieneman
   sponsors:
     - llvm-beanz: Chris Bieneman
-  status: Refinement
+  status: Accepted
 ---
 
 ## Introduction
