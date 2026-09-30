@@ -1,0 +1,815 @@
+\Sec{General Functions}{Math.GeneralFunctions}
+
+\p This subclause lists and describes functions for general mathematics
+operations operating objects of integer types, floating-point types, and vectors
+of such types.
+
+\begin{HLSL}
+float16_t abs(float16_t x);
+float abs(float x);
+double abs(double x);
+int16_t abs(int16_t x);
+uint16_t abs(uint16_t x);
+int abs(int x);
+uint abs(uint x);
+int64_t abs(int64_t x);
+uint64_t abs(uint64_t x);
+template <uint N> vector<float16_t, N> abs(vector<float16_t, N> x);
+template <uint N> vector<float, N> abs(vector<float, N> x);
+template <uint N> vector<double, N> abs(vector<double, N> x);
+template <uint N> vector<int16_t, N> abs(vector<int16_t, N> x);
+template <uint N> vector<uint16_t, N> abs(vector<uint16_t, N> x);
+template <uint N> vector<int, N> abs(vector<int, N> x);
+template <uint N> vector<uint, N> abs(vector<uint, N> x);
+template <uint N> vector<int64_t, N> abs(vector<int64_t, N> x);
+template <uint N> vector<uint64_t, N> abs(vector<uint64_t, N> x);
+
+float16_t ceil(float16_t x);
+float ceil(float x);
+template <uint N> vector<float16_t, N> ceil(vector<float16_t, N> x);
+template <uint N> vector<float, N> ceil(vector<float, N> x);
+
+float16_t clamp(float16_t x, float16_t min, float16_t max);
+float clamp(float x, float min, float max);
+double clamp(double x, double min, double max);
+int16_t clamp(int16_t x, int16_t min, int16_t max);
+uint16_t clamp(uint16_t x, uint16_t min, uint16_t max);
+int clamp(int x, int min, int max);
+uint clamp(uint x, uint min, uint max);
+int64_t clamp(int64_t x, int64_t min, int64_t max);
+uint64_t clamp(uint64_t x, uint64_t min, uint64_t max);
+template <uint N>
+vector<float16_t, N> clamp(vector<float16_t, N> x, vector<float16_t, N> min,
+                           vector<float16_t, N> max);
+template <uint N>
+vector<float, N> clamp(vector<float, N> x, vector<float, N> min,
+                       vector<float, N> max);
+template <uint N>
+vector<double, N> clamp(vector<double, N> x, vector<double, N> min,
+                        vector<double, N> max);
+template <uint N>
+vector<int16_t, N> clamp(vector<int16_t, N> x, vector<int16_t, N> min,
+                         vector<int16_t, N> max);
+template <uint N>
+vector<uint16_t, N> clamp(vector<uint16_t, N> x, vector<uint16_t, N> min,
+                          vector<uint16_t, N> max);
+template <uint N>
+vector<int, N> clamp(vector<int, N> x, vector<int, N> min, vector<int, N> max);
+template <uint N>
+vector<uint, N> clamp(vector<uint, N> x, vector<uint, N> min,
+                      vector<uint, N> max);
+template <uint N>
+vector<int64_t, N> clamp(vector<int64_t, N> x, vector<int64_t, N> min,
+                         vector<int64_t, N> max);
+template <uint N>
+vector<uint64_t, N> clamp(vector<uint64_t, N> x, vector<uint64_t, N> min,
+                          vector<uint64_t, N> max);
+
+float16_t exp(float16_t x);
+float exp(float x);
+template <uint N> vector<float16_t, N> exp(vector<float16_t, N> x);
+template <uint N> vector<float, N> exp(vector<float, N> x);
+
+float16_t exp2(float16_t x);
+float exp2(float x);
+template <uint N> vector<float16_t, N> exp2(vector<float16_t, N> x);
+template <uint N> vector<float, N> exp2(vector<float, N> x);
+
+float16_t floor(float16_t x);
+float floor(float x);
+template <uint N> vector<float16_t, N> floor(vector<float16_t, N> x);
+template <uint N> vector<float, N> floor(vector<float, N> x);
+
+double fma(double a, double b, double c);
+template <uint N>
+vector<double, N> fma(vector<double, N> a, vector<double, N> b,
+                      vector<double, N> c);
+
+float16_t fmod(float16_t a, float16_t b);
+float fmod(float a, float b);
+template <uint N>
+vector<float16_t, N> fmod(vector<float16_t, N> a, vector<float16_t, N> b);
+template <uint N> vector<float, N> fmod(vector<float, N> a, vector<float, N> b);
+
+float16_t frac(float16_t x);
+float frac(float x);
+template <uint N> vector<float16_t, N> frac(vector<float16_t, N> x);
+template <uint N> vector<float, N> frac(vector<float, N> x);
+
+float frexp(float x, out float exp);
+template <uint N>
+vector<float, N> frexp(vector<float, N> x, out vector<float, N> exp);
+
+float16_t ldexp(float16_t x, float16_t exp);
+float ldexp(float x, float exp);
+template <uint N>
+vector<float16_t, N> ldexp(vector<float16_t, N> x, vector<float16_t, N> exp);
+template <uint N>
+vector<float, N> ldexp(vector<float, N> x, vector<float, N> exp);
+
+float16_t lerp(float16_t a, float16_t b, float16_t s);
+float lerp(float a, float b, float s);
+template <uint N>
+vector<float16_t, N> lerp(vector<float16_t, N> a, vector<float16_t, N> b,
+                          vector<float16_t, N> s);
+template <uint N>
+vector<float, N> lerp(vector<float, N> a, vector<float, N> b,
+                      vector<float, N> s);
+
+float16_t log(float16_t x);
+float log(float x);
+template <uint N> vector<float16_t, N> log(vector<float16_t, N> x);
+template <uint N> vector<float, N> log(vector<float, N> x);
+
+float16_t log10(float16_t x);
+float log10(float x);
+template <uint N> vector<float16_t, N> log10(vector<float16_t, N> x);
+template <uint N> vector<float, N> log10(vector<float, N> x);
+
+float16_t log2(float16_t x);
+float log2(float x);
+template <uint N> vector<float16_t, N> log2(vector<float16_t, N> x);
+template <uint N> vector<float, N> log2(vector<float, N> x);
+
+float16_t mad(float16_t a, float16_t b, float16_t c);
+float mad(float a, float b, float c);
+double mad(double a, double b, double c);
+int16_t mad(int16_t a, int16_t b, int16_t c);
+uint16_t mad(uint16_t a, uint16_t b, uint16_t c);
+int mad(int a, int b, int c);
+uint mad(uint a, uint b, uint c);
+int64_t mad(int64_t a, int64_t b, int64_t c);
+uint64_t mad(uint64_t a, uint64_t b, uint64_t c);
+template <uint N>
+vector<float16_t, N> mad(vector<float16_t, N> a, vector<float16_t, N> b,
+                         vector<float16_t, N> c);
+template <uint N>
+vector<float, N> mad(vector<float, N> a, vector<float, N> b,
+                     vector<float, N> c);
+template <uint N>
+vector<double, N> mad(vector<double, N> a, vector<double, N> b,
+                      vector<double, N> c);
+template <uint N>
+vector<int16_t, N> mad(vector<int16_t, N> a, vector<int16_t, N> b,
+                       vector<int16_t, N> c);
+template <uint N>
+vector<uint16_t, N> mad(vector<uint16_t, N> a, vector<uint16_t, N> b,
+                        vector<uint16_t, N> c);
+template <uint N>
+vector<int, N> mad(vector<int, N> a, vector<int, N> b, vector<int, N> c);
+template <uint N>
+vector<uint, N> mad(vector<uint, N> a, vector<uint, N> b, vector<uint, N> c);
+template <uint N>
+vector<int64_t, N> mad(vector<int64_t, N> a, vector<int64_t, N> b,
+                       vector<int64_t, N> c);
+template <uint N>
+vector<uint64_t, N> mad(vector<uint64_t, N> a, vector<uint64_t, N> b,
+                        vector<uint64_t, N> c);
+
+float16_t max(float16_t a, float16_t b);
+float max(float a, float b);
+double max(double a, double b);
+int16_t max(int16_t a, int16_t b);
+uint16_t max(uint16_t a, uint16_t b);
+int max(int a, int b);
+uint max(uint a, uint b);
+int64_t max(int64_t a, int64_t b);
+uint64_t max(uint64_t a, uint64_t b);
+template <uint N>
+vector<float16_t, N> max(vector<float16_t, N> a, vector<float16_t, N> b);
+template <uint N> vector<float, N> max(vector<float, N> a, vector<float, N> b);
+template <uint N>
+vector<double, N> max(vector<double, N> a, vector<double, N> b);
+template <uint N>
+vector<int16_t, N> max(vector<int16_t, N> a, vector<int16_t, N> b);
+template <uint N>
+vector<uint16_t, N> max(vector<uint16_t, N> a, vector<uint16_t, N> b);
+template <uint N> vector<int, N> max(vector<int, N> a, vector<int, N> b);
+template <uint N> vector<uint, N> max(vector<uint, N> a, vector<uint, N> b);
+template <uint N>
+vector<int64_t, N> max(vector<int64_t, N> a, vector<int64_t, N> b);
+template <uint N>
+vector<uint64_t, N> max(vector<uint64_t, N> a, vector<uint64_t, N> b);
+
+float16_t min(float16_t a, float16_t b);
+float min(float a, float b);
+double min(double a, double b);
+int16_t min(int16_t a, int16_t b);
+uint16_t min(uint16_t a, uint16_t b);
+int min(int a, int b);
+uint min(uint a, uint b);
+int64_t min(int64_t a, int64_t b);
+uint64_t min(uint64_t a, uint64_t b);
+template <uint N>
+vector<float16_t, N> min(vector<float16_t, N> a, vector<float16_t, N> b);
+template <uint N> vector<float, N> min(vector<float, N> a, vector<float, N> b);
+template <uint N>
+vector<double, N> min(vector<double, N> a, vector<double, N> b);
+template <uint N>
+vector<int16_t, N> min(vector<int16_t, N> a, vector<int16_t, N> b);
+template <uint N>
+vector<uint16_t, N> min(vector<uint16_t, N> a, vector<uint16_t, N> b);
+template <uint N> vector<int, N> min(vector<int, N> a, vector<int, N> b);
+template <uint N> vector<uint, N> min(vector<uint, N> a, vector<uint, N> b);
+template <uint N>
+vector<int64_t, N> min(vector<int64_t, N> a, vector<int64_t, N> b);
+template <uint N>
+vector<uint64_t, N> min(vector<uint64_t, N> a, vector<uint64_t, N> b);
+
+float16_t pow(float16_t x, float16_t y);
+float pow(float x, float y);
+template <uint N>
+vector<float16_t, N> pow(vector<float16_t, N> x, vector<float16_t, N> y);
+template <uint N> vector<float, N> pow(vector<float, N> x, vector<float, N> y);
+
+float16_t rcp(float16_t x);
+float rcp(float x);
+double rcp(double x);
+template <uint N> vector<float16_t, N> rcp(vector<float16_t, N> x);
+template <uint N> vector<float, N> rcp(vector<float, N> x);
+template <uint N> vector<double, N> rcp(vector<double, N> x);
+
+float16_t round(float16_t x);
+float round(float x);
+template <uint N> vector<float16_t, N> round(vector<float16_t, N> x);
+template <uint N> vector<float, N> round(vector<float, N> x);
+
+float16_t rsqrt(float16_t x);
+float rsqrt(float x);
+template <uint N> vector<float16_t, N> rsqrt(vector<float16_t, N> x);
+template <uint N> vector<float, N> rsqrt(vector<float, N> x);
+
+int sign(float16_t x);
+int sign(float x);
+int sign(double x);
+int sign(int16_t x);
+int sign(uint16_t x);
+int sign(int x);
+int sign(uint x);
+int sign(int64_t x);
+int sign(uint64_t x);
+template <uint N> vector<int, N> sign(vector<float16_t, N> x);
+template <uint N> vector<int, N> sign(vector<float, N> x);
+template <uint N> vector<int, N> sign(vector<double, N> x);
+template <uint N> vector<int, N> sign(vector<int16_t, N> x);
+template <uint N> vector<int, N> sign(vector<uint16_t, N> x);
+template <uint N> vector<int, N> sign(vector<int, N> x);
+template <uint N> vector<int, N> sign(vector<uint, N> x);
+template <uint N> vector<int, N> sign(vector<int64_t, N> x);
+template <uint N> vector<int, N> sign(vector<uint64_t, N> x);
+
+float16_t smoothstep(float16_t a, float16_t b, float16_t x);
+float smoothstep(float a, float b, float x);
+template <uint N>
+vector<float16_t, N> smoothstep(vector<float16_t, N> a, vector<float16_t, N> b,
+                                vector<float16_t, N> x);
+template <uint N>
+vector<float, N> smoothstep(vector<float, N> a, vector<float, N> b,
+                            vector<float, N> x);
+
+float16_t sqrt(float16_t x);
+float sqrt(float x);
+template <uint N> vector<float16_t, N> sqrt(vector<float16_t, N> x);
+template <uint N> vector<float, N> sqrt(vector<float, N> x);
+
+float16_t step(float16_t a, float16_t x);
+float step(float a, float x);
+template <uint N>
+vector<float16_t, N> step(vector<float16_t, N> a, vector<float16_t, N> x);
+template <uint N> vector<float, N> step(vector<float, N> a, vector<float, N> x);
+
+float16_t trunc(float16_t x);
+float trunc(float x);
+template <uint N> vector<float16_t, N> trunc(vector<float16_t, N> x);
+template <uint N> vector<float, N> trunc(vector<float, N> x);
+\end{HLSL}
+
+\Sub{Other Non-Member Functions}{Math.GeneralFunctions.Other}
+
+\begin{HLSL}
+float16_t abs(float16_t x);
+float abs(float x);
+double abs(double x);
+int16_t abs(int16_t x);
+uint16_t abs(uint16_t x);
+int abs(int x);
+uint abs(uint x);
+int64_t abs(int64_t x);
+uint64_t abs(uint64_t x);
+template <uint N> vector<float16_t, N> abs(vector<float16_t, N> x);
+template <uint N> vector<float, N> abs(vector<float, N> x);
+template <uint N> vector<double, N> abs(vector<double, N> x);
+template <uint N> vector<int16_t, N> abs(vector<int16_t, N> x);
+template <uint N> vector<uint16_t, N> abs(vector<uint16_t, N> x);
+template <uint N> vector<int, N> abs(vector<int, N> x);
+template <uint N> vector<uint, N> abs(vector<uint, N> x);
+template <uint N> vector<int64_t, N> abs(vector<int64_t, N> x);
+template <uint N> vector<uint64_t, N> abs(vector<uint64_t, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as the
+  input where the value of each returned element is the magnitude of the
+  corresponding input element (\(|x_0|, .. |x_n|\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t ceil(float16_t x);
+float ceil(float x);
+template <uint N> vector<float16_t, N> ceil(vector<float16_t, N> x);
+template <uint N> vector<float, N> ceil(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as the
+  input where the value of each returned element is the ceiling of the
+  corresponding input element (\(\lceil x_0 \rceil, .. \lceil x_n \rceil\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t clamp(float16_t x, float16_t min, float16_t max);
+float clamp(float x, float min, float max);
+double clamp(double x, double min, double max);
+int16_t clamp(int16_t x, int16_t min, int16_t max);
+uint16_t clamp(uint16_t x, uint16_t min, uint16_t max);
+int clamp(int x, int min, int max);
+uint clamp(uint x, uint min, uint max);
+int64_t clamp(int64_t x, int64_t min, int64_t max);
+uint64_t clamp(uint64_t x, uint64_t min, uint64_t max);
+template <uint N>
+vector<float16_t, N> clamp(vector<float16_t, N> x, vector<float16_t, N> min,
+                           vector<float16_t, N> max);
+template <uint N>
+vector<float, N> clamp(vector<float, N> x, vector<float, N> min,
+                       vector<float, N> max);
+template <uint N>
+vector<double, N> clamp(vector<double, N> x, vector<double, N> min,
+                        vector<double, N> max);
+template <uint N>
+vector<int16_t, N> clamp(vector<int16_t, N> x, vector<int16_t, N> min,
+                         vector<int16_t, N> max);
+template <uint N>
+vector<uint16_t, N> clamp(vector<uint16_t, N> x, vector<uint16_t, N> min,
+                          vector<uint16_t, N> max);
+template <uint N>
+vector<int, N> clamp(vector<int, N> x, vector<int, N> min, vector<int, N> max);
+template <uint N>
+vector<uint, N> clamp(vector<uint, N> x, vector<uint, N> min,
+                      vector<uint, N> max);
+template <uint N>
+vector<int64_t, N> clamp(vector<int64_t, N> x, vector<int64_t, N> min,
+                         vector<int64_t, N> max);
+template <uint N>
+vector<uint64_t, N> clamp(vector<uint64_t, N> x, vector<uint64_t, N> min,
+                          vector<uint64_t, N> max);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is clamped between the
+  corresponding value in the \texttt{min} and \texttt{max} inputs.
+  \item \textit{Remarks:} Behavior of NaN input values is undefined.
+\end{itemize}
+
+\begin{HLSL}
+float16_t exp(float16_t x);
+float exp(float x);
+template <uint N> vector<float16_t, N> exp(vector<float16_t, N> x);
+template <uint N> vector<float, N> exp(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the base $e$ exponent of
+  the corresponding element (\(e^{x_0}, .. e^{x_n}\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t exp2(float16_t x);
+float exp2(float x);
+template <uint N> vector<float16_t, N> exp2(vector<float16_t, N> x);
+template <uint N> vector<float, N> exp2(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the base 2 exponent of
+  the corresponding element (\(2^{x_0}, .. 2^{x_n}\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t floor(float16_t x);
+float floor(float x);
+template <uint N> vector<float16_t, N> floor(vector<float16_t, N> x);
+template <uint N> vector<float, N> floor(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the floor of the
+  corresponding input element (\(\lfloor x_0 \rfloor, .. \lfloor x_n \rfloor\)).
+\end{itemize}
+
+\begin{HLSL}
+double fma(double a, double b, double c);
+template <uint N>
+vector<double, N> fma(vector<double, N> a, vector<double, N> b,
+                      vector<double, N> c);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is a fused multiply add of
+  the corresponding input elements (\(a_0 * b_0 + c_0, .. a_n * b_n + c_n\)).
+  \item \textit{Remarks:} The returned value must be accurate to 0.5 units of
+  least precision (ULP).
+\end{itemize}
+
+\begin{HLSL}
+float16_t fmod(float16_t a, float16_t b);
+float fmod(float a, float b);
+template <uint N>
+vector<float16_t, N> fmod(vector<float16_t, N> a, vector<float16_t, N> b);
+template <uint N> vector<float, N> fmod(vector<float, N> a, vector<float, N> b);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the floating-point
+  remainder of the corresponding input elements.
+\end{itemize}
+
+\begin{HLSL}
+float16_t frac(float16_t x);
+float frac(float x);
+template <uint N> vector<float16_t, N> frac(vector<float16_t, N> x);
+template <uint N> vector<float, N> frac(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the floating-point
+  fractional component of the corresponding input elements.
+\end{itemize}
+
+\begin{HLSL}
+float frexp(float x, out float exp);
+template <uint N>
+vector<float, N> frexp(vector<float, N> x, out vector<float, N> exp);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the mantissa of the
+  corresponding input elements.
+  \item \textit{Returns:} The scalar or vector \texttt{exp} is of the same
+  dimensions as the input and the value of each element is initialized to the
+  exponent of the corresponding input elements.
+\end{itemize}
+
+\begin{HLSL}
+float16_t ldexp(float16_t x, float16_t exp);
+float ldexp(float x, float exp);
+template <uint N>
+vector<float16_t, N> ldexp(vector<float16_t, N> x, vector<float16_t, N> exp);
+template <uint N>
+vector<float, N> ldexp(vector<float, N> x, vector<float, N> exp);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the input element
+  multiplied by the base 2 exponent of the corresponding element of \texttt{exp}
+  (\(x_0 * 2^{exp_0}, .. x_n * 2^{exp_n}\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t lerp(float16_t a, float16_t b, float16_t s);
+float lerp(float a, float b, float s);
+template <uint N>
+vector<float16_t, N> lerp(vector<float16_t, N> a, vector<float16_t, N> b,
+                          vector<float16_t, N> s);
+template <uint N>
+vector<float, N> lerp(vector<float, N> a, vector<float, N> b,
+                      vector<float, N> s);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the linear interpolation
+  of the corresponding input \texttt{a} towards \texttt{b} by the step factor
+  \texttt{s} (\(a_0 + s_0(b_0-a_0), .. a_0 + s_n(b_n-a_n)\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t log(float16_t x);
+float log(float x);
+template <uint N> vector<float16_t, N> log(vector<float16_t, N> x);
+template <uint N> vector<float, N> log(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the base $e$ logarithm
+  of the corresponding element (\(\ln x_0, .. \ln x_n\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t log10(float16_t x);
+float log10(float x);
+template <uint N> vector<float16_t, N> log10(vector<float16_t, N> x);
+template <uint N> vector<float, N> log10(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the base 10 logarithm
+  of the corresponding element (\(\log_{10} x_0, .. \log_{10} x_n\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t log2(float16_t x);
+float log2(float x);
+template <uint N> vector<float16_t, N> log2(vector<float16_t, N> x);
+template <uint N> vector<float, N> log2(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the base 2 logarithm
+  of the corresponding element (\(\log_{2} x_0, .. \log_{2} x_n\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t mad(float16_t a, float16_t b, float16_t c);
+float mad(float a, float b, float c);
+double mad(double a, double b, double c);
+int16_t mad(int16_t a, int16_t b, int16_t c);
+uint16_t mad(uint16_t a, uint16_t b, uint16_t c);
+int mad(int a, int b, int c);
+uint mad(uint a, uint b, uint c);
+int64_t mad(int64_t a, int64_t b, int64_t c);
+uint64_t mad(uint64_t a, uint64_t b, uint64_t c);
+template <uint N>
+vector<float16_t, N> mad(vector<float16_t, N> a, vector<float16_t, N> b,
+                         vector<float16_t, N> c);
+template <uint N>
+vector<float, N> mad(vector<float, N> a, vector<float, N> b,
+                     vector<float, N> c);
+template <uint N>
+vector<double, N> mad(vector<double, N> a, vector<double, N> b,
+                      vector<double, N> c);
+template <uint N>
+vector<int16_t, N> mad(vector<int16_t, N> a, vector<int16_t, N> b,
+                       vector<int16_t, N> c);
+template <uint N>
+vector<uint16_t, N> mad(vector<uint16_t, N> a, vector<uint16_t, N> b,
+                        vector<uint16_t, N> c);
+template <uint N>
+vector<int, N> mad(vector<int, N> a, vector<int, N> b, vector<int, N> c);
+template <uint N>
+vector<uint, N> mad(vector<uint, N> a, vector<uint, N> b, vector<uint, N> c);
+template <uint N>
+vector<int64_t, N> mad(vector<int64_t, N> a, vector<int64_t, N> b,
+                       vector<int64_t, N> c);
+template <uint N>
+vector<uint64_t, N> mad(vector<uint64_t, N> a, vector<uint64_t, N> b,
+                        vector<uint64_t, N> c);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is a multiplication then
+  addition of the corresponding input elements (\(a_0 * b_0 + c_0, .. a_n * b_n
+  + c_n\)).
+  \item \textit{Remarks:} An implementation may either fuse the multiplication
+  and addition into a single operation resulting in a higher-precision result or
+  it may implement the operation as separate multiplication and addition
+  operations.
+  \item \textit{Remarks:} In the presence of the \texttt{precise} keyword an
+  implementation must always lower this operation to either a fused or a
+  non-fused operation.
+\end{itemize}
+
+\begin{HLSL}
+float16_t max(float16_t a, float16_t b);
+float max(float a, float b);
+double max(double a, double b);
+int16_t max(int16_t a, int16_t b);
+uint16_t max(uint16_t a, uint16_t b);
+int max(int a, int b);
+uint max(uint a, uint b);
+int64_t max(int64_t a, int64_t b);
+uint64_t max(uint64_t a, uint64_t b);
+template <uint N>
+vector<float16_t, N> max(vector<float16_t, N> a, vector<float16_t, N> b);
+template <uint N> vector<float, N> max(vector<float, N> a, vector<float, N> b);
+template <uint N>
+vector<double, N> max(vector<double, N> a, vector<double, N> b);
+template <uint N>
+vector<int16_t, N> max(vector<int16_t, N> a, vector<int16_t, N> b);
+template <uint N>
+vector<uint16_t, N> max(vector<uint16_t, N> a, vector<uint16_t, N> b);
+template <uint N> vector<int, N> max(vector<int, N> a, vector<int, N> b);
+template <uint N> vector<uint, N> max(vector<uint, N> a, vector<uint, N> b);
+template <uint N>
+vector<int64_t, N> max(vector<int64_t, N> a, vector<int64_t, N> b);
+template <uint N>
+vector<uint64_t, N> max(vector<uint64_t, N> a, vector<uint64_t, N> b);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the greater of the
+  corresponding input elements (\(a_0 > b_0 ? a_0 : b_0, .. a_n > b_n ? a_n :
+  b_n\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t min(float16_t a, float16_t b);
+float min(float a, float b);
+double min(double a, double b);
+int16_t min(int16_t a, int16_t b);
+uint16_t min(uint16_t a, uint16_t b);
+int min(int a, int b);
+uint min(uint a, uint b);
+int64_t min(int64_t a, int64_t b);
+uint64_t min(uint64_t a, uint64_t b);
+template <uint N>
+vector<float16_t, N> min(vector<float16_t, N> a, vector<float16_t, N> b);
+template <uint N> vector<float, N> min(vector<float, N> a, vector<float, N> b);
+template <uint N>
+vector<double, N> min(vector<double, N> a, vector<double, N> b);
+template <uint N>
+vector<int16_t, N> min(vector<int16_t, N> a, vector<int16_t, N> b);
+template <uint N>
+vector<uint16_t, N> min(vector<uint16_t, N> a, vector<uint16_t, N> b);
+template <uint N> vector<int, N> min(vector<int, N> a, vector<int, N> b);
+template <uint N> vector<uint, N> min(vector<uint, N> a, vector<uint, N> b);
+template <uint N>
+vector<int64_t, N> min(vector<int64_t, N> a, vector<int64_t, N> b);
+template <uint N>
+vector<uint64_t, N> min(vector<uint64_t, N> a, vector<uint64_t, N> b);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the lesser of the
+  corresponding input elements (\(a_0 < b_0 ? a_0 : b_0, .. a_n < b_n ? a_n :
+  b_n\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t pow(float16_t x, float16_t y);
+float pow(float x, float y);
+template <uint N>
+vector<float16_t, N> pow(vector<float16_t, N> x, vector<float16_t, N> y);
+template <uint N> vector<float, N> pow(vector<float, N> x, vector<float, N> y);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the corresponding
+  \texttt{x} element raised to the power of the corresponding \texttt{y} element
+  (\(x_0^{y_0}, .. x_n^{y_n}\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t rcp(float16_t x);
+float rcp(float x);
+double rcp(double x);
+template <uint N> vector<float16_t, N> rcp(vector<float16_t, N> x);
+template <uint N> vector<float, N> rcp(vector<float, N> x);
+template <uint N> vector<double, N> rcp(vector<double, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the reciprocal of the
+  corresponding input element (\(1/x_0, .. 1/x_n\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t round(float16_t x);
+float round(float x);
+template <uint N> vector<float16_t, N> round(vector<float16_t, N> x);
+template <uint N> vector<float, N> round(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the value of the
+  corresponding input element rounded to the nearest integer. Ties are rounded
+  to the nearest even.
+\end{itemize}
+
+\begin{HLSL}
+float16_t rsqrt(float16_t x);
+float rsqrt(float x);
+template <uint N> vector<float16_t, N> rsqrt(vector<float16_t, N> x);
+template <uint N> vector<float, N> rsqrt(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the reciprocal of the
+  square root of the corresponding input element (\(1/\sqrt{x_0}, .. 1/\sqrt{x_n}\)).
+\end{itemize}
+
+\begin{HLSL}
+int sign(float16_t x);
+int sign(float x);
+int sign(double x);
+int sign(int16_t x);
+int sign(uint16_t x);
+int sign(int x);
+int sign(uint x);
+int sign(int64_t x);
+int sign(uint64_t x);
+template <uint N> vector<int, N> sign(vector<float16_t, N> x);
+template <uint N> vector<int, N> sign(vector<float, N> x);
+template <uint N> vector<int, N> sign(vector<double, N> x);
+template <uint N> vector<int, N> sign(vector<int16_t, N> x);
+template <uint N> vector<int, N> sign(vector<uint16_t, N> x);
+template <uint N> vector<int, N> sign(vector<int, N> x);
+template <uint N> vector<int, N> sign(vector<uint, N> x);
+template <uint N> vector<int, N> sign(vector<int64_t, N> x);
+template <uint N> vector<int, N> sign(vector<uint64_t, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the sign of the
+  corresponding input elements. For an input element less than zero the result
+  will be $-1$, for an input element greater than zero the result will be $1$,
+  for an input element equal to zero the result will be $0$.
+\end{itemize}
+
+\begin{HLSL}
+float16_t smoothstep(float16_t a, float16_t b, float16_t x);
+float smoothstep(float a, float b, float x);
+template <uint N>
+vector<float16_t, N> smoothstep(vector<float16_t, N> a, vector<float16_t, N> b,
+                                vector<float16_t, N> x);
+template <uint N>
+vector<float, N> smoothstep(vector<float, N> a, vector<float, N> b,
+                            vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the smooth Hermite
+  interpolation of the corresponding input \texttt{a} towards \texttt{b} by the
+  step factor
+  \texttt{s} (\(a_0 + s_0(b_0-a_0), .. a_0 + s_n(b_n-a_n)\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t sqrt(float16_t x);
+float sqrt(float x);
+template <uint N> vector<float16_t, N> sqrt(vector<float16_t, N> x);
+template <uint N> vector<float, N> sqrt(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the square root of the
+  corresponding input element (\(\sqrt{x_0}, .. \sqrt{x_n}\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t step(float16_t a, float16_t x);
+float step(float a, float x);
+template <uint N>
+vector<float16_t, N> step(vector<float16_t, N> a, vector<float16_t, N> x);
+template <uint N> vector<float, N> step(vector<float, N> a, vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the sign of the
+  corresponding input elements. For an input element less than zero the result
+  will be $-1$, for an input element greater than zero the result will be $1$,
+  for an input element equal to zero the result will be $0$.
+
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is $1$ if the \texttt{a}
+  element is greater than or equal to thee \texttt{b} element; otherwise the
+  element is $0$ (\(a_0 \geq b_0 ? 1 : 0, .. a_n \geq b_n ? 1 : 0\)).
+\end{itemize}
+
+\begin{HLSL}
+float16_t trunc(float16_t x);
+float trunc(float x);
+template <uint N> vector<float16_t, N> trunc(vector<float16_t, N> x);
+template <uint N> vector<float, N> trunc(vector<float, N> x);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} A scalar or vector object of the same dimensions as
+  the input where the value of each returned element is the truncated integer
+  value of the corresponding input element. This rounds towards zero for all
+  values, behaving like \texttt{floor} for positive values and \texttt{ceil} for
+  negative values.
+\end{itemize}
+
