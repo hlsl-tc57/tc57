@@ -832,27 +832,27 @@ template are \textit{matrix types}. Matrix dimensions, \texttt{N} and
 
 \Sub{Arithmetic Types}{Basic.Types.Arithmetic}
 
-\p There are three \textit{standard signed integer types}: \texttt{int16\_t},
-\texttt{int32\_t}, and \texttt{int64\_t}. Each of the signed integer types is
-explicitly named for the size in bits of the type's object representation. There
-is also the type alias \texttt{int} which is an alias of \texttt{int32\_t}.
-There is one \textit{minimum precision signed integer type}: \texttt{min16int}.
-The minimum precision signed integer type is named for the required minimum
-value representation size in bits. The object representation of
+\p There are three \textit{standard signed integer types}: \texttt{short},
+\texttt{int}, and \texttt{long}. The object representation for the
+\texttt{short} type may be 16 or 32-bits. The object representation for the
+\texttt{int} and \texttt{long} types are respectively 32, and 64 bits. There is
+one optionally supported \textit{minimum precision signed integer type}:
+\texttt{min16int}. The minimum precision signed integer type is named for the
+required minimum value representation size in bits. The object representation of
 \texttt{min16int} is \texttt{int}. The standard signed integer types and minimum
 precision signed integer type are collectively called \textit{signed integer
 types}.
 
-\p There are three \textit{standard unsigned integer types}: \texttt{uint16\_t},
-\texttt{uint32\_t}, and \texttt{uint64\_t}. Each of the unsigned integer types
-is explicitly named for the size in bits of the type's object representation.
-There is also the type alias \texttt{uint} which is an alias of
-\texttt{uint32\_t}. There is one \textit{minimum precision unsigned integer
-type}: \texttt{min16uint}. The minimum precision unsigned integer type is named
-for the required minimum value representation size in bits. The object
-representation of \texttt{min16uint} is \texttt{uint}. The standard unsigned
-integer types and minimum precision unsigned integer type are collectively
-called \textit{unsigned integer types}.
+\p There are three \textit{standard unsigned integer types}: \texttt{unsigned
+short}, \texttt{unsigned int}, and \texttt{unsigned long}. The object
+representation for the \texttt{unsigned short} type may be 16 or 32-bits. The
+object representation for the \texttt{unsigned int} and \texttt{unsigned long}
+types are respectively 32, and 64 bits. There is one optionally supported
+\textit{minimum precision unsigned integer type}: \texttt{min16uint}. The
+minimum precision unsigned integer type is named for the required minimum value
+representation size in bits. The object representation of \texttt{min16uint} is
+\texttt{unsigned int}. The standard unsigned integer types and minimum precision
+unsigned integer type are collectively called \textit{unsigned integer types}.
 
 \p The minimum precision signed integer types and minimum precision unsigned
 integer types are collectively called \textit{minimum precision integer types}.
@@ -866,20 +866,18 @@ shall satisfy the constraints defined in \glsdesc{isoCPP}, section
 
 \p There are three \textit{standard floating point types}: \texttt{half},
 \texttt{float}, and \texttt{double}. The \texttt{float} type is a 32-bit
-floating point type, and has a type alias \texttt{float32\_t}. The
-\texttt{double} type is a 64-bit floating point type, and has a type alias
-\texttt{float64\_t}. Both the \texttt{float} and \texttt{double} types have
-object representations as defined in \gls{IEEE754}. The \texttt{half} type may
-be either 16-bit or 32-bit as controlled by implementation-defined compiler
-settings. If \texttt{half} is 32-bit it will have an object representation as
-defined in \gls{IEEE754}, otherwise it will have an object representation
-matching the \textbf{binary16} format defined in \gls{IEEE754}. When
-\texttt{half} is 16-bit, it will have a type alias \texttt{float16\_t}. There is
-one \textit{minimum precision floating point type}: \texttt{min16float}. The
-minimum precision floating point type is named for the required minimum value
-representation size in bits. The object representation of \texttt{min16float} is
-\texttt{float}. The standard floating point types and minimum precision floating
-point type are collectively called \textit{floating point types}.
+floating point type. The \texttt{double} type is a 64-bit floating point type.
+Both the \texttt{float} and \texttt{double} types have object representations as
+defined in \gls{IEEE754}. The \texttt{half} type may be either 16-bit or 32-bit
+as controlled by implementation-defined compiler settings. If \texttt{half} is
+32-bit it will have an object representation as defined in \gls{IEEE754},
+otherwise it will have an object representation matching the \textbf{binary16}
+format defined in \gls{IEEE754}. There is one \textit{minimum precision floating
+point type}: \texttt{min16float}. The minimum precision floating point type is
+named for the required minimum value representation size in bits. The object
+representation of \texttt{min16float} is \texttt{float}. The standard floating
+point types and minimum precision floating point type are collectively called
+\textit{floating point types}.
 
 \p Integer and floating point types are collectively called \textit{arithmetic
 types}.
