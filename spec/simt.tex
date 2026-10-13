@@ -1,0 +1,1250 @@
+\Ch{SIMT Functions}{SIMT}
+
+\p This clause lists and describes functions provided by the HLSL standard
+library to perform operations utilizing the \acrshort{simt} programming model to
+coordinate across co-executing threads. These operations are called
+\textit{cooperative} and require execution synchronization.
+
+\p The set of cooperative functions are divided into functions that require
+cooperation of the variable-width \gls{wave} called \textit{wave functions}
+(\ref{SIMT.Wave}), and functions that require cooperation of groupings of four
+adjacent threads called \textit{quad functions} (\ref{SIMT.Quad}).
+
+\p The full semantics of \acrshort{simt} cooperation is detailed in the
+execution model (\ref{Basic.Exec}).
+
+\Sec{Wave Functions}{SIMT.Wave}
+
+\p This subclause defines the set of \gls{wave} functions included in the
+HLSL standard library.
+
+\Sub{Functions}{SIMT.Wave.Functions}
+
+\begin{HLSL}
+bool WaveIsFirstLane();
+
+uint WaveGetLaneIndex();
+
+uint WaveGetLaneCount();
+
+bool WaveActiveAnyTrue(bool cond);
+bool WaveActiveAllTrue(bool cond);
+
+template <typename T> bool WaveActiveAllEqual(T value);
+
+vector<uint, 4> WaveActiveBallot(bool cond);
+
+template <typename T> T WaveReadLaneAt(T value, uint lane);
+
+template <typename T> T WaveReadLaneFirst(T value);
+
+uint WaveActiveCountBits(bool value);
+
+float16_t WaveActiveSum(float16_t value);
+float WaveActiveSum(float value);
+double WaveActiveSum(double value);
+int16_t WaveActiveSum(int16_t value);
+uint16_t WaveActiveSum(uint16_t value);
+int WaveActiveSum(int value);
+uint WaveActiveSum(uint value);
+int64_t WaveActiveSum(int64_t value);
+uint64_t WaveActiveSum(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveSum(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveSum(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveSum(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveSum(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveSum(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveSum(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveSum(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveSum(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveSum(vector<uint64_t, N> value);
+
+float16_t WaveActiveProduct(float16_t value);
+float WaveActiveProduct(float value);
+double WaveActiveProduct(double value);
+int16_t WaveActiveProduct(int16_t value);
+uint16_t WaveActiveProduct(uint16_t value);
+int WaveActiveProduct(int value);
+uint WaveActiveProduct(uint value);
+int64_t WaveActiveProduct(int64_t value);
+uint64_t WaveActiveProduct(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveProduct(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveProduct(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveProduct(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveProduct(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveProduct(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveProduct(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveProduct(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveProduct(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveProduct(vector<uint64_t, N> value);
+
+uint WaveActiveBitAnd(uint value);
+uint64_t WaveActiveBitAnd(uint64_t value);
+template <uint N> vector<uint, N> WaveActiveBitAnd(vector<uint, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveBitAnd(vector<uint64_t, N> value);
+
+uint WaveActiveBitOr(uint value);
+uint64_t WaveActiveBitOr(uint64_t value);
+template <uint N> vector<uint, N> WaveActiveBitOr(vector<uint, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveBitOr(vector<uint64_t, N> value);
+
+uint WaveActiveBitXor(uint value);
+uint64_t WaveActiveBitXor(uint64_t value);
+template <uint N> vector<uint, N> WaveActiveBitXor(vector<uint, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveBitXor(vector<uint64_t, N> value);
+
+float16_t WaveActiveMin(float16_t value);
+float WaveActiveMin(float value);
+double WaveActiveMin(double value);
+int16_t WaveActiveMin(int16_t value);
+uint16_t WaveActiveMin(uint16_t value);
+int WaveActiveMin(int value);
+uint WaveActiveMin(uint value);
+int64_t WaveActiveMin(int64_t value);
+uint64_t WaveActiveMin(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveMin(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveMin(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveMin(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveMin(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveMin(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveMin(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveMin(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveMin(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveMin(vector<uint64_t, N> value);
+
+float16_t WaveActiveMax(float16_t value);
+float WaveActiveMax(float value);
+double WaveActiveMax(double value);
+int16_t WaveActiveMax(int16_t value);
+uint16_t WaveActiveMax(uint16_t value);
+int WaveActiveMax(int value);
+uint WaveActiveMax(uint value);
+int64_t WaveActiveMax(int64_t value);
+uint64_t WaveActiveMax(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveMax(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveMax(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveMax(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveMax(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveMax(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveMax(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveMax(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveMax(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveMax(vector<uint64_t, N> value);
+
+uint WavePrefixCountBits(bool value);
+
+float16_t WavePrefixSum(float16_t value);
+float WavePrefixSum(float value);
+double WavePrefixSum(double value);
+int16_t WavePrefixSum(int16_t value);
+uint16_t WavePrefixSum(uint16_t value);
+int WavePrefixSum(int value);
+uint WavePrefixSum(uint value);
+int64_t WavePrefixSum(int64_t value);
+uint64_t WavePrefixSum(uint64_t value);
+template <uint N> vector<float16_t, N> WavePrefixSum(vector<float16_t, N> value);
+template <uint N> vector<float, N> WavePrefixSum(vector<float, N> value);
+template <uint N> vector<double, N> WavePrefixSum(vector<double, N> value);
+template <uint N> vector<int16_t, N> WavePrefixSum(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WavePrefixSum(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WavePrefixSum(vector<int, N> value);
+template <uint N> vector<uint, N> WavePrefixSum(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WavePrefixSum(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WavePrefixSum(vector<uint64_t, N> value);
+
+float16_t WavePrefixProduct(float16_t value);
+float WavePrefixProduct(float value);
+double WavePrefixProduct(double value);
+int16_t WavePrefixProduct(int16_t value);
+uint16_t WavePrefixProduct(uint16_t value);
+int WavePrefixProduct(int value);
+uint WavePrefixProduct(uint value);
+int64_t WavePrefixProduct(int64_t value);
+uint64_t WavePrefixProduct(uint64_t value);
+template <uint N> vector<float16_t, N> WavePrefixProduct(vector<float16_t, N> value);
+template <uint N> vector<float, N> WavePrefixProduct(vector<float, N> value);
+template <uint N> vector<double, N> WavePrefixProduct(vector<double, N> value);
+template <uint N> vector<int16_t, N> WavePrefixProduct(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WavePrefixProduct(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WavePrefixProduct(vector<int, N> value);
+template <uint N> vector<uint, N> WavePrefixProduct(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WavePrefixProduct(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WavePrefixProduct(vector<uint64_t, N> value);
+
+vector<uint, 4> WaveMatch(float16_t value);
+vector<uint, 4> WaveMatch(float value);
+vector<uint, 4> WaveMatch(double value);
+vector<uint, 4> WaveMatch(int16_t value);
+vector<uint, 4> WaveMatch(uint16_t value);
+vector<uint, 4> WaveMatch(int value);
+vector<uint, 4> WaveMatch(uint value);
+vector<uint, 4> WaveMatch(int64_t value);
+vector<uint, 4> WaveMatch(uint64_t value);
+template <uint N> vector<uint, 4> WaveMatch(vector<float16_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<float, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<double, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<int16_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<uint16_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<int, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<uint, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<int64_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<uint64_t, N> value);
+
+int16_t WaveMultiPrefixBitAnd(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixBitAnd(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixBitAnd(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixBitAnd(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixBitAnd(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixBitAnd(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixBitAnd(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixBitAnd(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixBitAnd(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixBitAnd(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixBitAnd(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixBitAnd(vector<uint64_t, N> value, vector<uint, 4> mask);
+
+int16_t WaveMultiPrefixBitOr(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixBitOr(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixBitOr(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixBitOr(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixBitOr(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixBitOr(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixBitOr(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixBitOr(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixBitOr(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixBitOr(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixBitOr(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixBitOr(vector<uint64_t, N> value, vector<uint, 4> mask);
+
+int16_t WaveMultiPrefixBitXor(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixBitXor(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixBitXor(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixBitXor(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixBitXor(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixBitXor(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixBitXor(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixBitXor(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixBitXor(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixBitXor(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixBitXor(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixBitXor(vector<uint64_t, N> value, vector<uint, 4> mask);
+
+uint WaveMultiPrefixCountBits(bool value, vector<uint, 4> mask);
+
+float16_t WaveMultiPrefixProduct(float16_t value, vector<uint, 4> mask);
+float WaveMultiPrefixProduct(float value, vector<uint, 4> mask);
+double WaveMultiPrefixProduct(double value, vector<uint, 4> mask);
+int16_t WaveMultiPrefixProduct(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixProduct(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixProduct(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixProduct(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixProduct(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixProduct(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<float16_t, N> WaveMultiPrefixProduct(vector<float16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<float, N> WaveMultiPrefixProduct(vector<float, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<double, N> WaveMultiPrefixProduct(vector<double, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixProduct(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixProduct(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixProduct(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixProduct(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixProduct(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixProduct(vector<uint64_t, N> value, vector<uint, 4> mask);
+
+float16_t WaveMultiPrefixSum(float16_t value, vector<uint, 4> mask);
+float WaveMultiPrefixSum(float value, vector<uint, 4> mask);
+double WaveMultiPrefixSum(double value, vector<uint, 4> mask);
+int16_t WaveMultiPrefixSum(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixSum(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixSum(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixSum(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixSum(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixSum(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<float16_t, N> WaveMultiPrefixSum(vector<float16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<float, N> WaveMultiPrefixSum(vector<float, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<double, N> WaveMultiPrefixSum(vector<double, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixSum(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixSum(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixSum(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixSum(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixSum(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixSum(vector<uint64_t, N> value, vector<uint, 4> mask);
+
+uint GetGroupWaveIndex();
+
+uint GetGroupWaveCount();
+\end{HLSL}
+
+\Sub{Other Non-Member Functions}{SIMT.Wave.Functions.Other}
+
+\begin{HLSL}
+bool WaveIsFirstLane();
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} \texttt{true} only on the \gls{lane} with the
+  lowest index in the \gls{tangle}; \texttt{false} on all other lanes.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveGetLaneIndex();
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} the index of the current thread within the \gls{wave}.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveGetLaneCount();
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} the number of \gls{lane}s in the \gls{wave}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{threadgroup}.
+\end{itemize}
+
+\begin{HLSL}
+bool WaveActiveAnyTrue(bool cond);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} returns \texttt{true} if \texttt{cond} is
+  \texttt{true} in any of the co-executing threads in the \gls{tangle};
+  \texttt{false} otherwise.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+bool WaveActiveAllTrue(bool cond);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} returns \texttt{true} if \texttt{cond} is
+  \texttt{true} in all of the co-executing threads in the \gls{tangle};
+  \texttt{false} otherwise.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+template <typename T> bool WaveActiveAllEqual(T value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} returns \texttt{true} if \texttt{value} in all threads
+  equates to the same value as if \texttt{value\textsubscript{0} ==
+  value\textsubscript{1} \&\& value\textsubscript{1} == value\textsubscript{2}
+  \&\& ...}; \texttt{false} otherwise.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+vector<uint, 4> WaveActiveBallot(bool cond);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} A 128-bit bitmask stored in a \texttt{vector<uint,
+  4>}, where each bit denotes if \texttt{cond} on the corresponding \gls{lane}
+  was \texttt{true} with a \texttt{1} and is otherwise \texttt{0}. The least
+  significant bit stores the value from the \gls{lane} with index zero, and the
+  more significant bits map to \gls{lane}s in increasing index order. Any bits
+  that do not map to \gls{lane}s in this \gls{wave} or map to inactive
+  \gls{lane}s are \texttt{0}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+  \item \textit{Notes:} The 128-bit bitmask has one bit for each \gls{lane} in
+  the maximum \gls{wave} size.
+\end{itemize}
+
+\begin{HLSL}
+template <typename T> T WaveReadLaneAt(T value, uint lane);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the value of \texttt{value} from the \gls{lane}
+  specified by \texttt{lane}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle} if \texttt{lane} is uniform.
+\end{itemize}
+
+\begin{HLSL}
+template <typename T> T WaveReadLaneFirst(T value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the value of \texttt{value} from the lane in the
+  \gls{tangle} with the lowest index.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveActiveCountBits(bool value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the number of threads in the \gls{tangle} for which
+  \texttt{value} is \texttt{true}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WaveActiveSum(float16_t value);
+float WaveActiveSum(float value);
+double WaveActiveSum(double value);
+int16_t WaveActiveSum(int16_t value);
+uint16_t WaveActiveSum(uint16_t value);
+int WaveActiveSum(int value);
+uint WaveActiveSum(uint value);
+int64_t WaveActiveSum(int64_t value);
+uint64_t WaveActiveSum(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveSum(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveSum(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveSum(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveSum(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveSum(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveSum(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveSum(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveSum(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveSum(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the arithmetic sum of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{value\textsubscript{0} +
+  value\textsubscript{1} + value\textsubscript{2} + ...}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WaveActiveProduct(float16_t value);
+float WaveActiveProduct(float value);
+double WaveActiveProduct(double value);
+int16_t WaveActiveProduct(int16_t value);
+uint16_t WaveActiveProduct(uint16_t value);
+int WaveActiveProduct(int value);
+uint WaveActiveProduct(uint value);
+int64_t WaveActiveProduct(int64_t value);
+uint64_t WaveActiveProduct(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveProduct(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveProduct(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveProduct(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveProduct(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveProduct(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveProduct(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveProduct(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveProduct(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveProduct(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the arithmetic product of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{value\textsubscript{0} *
+  value\textsubscript{1} * value\textsubscript{2} * ...}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveActiveBitAnd(uint value);
+uint64_t WaveActiveBitAnd(uint64_t value);
+template <uint N> vector<uint, N> WaveActiveBitAnd(vector<uint, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveBitAnd(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} a bitwise and of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{value\textsubscript{0} \&
+  value\textsubscript{1} \& value\textsubscript{2} \& ...}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveActiveBitOr(uint value);
+uint64_t WaveActiveBitOr(uint64_t value);
+template <uint N> vector<uint, N> WaveActiveBitOr(vector<uint, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveBitOr(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} a bitwise or of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{value\textsubscript{0} |
+  value\textsubscript{1} | value\textsubscript{2} | ...}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveActiveBitXor(uint value);
+uint64_t WaveActiveBitXor(uint64_t value);
+template <uint N> vector<uint, N> WaveActiveBitXor(vector<uint, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveBitXor(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} a bitwise exclusive or of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{value\textsubscript{0} \^{}
+  value\textsubscript{1} \^{} value\textsubscript{2} \^{} ...}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WaveActiveMin(float16_t value);
+float WaveActiveMin(float value);
+double WaveActiveMin(double value);
+int16_t WaveActiveMin(int16_t value);
+uint16_t WaveActiveMin(uint16_t value);
+int WaveActiveMin(int value);
+uint WaveActiveMin(uint value);
+int64_t WaveActiveMin(int64_t value);
+uint64_t WaveActiveMin(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveMin(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveMin(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveMin(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveMin(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveMin(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveMin(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveMin(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveMin(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveMin(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the minimum value of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{min(value\textsubscript{0},
+  min(value\textsubscript{1}, min(value\textsubscript{2}, ...)))}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+  \item \textit{Remarks:} inactive \gls{lane}s may behave as if an identity
+  value of the minimum representable valid value of the input type is provided;
+  -INF for floating point types, zero for unsigned integer types, and the
+  largest representable negative value for signed integer types.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WaveActiveMax(float16_t value);
+float WaveActiveMax(float value);
+double WaveActiveMax(double value);
+int16_t WaveActiveMax(int16_t value);
+uint16_t WaveActiveMax(uint16_t value);
+int WaveActiveMax(int value);
+uint WaveActiveMax(uint value);
+int64_t WaveActiveMax(int64_t value);
+uint64_t WaveActiveMax(uint64_t value);
+template <uint N> vector<float16_t, N> WaveActiveMax(vector<float16_t, N> value);
+template <uint N> vector<float, N> WaveActiveMax(vector<float, N> value);
+template <uint N> vector<double, N> WaveActiveMax(vector<double, N> value);
+template <uint N> vector<int16_t, N> WaveActiveMax(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WaveActiveMax(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WaveActiveMax(vector<int, N> value);
+template <uint N> vector<uint, N> WaveActiveMax(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WaveActiveMax(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WaveActiveMax(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the maximum value of the \texttt{value} from each
+  \gls{lane} in the \gls{tangle}, as if \texttt{max(value\textsubscript{0},
+  max(value\textsubscript{1}, max(value\textsubscript{2}, ...)))}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{tangle}.
+  \item \textit{Remarks:} inactive \gls{lane}s may behave as if an identity
+  value of the maximum representable valid value of the input type is provided;
+  INF for floating point types, and the largest representable positive value
+  for integer types.
+\end{itemize}
+
+\begin{HLSL}
+uint WavePrefixCountBits(bool value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the number of \gls{lane}s in the \gls{tangle} with
+  indices less than or equal to the current \gls{lane} where \texttt{value} is
+  \texttt{true}.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WavePrefixSum(float16_t value);
+float WavePrefixSum(float value);
+double WavePrefixSum(double value);
+int16_t WavePrefixSum(int16_t value);
+uint16_t WavePrefixSum(uint16_t value);
+int WavePrefixSum(int value);
+uint WavePrefixSum(uint value);
+int64_t WavePrefixSum(int64_t value);
+uint64_t WavePrefixSum(uint64_t value);
+template <uint N> vector<float16_t, N> WavePrefixSum(vector<float16_t, N> value);
+template <uint N> vector<float, N> WavePrefixSum(vector<float, N> value);
+template <uint N> vector<double, N> WavePrefixSum(vector<double, N> value);
+template <uint N> vector<int16_t, N> WavePrefixSum(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WavePrefixSum(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WavePrefixSum(vector<int, N> value);
+template <uint N> vector<uint, N> WavePrefixSum(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WavePrefixSum(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WavePrefixSum(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the arithmetic sum of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} with indices less than or equal to the current
+  \gls{lane}.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WavePrefixProduct(float16_t value);
+float WavePrefixProduct(float value);
+double WavePrefixProduct(double value);
+int16_t WavePrefixProduct(int16_t value);
+uint16_t WavePrefixProduct(uint16_t value);
+int WavePrefixProduct(int value);
+uint WavePrefixProduct(uint value);
+int64_t WavePrefixProduct(int64_t value);
+uint64_t WavePrefixProduct(uint64_t value);
+template <uint N> vector<float16_t, N> WavePrefixProduct(vector<float16_t, N> value);
+template <uint N> vector<float, N> WavePrefixProduct(vector<float, N> value);
+template <uint N> vector<double, N> WavePrefixProduct(vector<double, N> value);
+template <uint N> vector<int16_t, N> WavePrefixProduct(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> WavePrefixProduct(vector<uint16_t, N> value);
+template <uint N> vector<int, N> WavePrefixProduct(vector<int, N> value);
+template <uint N> vector<uint, N> WavePrefixProduct(vector<uint, N> value);
+template <uint N> vector<int64_t, N> WavePrefixProduct(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> WavePrefixProduct(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the arithmetic product of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} with indices less than or equal to the current
+  \gls{lane}.
+\end{itemize}
+
+\begin{HLSL}
+vector<uint, 4> WaveMatch(float16_t value);
+vector<uint, 4> WaveMatch(float value);
+vector<uint, 4> WaveMatch(double value);
+vector<uint, 4> WaveMatch(int16_t value);
+vector<uint, 4> WaveMatch(uint16_t value);
+vector<uint, 4> WaveMatch(int value);
+vector<uint, 4> WaveMatch(uint value);
+vector<uint, 4> WaveMatch(int64_t value);
+vector<uint, 4> WaveMatch(uint64_t value);
+template <uint N> vector<uint, 4> WaveMatch(vector<float16_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<float, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<double, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<int16_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<uint16_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<int, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<uint, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<int64_t, N> value);
+template <uint N> vector<uint, 4> WaveMatch(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} A 128-bit bitmask stored in a \texttt{vector<uint,
+  4>}, where each bit is \texttt{1} to denote that \texttt{value} on the
+  corresponding \gls{lane} is equal to \texttt{value} on the current lane, and
+  \texttt{0} otherwise. The least significant bit stores the value from the
+  \gls{lane} with index zero, and the more significant bits map to \gls{lane}s
+  in increasing index order. Any bits that do not map to \gls{lane}s in this
+  \gls{wave} or map to \gls{lane}s that not in the \texttt{tangle} are
+  \texttt{0}.
+\end{itemize}
+
+\begin{HLSL}
+int16_t WaveMultiPrefixBitAnd(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixBitAnd(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixBitAnd(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixBitAnd(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixBitAnd(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixBitAnd(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixBitAnd(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixBitAnd(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixBitAnd(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixBitAnd(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixBitAnd(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixBitAnd(vector<uint64_t, N> value, vector<uint, 4> mask);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the bitwise and of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} for which the corresponding \texttt{mask} bit
+  is \texttt{1}.
+  \item \textit{Remarks:} each \gls{lane} may only participate in one grouping
+  as defined by the \texttt{mask}, if a \gls{lane} is masked on in more than one
+  mask formulation the behavior is undefined.
+\end{itemize}
+
+\begin{HLSL}
+int16_t WaveMultiPrefixBitOr(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixBitOr(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixBitOr(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixBitOr(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixBitOr(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixBitOr(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixBitOr(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixBitOr(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixBitOr(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixBitOr(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixBitOr(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixBitOr(vector<uint64_t, N> value, vector<uint, 4> mask);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the bitwise or of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} for which the corresponding \texttt{mask} bit
+  is \texttt{1}.
+  \item \textit{Remarks:} each \gls{lane} may only participate in one grouping
+  as defined by the \texttt{mask}, if a \gls{lane} is masked on in more than one
+  mask formulation the behavior is undefined.
+\end{itemize}
+
+\begin{HLSL}
+int16_t WaveMultiPrefixBitXor(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixBitXor(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixBitXor(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixBitXor(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixBitXor(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixBitXor(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixBitXor(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixBitXor(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixBitXor(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixBitXor(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixBitXor(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixBitXor(vector<uint64_t, N> value, vector<uint, 4> mask);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the bitwise exclusive or of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} for which the corresponding \texttt{mask} bit
+  is \texttt{1}.
+  \item \textit{Remarks:} each \gls{lane} may only participate in one grouping
+  as defined by the \texttt{mask}, if a \gls{lane} is masked on in more than one
+  mask formulation the behavior is undefined.
+\end{itemize}
+
+\begin{HLSL}
+uint WaveMultiPrefixCountBits(bool value, vector<uint, 4> mask);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the number of \gls{lane}s in the \gls{tangle} for
+  which tthe corresponding \texttt{mask} bit is \texttt{1} and \texttt{value} is
+  \texttt{true}.
+  \item \textit{Remarks:} each \gls{lane} may only participate in one grouping
+  as defined by the \texttt{mask}, if a \gls{lane} is masked on in more than one
+  mask formulation the behavior is undefined.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WaveMultiPrefixProduct(float16_t value, vector<uint, 4> mask);
+float WaveMultiPrefixProduct(float value, vector<uint, 4> mask);
+double WaveMultiPrefixProduct(double value, vector<uint, 4> mask);
+int16_t WaveMultiPrefixProduct(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixProduct(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixProduct(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixProduct(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixProduct(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixProduct(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<float16_t, N> WaveMultiPrefixProduct(vector<float16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<float, N> WaveMultiPrefixProduct(vector<float, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<double, N> WaveMultiPrefixProduct(vector<double, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixProduct(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixProduct(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixProduct(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixProduct(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixProduct(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixProduct(vector<uint64_t, N> value, vector<uint, 4> mask);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the arithmetic product of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} for which the corresponding \texttt{mask} bit
+  is \texttt{1}.
+  \item \textit{Remarks:} each \gls{lane} may only participate in one grouping
+  as defined by the \texttt{mask}, if a \gls{lane} is masked on in more than one
+  mask formulation the behavior is undefined.
+\end{itemize}
+
+\begin{HLSL}
+float16_t WaveMultiPrefixSum(float16_t value, vector<uint, 4> mask);
+float WaveMultiPrefixSum(float value, vector<uint, 4> mask);
+double WaveMultiPrefixSum(double value, vector<uint, 4> mask);
+int16_t WaveMultiPrefixSum(int16_t value, vector<uint, 4> mask);
+uint16_t WaveMultiPrefixSum(uint16_t value, vector<uint, 4> mask);
+int WaveMultiPrefixSum(int value, vector<uint, 4> mask);
+uint WaveMultiPrefixSum(uint value, vector<uint, 4> mask);
+int64_t WaveMultiPrefixSum(int64_t value, vector<uint, 4> mask);
+uint64_t WaveMultiPrefixSum(uint64_t value, vector<uint, 4> mask);
+template <uint N>
+vector<float16_t, N> WaveMultiPrefixSum(vector<float16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<float, N> WaveMultiPrefixSum(vector<float, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<double, N> WaveMultiPrefixSum(vector<double, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int16_t, N> WaveMultiPrefixSum(vector<int16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint16_t, N> WaveMultiPrefixSum(vector<uint16_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int, N> WaveMultiPrefixSum(vector<int, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint, N> WaveMultiPrefixSum(vector<uint, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<int64_t, N> WaveMultiPrefixSum(vector<int64_t, N> value, vector<uint, 4> mask);
+template <uint N>
+vector<uint64_t, N> WaveMultiPrefixSum(vector<uint64_t, N> value, vector<uint, 4> mask);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the arithmetic sum of \texttt{value} on all the
+  \gls{lane}s in the \gls{tangle} for which the corresponding \texttt{mask} bit
+  is \texttt{1}.
+  \item \textit{Remarks:} each \gls{lane} may only participate in one grouping
+  as defined by the \texttt{mask}, if a \gls{lane} is masked on in more than one
+  mask formulation the behavior is undefined.
+\end{itemize}
+
+\begin{HLSL}
+uint GetGroupWaveIndex();
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} the index of the current \gls{wave} within the
+  \gls{threadgroup}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{wave}.
+\end{itemize}
+
+\begin{HLSL}
+uint GetGroupWaveCount();
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Returns:} the number of \gls{wave}s executing the current
+  \gls{threadgroup}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{threadgroup}.
+\end{itemize}
+
+\Sec{Quad Functions}{SIMT.Quad}
+
+\p This subclause defines the set of \gls{quad} functions included in the
+HLSL standard library.
+
+\p Co-executing threads within a \gls{wave} are logically subdivided into a quad
+grouping comprised of four threads numbered $0..3$. The indices correspond to a
+logical layout which maps the layout of pixels in a pixel shader as illustrated
+in the table below:
+
+\begin{center}
+  \begin{tabular}{| c | c |}
+    \hline 0 & 1 \\
+    \hline 2 & 3 \\
+    \hline
+  \end{tabular}
+\end{center}
+
+\p In the operations in this subclause $X$ refers to the horizontal axis in the
+table above while $Y$ refers to the vertical axis.
+
+\Sub{Functions}{SIMT.Quad.Functions}
+
+\begin{HLSL}
+float16_t QuadReadLaneAt(float16_t value, uint quadLane);
+float QuadReadLaneAt(float value, uint quadLane);
+double QuadReadLaneAt(double value, uint quadLane);
+int16_t QuadReadLaneAt(int16_t value, uint quadLane);
+uint16_t QuadReadLaneAt(uint16_t value, uint quadLane);
+int QuadReadLaneAt(int value, uint quadLane);
+uint QuadReadLaneAt(uint value, uint quadLane);
+int64_t QuadReadLaneAt(int64_t value, uint quadLane);
+uint64_t QuadReadLaneAt(uint64_t value, uint quadLane);
+template <uint N>
+vector<float16_t, N> QuadReadLaneAt(vector<float16_t, N> value, uint quadLane);
+template <uint N>
+vector<float, N> QuadReadLaneAt(vector<float, N> value, uint quadLane);
+template <uint N>
+vector<double, N> QuadReadLaneAt(vector<double, N> value, uint quadLane);
+template <uint N>
+vector<int16_t, N> QuadReadLaneAt(vector<int16_t, N> value, uint quadLane);
+template <uint N>
+vector<uint16_t, N> QuadReadLaneAt(vector<uint16_t, N> value, uint quadLane);
+template <uint N>
+vector<int, N> QuadReadLaneAt(vector<int, N> value, uint quadLane);
+template <uint N>
+vector<uint, N> QuadReadLaneAt(vector<uint, N> value, uint quadLane);
+template <uint N>
+vector<int64_t, N> QuadReadLaneAt(vector<int64_t, N> value, uint quadLane);
+template <uint N>
+vector<uint64_t, N> QuadReadLaneAt(vector<uint64_t, N> value, uint quadLane);
+
+float16_t QuadReadAcrossX(float16_t value);
+float QuadReadAcrossX(float value);
+double QuadReadAcrossX(double value);
+int16_t QuadReadAcrossX(int16_t value);
+uint16_t QuadReadAcrossX(uint16_t value);
+int QuadReadAcrossX(int value);
+uint QuadReadAcrossX(uint value);
+int64_t QuadReadAcrossX(int64_t value);
+uint64_t QuadReadAcrossX(uint64_t value);
+template <uint N> vector<float16_t, N> QuadReadAcrossX(vector<float16_t, N> value);
+template <uint N> vector<float, N> QuadReadAcrossX(vector<float, N> value);
+template <uint N> vector<double, N> QuadReadAcrossX(vector<double, N> value);
+template <uint N> vector<int16_t, N> QuadReadAcrossX(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> QuadReadAcrossX(vector<uint16_t, N> value);
+template <uint N> vector<int, N> QuadReadAcrossX(vector<int, N> value);
+template <uint N> vector<uint, N> QuadReadAcrossX(vector<uint, N> value);
+template <uint N> vector<int64_t, N> QuadReadAcrossX(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> QuadReadAcrossX(vector<uint64_t, N> value);
+
+float16_t QuadReadAcrossY(float16_t value);
+float QuadReadAcrossY(float value);
+double QuadReadAcrossY(double value);
+int16_t QuadReadAcrossY(int16_t value);
+uint16_t QuadReadAcrossY(uint16_t value);
+int QuadReadAcrossY(int value);
+uint QuadReadAcrossY(uint value);
+int64_t QuadReadAcrossY(int64_t value);
+uint64_t QuadReadAcrossY(uint64_t value);
+template <uint N> vector<float16_t, N> QuadReadAcrossY(vector<float16_t, N> value);
+template <uint N> vector<float, N> QuadReadAcrossY(vector<float, N> value);
+template <uint N> vector<double, N> QuadReadAcrossY(vector<double, N> value);
+template <uint N> vector<int16_t, N> QuadReadAcrossY(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> QuadReadAcrossY(vector<uint16_t, N> value);
+template <uint N> vector<int, N> QuadReadAcrossY(vector<int, N> value);
+template <uint N> vector<uint, N> QuadReadAcrossY(vector<uint, N> value);
+template <uint N> vector<int64_t, N> QuadReadAcrossY(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> QuadReadAcrossY(vector<uint64_t, N> value);
+
+float16_t QuadReadAcrossDiagonal(float16_t value);
+float QuadReadAcrossDiagonal(float value);
+double QuadReadAcrossDiagonal(double value);
+int16_t QuadReadAcrossDiagonal(int16_t value);
+uint16_t QuadReadAcrossDiagonal(uint16_t value);
+int QuadReadAcrossDiagonal(int value);
+uint QuadReadAcrossDiagonal(uint value);
+int64_t QuadReadAcrossDiagonal(int64_t value);
+uint64_t QuadReadAcrossDiagonal(uint64_t value);
+template <uint N> vector<float16_t, N> QuadReadAcrossDiagonal(vector<float16_t, N> value);
+template <uint N> vector<float, N> QuadReadAcrossDiagonal(vector<float, N> value);
+template <uint N> vector<double, N> QuadReadAcrossDiagonal(vector<double, N> value);
+template <uint N> vector<int16_t, N> QuadReadAcrossDiagonal(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> QuadReadAcrossDiagonal(vector<uint16_t, N> value);
+template <uint N> vector<int, N> QuadReadAcrossDiagonal(vector<int, N> value);
+template <uint N> vector<uint, N> QuadReadAcrossDiagonal(vector<uint, N> value);
+template <uint N> vector<int64_t, N> QuadReadAcrossDiagonal(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> QuadReadAcrossDiagonal(vector<uint64_t, N> value);
+
+bool QuadAny(bool cond);
+bool QuadAll(bool cond);
+\end{HLSL}
+
+\Sub{Other Non-Member Functions}{SIMT.Quad.Functions.Other}
+
+\begin{HLSL}
+float16_t QuadReadLaneAt(float16_t value, uint quadLane);
+float QuadReadLaneAt(float value, uint quadLane);
+double QuadReadLaneAt(double value, uint quadLane);
+int16_t QuadReadLaneAt(int16_t value, uint quadLane);
+uint16_t QuadReadLaneAt(uint16_t value, uint quadLane);
+int QuadReadLaneAt(int value, uint quadLane);
+uint QuadReadLaneAt(uint value, uint quadLane);
+int64_t QuadReadLaneAt(int64_t value, uint quadLane);
+uint64_t QuadReadLaneAt(uint64_t value, uint quadLane);
+template <uint N>
+vector<float16_t, N> QuadReadLaneAt(vector<float16_t, N> value, uint quadLane);
+template <uint N>
+vector<float, N> QuadReadLaneAt(vector<float, N> value, uint quadLane);
+template <uint N>
+vector<double, N> QuadReadLaneAt(vector<double, N> value, uint quadLane);
+template <uint N>
+vector<int16_t, N> QuadReadLaneAt(vector<int16_t, N> value, uint quadLane);
+template <uint N>
+vector<uint16_t, N> QuadReadLaneAt(vector<uint16_t, N> value, uint quadLane);
+template <uint N>
+vector<int, N> QuadReadLaneAt(vector<int, N> value, uint quadLane);
+template <uint N>
+vector<uint, N> QuadReadLaneAt(vector<uint, N> value, uint quadLane);
+template <uint N>
+vector<int64_t, N> QuadReadLaneAt(vector<int64_t, N> value, uint quadLane);
+template <uint N>
+vector<uint64_t, N> QuadReadLaneAt(vector<uint64_t, N> value, uint quadLane);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Requires:} \texttt{quadLane} must be a value between \texttt{0}
+  and \texttt{3}.
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the value of \texttt{value} from the \gls{lane}
+  specified by \texttt{quadLane}.
+  \item \textit{Remarks:} the return value of this function is uniform across
+  the \gls{quad}.
+\end{itemize}
+
+\begin{HLSL}
+float16_t QuadReadAcrossX(float16_t value);
+float QuadReadAcrossX(float value);
+double QuadReadAcrossX(double value);
+int16_t QuadReadAcrossX(int16_t value);
+uint16_t QuadReadAcrossX(uint16_t value);
+int QuadReadAcrossX(int value);
+uint QuadReadAcrossX(uint value);
+int64_t QuadReadAcrossX(int64_t value);
+uint64_t QuadReadAcrossX(uint64_t value);
+template <uint N> vector<float16_t, N> QuadReadAcrossX(vector<float16_t, N> value);
+template <uint N> vector<float, N> QuadReadAcrossX(vector<float, N> value);
+template <uint N> vector<double, N> QuadReadAcrossX(vector<double, N> value);
+template <uint N> vector<int16_t, N> QuadReadAcrossX(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> QuadReadAcrossX(vector<uint16_t, N> value);
+template <uint N> vector<int, N> QuadReadAcrossX(vector<int, N> value);
+template <uint N> vector<uint, N> QuadReadAcrossX(vector<uint, N> value);
+template <uint N> vector<int64_t, N> QuadReadAcrossX(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> QuadReadAcrossX(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the \texttt{value} from the other \gls{lane} in the
+  \gls{quad} reachable along the $X$ axis.
+  \item \textit{Remarks:} if the \gls{lane} being read from is inactive, the
+  results are undefined.
+\end{itemize}
+
+\begin{HLSL}
+float16_t QuadReadAcrossY(float16_t value);
+float QuadReadAcrossY(float value);
+double QuadReadAcrossY(double value);
+int16_t QuadReadAcrossY(int16_t value);
+uint16_t QuadReadAcrossY(uint16_t value);
+int QuadReadAcrossY(int value);
+uint QuadReadAcrossY(uint value);
+int64_t QuadReadAcrossY(int64_t value);
+uint64_t QuadReadAcrossY(uint64_t value);
+template <uint N> vector<float16_t, N> QuadReadAcrossY(vector<float16_t, N> value);
+template <uint N> vector<float, N> QuadReadAcrossY(vector<float, N> value);
+template <uint N> vector<double, N> QuadReadAcrossY(vector<double, N> value);
+template <uint N> vector<int16_t, N> QuadReadAcrossY(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> QuadReadAcrossY(vector<uint16_t, N> value);
+template <uint N> vector<int, N> QuadReadAcrossY(vector<int, N> value);
+template <uint N> vector<uint, N> QuadReadAcrossY(vector<uint, N> value);
+template <uint N> vector<int64_t, N> QuadReadAcrossY(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> QuadReadAcrossY(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the \texttt{value} from the other \gls{lane} in the
+  \gls{quad} reachable along the $Y$ axis.
+  \item \textit{Remarks:} if the \gls{lane} being read from is inactive, the
+  results are undefined.
+\end{itemize}
+
+\begin{HLSL}
+float16_t QuadReadAcrossDiagonal(float16_t value);
+float QuadReadAcrossDiagonal(float value);
+double QuadReadAcrossDiagonal(double value);
+int16_t QuadReadAcrossDiagonal(int16_t value);
+uint16_t QuadReadAcrossDiagonal(uint16_t value);
+int QuadReadAcrossDiagonal(int value);
+uint QuadReadAcrossDiagonal(uint value);
+int64_t QuadReadAcrossDiagonal(int64_t value);
+uint64_t QuadReadAcrossDiagonal(uint64_t value);
+template <uint N> vector<float16_t, N> QuadReadAcrossDiagonal(vector<float16_t, N> value);
+template <uint N> vector<float, N> QuadReadAcrossDiagonal(vector<float, N> value);
+template <uint N> vector<double, N> QuadReadAcrossDiagonal(vector<double, N> value);
+template <uint N> vector<int16_t, N> QuadReadAcrossDiagonal(vector<int16_t, N> value);
+template <uint N> vector<uint16_t, N> QuadReadAcrossDiagonal(vector<uint16_t, N> value);
+template <uint N> vector<int, N> QuadReadAcrossDiagonal(vector<int, N> value);
+template <uint N> vector<uint, N> QuadReadAcrossDiagonal(vector<uint, N> value);
+template <uint N> vector<int64_t, N> QuadReadAcrossDiagonal(vector<int64_t, N> value);
+template <uint N> vector<uint64_t, N> QuadReadAcrossDiagonal(vector<uint64_t, N> value);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} the \texttt{value} from the other \gls{lane} in the
+  \gls{quad} reachable along the diagonal axis.
+  \item \textit{Remarks:} if the \gls{lane} being read from is inactive, the
+  results are undefined.
+\end{itemize}
+
+\begin{HLSL}
+bool QuadAny(bool cond);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} \texttt{true} if \texttt{cond} is \texttt{true} on any
+  \gls{lane} in the \gls{quad}.
+  \item \textit{Remarks:} if any \gls{lane} in the \gls{quad} is inactive, the
+  results are undefined.
+\end{itemize}
+
+\begin{HLSL}
+bool QuadAll(bool cond);
+\end{HLSL}
+
+\begin{itemize}
+  \item \textit{Synchronization:} all co-executing threads within a \gls{tangle}
+  must complete evaluation of all preceding expressions and sub-expressions
+  prior to evaluating this function.
+  \item \textit{Returns:} \texttt{true} if \texttt{cond} is \texttt{true} on all
+  \gls{lane}s in the \gls{quad}.
+  \item \textit{Remarks:} if any \gls{lane} in the \gls{quad} is inactive, the
+  results are undefined.
+\end{itemize}
+

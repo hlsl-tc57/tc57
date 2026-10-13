@@ -188,6 +188,26 @@ are temporarily not executing.
 \end{figure}
 \end{center}
 
+\Sub{Dynamic Instance}{Terms.DynamicInstnace}
+
+\p A compiled program is comprised of a set of declarations, statements, and
+expressions. Each \gls{dispatch} produces at runtime a set of \textit{dynamic
+instances} of each declaration, statement, and expression which represent the
+runtime behavior of each construct.
+
+\p A program's execution may produce multiple dynamic instances of a given
+instruction through constructs like loops or function calls where the same
+expressions are evaluated multiple times.
+
+\p All co-executing \gls{lane}s in the same \gls{wave} which evaluate the same
+expressions under the same control flow, are said to share dynamic instances of
+instructions.
+
+\Sub{\gls{tangle}}{Terms.Tangle}
+
+\p A \gls{tangle} is a grouping of active co-executing threads that evaluate the
+same dynamic instance of a statement or expression.
+
 \Sub{Uniformity}{Terms.Uniformity}
 
 \p Uniformity is a property of either a value or a control flow construct.
