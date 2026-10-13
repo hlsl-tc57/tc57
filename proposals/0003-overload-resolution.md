@@ -6,7 +6,7 @@ params:
     - llvm-beanz: Chris Bieneman
   sponsors:
     - llvm-beanz: Chris Bieneman
-  status: Completed
+  status: Accepted
 ---
 
 * Dependencies: [#74](https://github.com/hlsl-tc57/tc57/pull/74),
