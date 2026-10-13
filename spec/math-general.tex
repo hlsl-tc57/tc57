@@ -498,7 +498,7 @@ vector<float, N> lerp(vector<float, N> a, vector<float, N> b,
   \item \textit{Returns:} A scalar or vector object of the same dimensions as
   the input where the value of each returned element is the linear interpolation
   of the corresponding input \texttt{a} towards \texttt{b} by the step factor
-  \texttt{s} (\(a_0 + s_0(b_0-a_0), .. a_0 + s_n(b_n-a_n)\)).
+  \texttt{s} (\(a_0 + s_0(b_0-a_0), .. a_n + s_n(b_n-a_n)\)).
 \end{itemize}
 
 \begin{HLSL}
@@ -583,12 +583,13 @@ vector<uint64_t, N> mad(vector<uint64_t, N> a, vector<uint64_t, N> b,
   addition of the corresponding input elements (\(a_0 * b_0 + c_0, .. a_n * b_n
   + c_n\)).
   \item \textit{Remarks:} An implementation may either fuse the multiplication
-  and addition into a single operation resulting in a higher-precision result or
-  it may implement the operation as separate multiplication and addition
-  operations.
+  and addition into a single operation which may avoid intermediate rounding
+  in the result or it may implement the operation as separate multiplication and
+  addition operations.
   \item \textit{Remarks:} In the presence of the \texttt{precise} keyword an
-  implementation must always lower this operation to either a fused or a
-  non-fused operation.
+  implementation must lower all \texttt{mad} functions with \texttt{precise}
+  outputs to the same hardware operations, which may be fused or
+  non-fused.
 \end{itemize}
 
 \begin{HLSL}
@@ -757,11 +758,7 @@ vector<float, N> smoothstep(vector<float, N> a, vector<float, N> b,
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Returns:} A scalar or vector object of the same dimensions as
-  the input where the value of each returned element is the smooth Hermite
-  interpolation of the corresponding input \texttt{a} towards \texttt{b} by the
-  step factor
-  \texttt{s} (\(a_0 + s_0(b_0-a_0), .. a_0 + s_n(b_n-a_n)\)).
+  \item \textit{Returns:} %TODO - Must be fixed.
 \end{itemize}
 
 \begin{HLSL}
@@ -786,15 +783,10 @@ template <uint N> vector<float, N> step(vector<float, N> a, vector<float, N> x);
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Returns:} A scalar or vector object of the same dimensions as
-  the input where the value of each returned element is the sign of the
-  corresponding input elements. For an input element less than zero the result
-  will be $-1$, for an input element greater than zero the result will be $1$,
-  for an input element equal to zero the result will be $0$.
 
   \item \textit{Returns:} A scalar or vector object of the same dimensions as
-  the input where the value of each returned element is $1$ if the \texttt{a}
-  element is greater than or equal to thee \texttt{b} element; otherwise the
+  the input where the value of each returned element is $1$ if the \texttt{x}
+  element is greater than or equal to the \texttt{a} element; otherwise the
   element is $0$ (\(a_0 \geq b_0 ? 1 : 0, .. a_n \geq b_n ? 1 : 0\)).
 \end{itemize}
 
