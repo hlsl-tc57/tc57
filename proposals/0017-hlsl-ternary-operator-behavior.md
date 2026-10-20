@@ -6,7 +6,7 @@ params:
     - bob80905: Joshua Batista
     sponsors:
     - bob80905: Joshua Batista
-    status: Under Consideration
+    status: Refinement
 ---
 
 * Planned Version: 202x
