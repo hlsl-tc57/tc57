@@ -258,13 +258,14 @@ template <uint N> vector<int, N> sign(vector<uint, N> x);
 template <uint N> vector<int, N> sign(vector<int64_t, N> x);
 template <uint N> vector<int, N> sign(vector<uint64_t, N> x);
 
-float16_t smoothstep(float16_t a, float16_t b, float16_t x);
-float smoothstep(float a, float b, float x);
+float16_t smoothstep(float16_t min, float16_t max, float16_t x);
+float smoothstep(float min, float max, float x);
 template <uint N>
-vector<float16_t, N> smoothstep(vector<float16_t, N> a, vector<float16_t, N> b,
+vector<float16_t, N> smoothstep(vector<float16_t, N> min,
+                                vector<float16_t, N> max,
                                 vector<float16_t, N> x);
 template <uint N>
-vector<float, N> smoothstep(vector<float, N> a, vector<float, N> b,
+vector<float, N> smoothstep(vector<float, N> min, vector<float, N> max,
                             vector<float, N> x);
 
 float16_t sqrt(float16_t x);
@@ -747,18 +748,21 @@ template <uint N> vector<int, N> sign(vector<uint64_t, N> x);
 \end{itemize}
 
 \begin{HLSL}
-float16_t smoothstep(float16_t a, float16_t b, float16_t x);
-float smoothstep(float a, float b, float x);
+float16_t smoothstep(float16_t min, float16_t max, float16_t x);
+float smoothstep(float min, float max, float x);
 template <uint N>
-vector<float16_t, N> smoothstep(vector<float16_t, N> a, vector<float16_t, N> b,
+vector<float16_t, N> smoothstep(vector<float16_t, N> min,
+                                vector<float16_t, N> max,
                                 vector<float16_t, N> x);
 template <uint N>
-vector<float, N> smoothstep(vector<float, N> a, vector<float, N> b,
+vector<float, N> smoothstep(vector<float, N> min, vector<float, N> max,
                             vector<float, N> x);
 \end{HLSL}
 
 \begin{itemize}
-  \item \textit{Returns:} %TODO - Must be fixed.
+  \item \textit{Returns:} $0$ if \texttt{x} is less than \texttt{min} and $1$ if
+  \texttt{x} is greater than \texttt{max}; otherwise an interpolant computed by
+  Hermite interpolation of \texttt{x} between \texttt{min} and \texttt{max}.
 \end{itemize}
 
 \begin{HLSL}
