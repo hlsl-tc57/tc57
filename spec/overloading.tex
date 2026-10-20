@@ -229,10 +229,10 @@ spellable operator, and \texttt{a} and \texttt{b} represent arguments to the ope
 \end{tabular}
 \end{center}
 
-\p Given the table above, operand \texttt{a} is of type \texttt{T1}, and operand \texttt{b} is of type
-\texttt{T2}. \texttt{T1} must be of class or enumeration type, and \texttt{T2} may be of any type
-including \texttt{T1}. The candidate set for operator resolution is constructed by the
-process:
+\p Given the table above, operand \texttt{a} is of type \texttt{T1}, and operand
+\texttt{b} is of type \texttt{T2}. Either \texttt{T1} or \texttt{T2} must be of
+class or enumeration type. The candidate set for operator resolution is
+constructed by the process:
 
 \begin{itemize}
 \item If \texttt{T1} is a class type, the result of qualified lookup of \texttt{operator@} is
