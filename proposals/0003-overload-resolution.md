@@ -343,14 +343,14 @@ and non-member function call expressions. In the table `@` represents any
 spellable operator, and `a` and `b` represent arguments to the operator.
 
 | Expression | Member function   | Non-member function |
+| ---------- | ----------------- | ------------------- |
 | @a         | (a).operator@()   | operator@(a)        |
 | a@b        | (a).operator@(b)  | operator@(a,b)      |
 | a[b]       | (a).operator[](b) |                     |
 
 Given the table above, operand `a` is of type `T1`, and operand `b` is of type
-`T2`. `T1` must be of class or enumeration type, and `T2` may be of any type
-including `T1`. The candidate set for operator resolution is constructed by the
-process:
+`T2`. Either `T1` or `T2` must be of class or enumeration type. The candidate
+set for operator resolution is constructed by the process:
 
 * If `T1` is a class type, the result of qualified lookup of `operator@` is
   added to the set.
