@@ -36,19 +36,20 @@ of the members.
 
 In HLSL the following code is valid:
 
-  struct A {
-    int a;
-    double b;
-  };
-  struct B {
-    A a[2];
-    int c;
-  };
-  B b = {{1, 1.2}, {2, 2.2}, 3};   // Array elements specified as members
-  B b2 = {1, 2, 3, 4, 5};          // each field initialized separately
-  B b3 = {{1, {2, 3}}, {4, 5}};    // Completely random grouping of arguments
-  int4 i4 = {1,2,3,4};             // valid int4 in C-syntax
-  B b4 = {i4, 5};                  // int4 implicitly expanded to 4 arguments
+```hlsl
+struct A {
+  int a;
+  double b;
+};
+struct B {
+  A a[2];
+  int c;
+};
+B b = {{1, 1.2}, {2, 2.2}, 3};   // Array elements specified as members
+B b2 = {1, 2, 3, 4, 5};          // each field initialized separately
+B b3 = {{1, {2, 3}}, {4, 5}};    // Completely random grouping of arguments
+int4 i4 = {1,2,3,4};             // valid int4 in C-syntax
+B b4 = {i4, 5};                  // int4 implicitly expanded to 4 arguments
 ```
 
 Formalizing this code to comply with C/C++ initializer list rules will likely
@@ -78,11 +79,12 @@ initialized.
 For example given the source example from the motivation section above, a tool
 could rewrite the initializers as:
 
-  B b = {{{1, 1.2}, {2, 2.2}}, 3};
-  B b2 = {{{1, 2}, {3, 4}}, 5};
-  B b3 = {{{1, 2}, {3, 4}}, 5};
-  int4 i4 = {1,2,3,4};
-  B b4 = {{{i4.x, i4.y}, {i4.z, i4.w}}, 5};
+```hlsl
+B b = {{{1, 1.2}, {2, 2.2}}, 3};
+B b2 = {{{1, 2}, {3, 4}}, 5};
+B b3 = {{{1, 2}, {3, 4}}, 5};
+int4 i4 = {1,2,3,4};
+B b4 = {{{i4.x, i4.y}, {i4.z, i4.w}}, 5};
 ```
 
 The rewritten initializers all behave the same but shift braces to match
