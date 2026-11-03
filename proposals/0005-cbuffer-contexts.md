@@ -5,7 +5,7 @@ params:
   authors:
   - llvm-beanz: Chris Bieneman
   - hekota: Helena Kotas
-  status: Accepted
+  status: Completed
 ---
 
 * Planned Version: 202x
