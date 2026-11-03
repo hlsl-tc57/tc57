@@ -47,7 +47,8 @@ This proposal also will introduce the `explicit` keyword which may only be
 applied to a user-defined conversion function. When a conversion function is
 annotated with the `explicit` keyword the conversion function will be excluded
 from any overload set constructed for implicit conversions, allowing the
-function to only be resolved in explicit cast expressions.
+function to only be resolved in explicit cast expressions, or direct
+initializations of the form `T X = T(Obj)` where `T` is a built-in type.
 
 ## Detailed Design
 
