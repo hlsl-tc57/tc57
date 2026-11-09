@@ -540,3 +540,30 @@ where only the first vector element accessor is valid (\texttt{x} or
 \texttt{r}). A \textit{scalar-element-sequence} is equivalent to a vector splat
 conversion performed on the \textit{integer-literal} or
 \textit{floating-literal} value (\ref{Conv.vsplat}).
+
+\Sub{String Literals}{Lex.Literal.String}
+
+\begin{grammar}
+  \define{string-literal}\br
+  \terminal{"} char-sequence \terminal{"}
+\end{grammar}
+
+\p A \textit{string literal} is a sequence of 8-bit characters
+(\ref{Lex.Literal.Char}) surrounded by double quotes (\texttt{"}).
+
+\p String literal objects have the type \texttt{string}
+(\ref{Basic.Types.String}), and have static storage duration
+(\ref{Basic.Storage.Static}).
+
+\p Translation phase 6 (\ref{Lex.Phases}) concatenates adjacent string literals
+into a single merged string, and appends a null-terminator (\texttt{\\0}).
+
+\p In a string literal, the single quote (\texttt{'}) is representable by itself
+or by the escape sequence \texttt{\\'}, and a double quote must be preceded by a
+\texttt{\\}; otherwise all escape sequences and universal-character-names in
+string literals have the same meaning as in character literals
+(\ref{Lex.Literal.Char}).
+
+\p A char or universal-character-name in a string literal may map to a
+multibyte sequence in the final translated string. Final translated strings are
+UTF-8 as defined by \gls{UTF}.
