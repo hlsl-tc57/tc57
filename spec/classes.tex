@@ -1,5 +1,68 @@
 \Ch{Classes}{Class}
 
+\p A class is a type. The name of a class is a \textit{class-name}
+(\ref{Class.Name}) within its scope.
+
+\begin{grammar}
+  \define{class-name}\br
+  identifier\br
+  simple-template-id
+\end{grammar}
+
+A \textit{class-name} is introduced by a \textit{class-specifier} or
+\textit{elaborated-type-specifier}. An object of class type contains zero or
+more members and base class objects in sequence.
+
+\begin{grammar}
+  \define{class-specifier}\br
+  class-head \terminal{\{} \opt{member-specification} \terminal{\}}
+
+  \define{class-head}\br
+  class-key \opt{atribute-specifier-seq} class-head-name \opt{class-final-specifier} \opt{base-clause}\br
+  class-key \opt{atribute-specifier-seq} \opt{base-clause}
+
+  \define{class-head-name}\br
+  \opt{nested-name-specifier} class-name
+
+  \define{class-final-specifier}\br
+  \terminal{final}
+
+  \define{class-key}\br
+  \terminal{class}\br
+  \terminal{struct}
+\end{grammar}
+
+\p A \textit{class-specifier} defines a class type, and is known as a
+\textit{class definition}. A class is considered defined after the closing brace
+of its \textit{class-specifier} has been seen even if its members are not yet
+defined.
+
+\p A \textit{class-specifier} that does not contain a \textit{class-head-name}
+defines an unnamed class.
+
+\p A \textit{class-name} is introduced into the scope it is declared in
+immediately after the \textit{class-name} is seen. The \textit{class-name} is
+also introduced into the scope of the class itself from the beginning of the
+scope, where it is known as the \textit{injected-class-name}.
+
+\p If a class definition contains a \textit{class-final-specifier} marking the
+class as \texttt{final}, the class may not appear as a
+\textit{base-type-specifier} in the \textit{base-clause} of another class or the
+program is ill-formed.
+
+\p If a base class or member subobject of a class is an object of intangible
+type, the class itself is an intangible type and usage of any object of the
+class must follow the rules governing intangible objects or the program is
+ill-formed (\ref{Basic.Types.Intangible}).
+
+\p A \textit{readonly-storable class} is a class that:
+
+\begin{itemize}
+  \item has no non-static data members of type non-readonly-storable class.
+  \item has no non-readonly-storable base classes, and
+  \item has no non-static data members marked \texttt{mutable}
+\end{itemize}
+
 \Sec{Member Functions}{Class.MemberFunctions}
 
 \Sub{Non-static Member Functions}{Class.MemberFunctions.NonStatic}
