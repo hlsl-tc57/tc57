@@ -18,8 +18,8 @@ more members and base class objects in sequence.
   class-head \terminal{\{} \opt{member-specification} \terminal{\}}
 
   \define{class-head}\br
-  class-key \opt{atribute-specifier-seq} class-head-name \opt{class-final-specifier} \opt{base-clause}\br
-  class-key \opt{atribute-specifier-seq} \opt{base-clause}
+  class-key \opt{attribute-specifier-seq} class-head-name \opt{class-final-specifier} \opt{base-clause}\br
+  class-key \opt{attribute-specifier-seq} \opt{base-clause}
 
   \define{class-head-name}\br
   \opt{nested-name-specifier} class-name
@@ -58,7 +58,7 @@ ill-formed (\ref{Basic.Types.Intangible}).
 \p A \textit{readonly-storable class} is a class that:
 
 \begin{itemize}
-  \item has no non-static data members of type non-readonly-storable class.
+  \item has no non-static data members of type non-readonly-storable class, or array of non-readonly-storable class.
   \item has no non-readonly-storable base classes, and
   \item has no non-static data members marked \texttt{mutable}
 \end{itemize}
