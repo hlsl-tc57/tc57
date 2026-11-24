@@ -174,13 +174,14 @@ value is outside the range at runtime, the behavior is undefined.
 
 \p A \textit{postfix-expression} followed by a dot (\texttt{.}) and a sequence
 of one or more \textit{swizzle components} is a postfix expression. The postfix
-expression before the dot is evaluated and must be of vector or matrix type. If
-the postfix expression before the dot is an lvalue, the swizzle expression may
-produce either an lvalue or a prvalue; otherwise it produces a prvalue.
+expression before the dot is evaluated and must be of scalar, vector or matrix
+type. If the postfix expression before the dot is an lvalue, the swizzle
+expression may produce either an lvalue or a prvalue; otherwise it produces a
+prvalue.
 
-\p If the postfix expression before the dot is an lvalue and the
-\textit{swizzle-component-sequence} contains no repeated components, the swizzle
-expression is an lvalue; otherwise it is a prvalue.
+\p If the postfix expression before the dot is an lvalue, is not a scalar, and
+the \textit{swizzle-component-sequence} contains no repeated components, the
+swizzle expression is an lvalue; otherwise it is a prvalue.
 
 \Sub{Vector Swizzle}{Expr.Post.Swizzle.Vector}
 
@@ -208,8 +209,9 @@ expression is an lvalue; otherwise it is a prvalue.
 swizzle components of either the \textit{swizzle-component-rgba} or
 \textit{swizzle-component-xyzw} forms; the two forms may not be mixed in the
 same \textit{vector-swizzle-component-sequence}. The type of a swizzle
-expression is a vector of the same element type as the postfix expression before
-the dot, with a number of elements equal to the number of components in the
+expression is a vector of the same element type as the vector postfix
+expression or type of the scalar postfix expression before the dot, with a
+number of elements equal to the number of components in the
 \textit{vector-swizzle-component-sequence}.
 
 \p Vector swizzle components map to elements of the vector in the following way:
@@ -229,7 +231,8 @@ the dot, with a number of elements equal to the number of components in the
 
 \p A program is ill-formed if any component in the
 \textit{swizzle-component-sequence} refers to an element index that is out of
-range of the vector type of the postfix expression before the dot.
+range of the vector type of the postfix expression before the dot or refers any
+element index other than 0 of a scalar type.
 
 \Sub{Matrix Swizzle}{Expr.Post.Swizzle.Matrix}
 \begin{grammar}
