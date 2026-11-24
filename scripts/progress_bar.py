@@ -167,7 +167,7 @@ def generate_progress_bar_svg(progress: int, start_date: date = DEFAULT_START_DA
 def main():
     parser = argparse.ArgumentParser(description="Generate an SVG progress bar from a PDF page count.")
     parser.add_argument("pdf", help="Path to the PDF file")
-    parser.add_argument("target", type=int, help="Target total page count (100% mark)")
+    parser.add_argument("target", type=int, help="Target total page count (100%% mark)")
     parser.add_argument("-o", "--output", help="Output file path (default: stdout)")
     parser.add_argument(
         "--start-date",
