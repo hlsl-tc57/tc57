@@ -50,65 +50,12 @@ the first element.
 <!-- I know it said not to include this yet, but I wrote it up before I started
 this, so I figured I may as well include it -->
 
-### Addition to [Lex.Literal.Vector]
-
-> 0 and 1 scalar elements are added to the scalar-element-sequence grammar
-
-```diff
- \begin{grammar}
-   \define{vector-literal}\br
-   integer-literal \texttt{.} scalar-element-sequence\br
-   floating-literal \texttt{.} scalar-element-sequence
- 
-   \define{scalar-element-sequence}\br
--  scalar-element-sequence-x\br
--  scalar-element-sequence-r
-+  \texttt{x} \opt(scalar-element-sequence-x)\br
-+  \texttt{r} \opt(scalar-element-sequence-r)\br
- 
-   \define{scalar-element-sequence-x}\br
--  \texttt{x}\br
--  scalar-element-sequence-x \texttt{x}
-+  scalar-element-x01\br
-+  scalar-element-sequence-x scalar-element-r01\br
- 
-   \define{scalar-element-sequence-r}\br
--  \texttt{r}\br
--  scalar-element-sequence-r \texttt{r}
-+  scalar-element-r01\br
-+  scalar-element-sequence-r scalar-element-r01\br
-+
-+  \define{scalar-element-x01} \textnormal{one of}\br
-+  \terminal{x 0 1}\br
-+
-+  \define{scalar-element-r01} \textnormal{one of}\br
-+  \terminal{r 0 1}\br
-+
- \end{grammar}
-```
-
-> The description of the `scalar-element-sequence` is expanded to describe the
-new behavior:
-
-A _scalar-element-sequence_ is an `r` followed by an optional
-_vector-swizzle-sequence-r_ or a `x` followed by an optional
-_vector-swizzle-sequence-x_. Each sequence is some combination of `0`, `1`, and
-either `r` or `x` components. Each `r` or `x` component refers to the value of
-the scalar literal. Explicit vector swizzle components `0` or `1` correspond to
-constant values inserted into the corresponding element of the output vector of
-the same element type and corresponding representation of the postfix expression
-for the values of zero and one for `0` and `1` respectively.
-
-A _scalar-element-sequence_ with no explicit components is equivalent to a
-vector splat conversion performed on the _integer-literal_ or _floating-literal_
-value [Conv.vsplat].
-
 ### Addition to [Expr.Post.Swizzle]
 
 > Description of when a postfix expression might be considered an lvalue is
 expanded
 
-If the postfix expression before the dot is an lvalue, is not a scalar, and the
+If the postfix expression before the dot is an lvalue and the
 _swizzle-component-sequence_ contains no repeated nor explicit components (`0`
 or `1`), the swizzle expression is an lvalue; otherwise it is a prvalue.
 
@@ -174,8 +121,8 @@ because vector literals already have their own grammar and limitations and there
 are some use cases such as quaternions that would benefit from the ability to
 insert a constant value at the front of a vector.
 
-The literal vector case may be ultimately left out of this entirely instead of
-limited to starting with an `x` or an `r`. It would simplify the spec some.
-It is of uncertain utility. It does enable something that is easy to do and
-creates maximum consistency between the left sides of the two swizzle targets
-which might minimize user astonishment.
+Allowing 0/1 swizzles on literal vectors was considered. It would enable
+something that is easy to do and creates maximum consistency between the left
+sides of the two swizzle targets which might minimize user astonishment. It
+would complicate the spec language and there is another way to accomplish it by
+chaining a swizzle onto the vector literal e.g. `1.x.xxx1`.
