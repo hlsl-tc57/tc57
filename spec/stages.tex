@@ -1,0 +1,77 @@
+\Ch{Pipeline Stages}{Stages}
+
+\p Shader programs are arranged by runtime drivers into a series of steps called
+a \textit{pipeline}. Depending on the type of workload being performed the
+pipeline may contain shaders implementing different \textit{stages}.
+
+\p The \textit{basic compute} stage is called the \textit{compute} stage.
+
+\p The \textit{basic rasterization} stages are the \textit{vertex} and
+\textit{fragment} stages.
+
+\begin{note}
+A fragment shader may also be called a \textit{pixel} shader.
+\end{note}
+
+\p The \textit{mesh primitive} stages are \textit{amplification} and
+\textit{mesh}.
+
+\p The \textit{ray tracing} stages are \textit{ray generation},
+\textit{intersection}, \textit{any hit}, \textit{closest hit}, \textit{miss},
+and \textit{callable}.
+
+\p During shader compilation the target shader stage must be know to the
+compiler. This may be provided by the compiler from the user, or with a source
+attribute (\ref{Decl.Attribute.Shader}). Declarations defined in the standard
+library clauses (\ref{Library}) may restrict availability based on target shader
+stage. A program is ill-formed if it relies on a declaration that is not
+available in the target shader stage. An implementation may omit diagnostics for
+provably unreachable.
+
+\p All conforming implementations must support the basic compute stage; all
+other stages are optional except that any conforming implementation that
+supports the mesh primitive stages or ray tracing stages must also support the
+basic rasterization stages.
+
+\p Each shader stage defines a set of special named input and output variables
+called \textit{system values}. A stage defines which system values are legal as
+inputs or outputs for each stage and what the values mean.
+
+\Sec{Compute Stage}{Stages.Compute}
+
+\p A compute shader represents a generic computation and may be used for general
+purpose programmability.
+
+\Sub{Input System Values}{Stages.Compute.Input}
+
+\Sec{Basic Rasterization Stages}{Stages.Rasterization}
+
+\p Each \gls{lane} in a vertex shader produces a mutated vertex value from a set
+of stage-provided and user-defined inputs. Each \gls{lane} in a fragment shader
+produces a color value for a rendered fragment which contributes to the final
+color value for one or more output pixels.
+
+\Sub{Input System Values}{Stages.Compute.Input}
+\Sub{Output System Values}{Stages.Compute.Output}
+
+\Sec{Mesh Primitive Stages}{Stages.Mesh}
+
+\p A mesh shading pipeline may optionally contain an amplification shader which
+is responsible for dispatching \gls{threadgroup}s and creating payloads for the
+mesh shader to operate on. A mesh shader operates on a small batch of vertices
+and primitives grouped together called a \textit{meshlet}, and performs a
+similar role to a vertex shader.
+
+\Sub{Input System Values}{Stages.Compute.Input}
+\Sub{Output System Values}{Stages.Compute.Output}
+
+\Sec{Ray Tracing Stages}{Stages.RayTracing}
+
+\p A ray tracing shader pipeline is comprised of a ray generation shader which
+begins the dispatch and launches rays into the scene. The pipeline may register
+intersection, closest hit, and any hit shaders to execute on ray collision
+conditions, or miss shaders to execute when no collision occurs. Callable
+shaders may be directly invoked from other ray tracing shader stages.
+
+\Sub{Input System Values}{Stages.Compute.Input}
+\Sub{Output System Values}{Stages.Compute.Output}
