@@ -170,3 +170,18 @@ diagnostic.
 conforming implementation will not support these keywords, will treat them as
 identifier tokens, and will error if they are encountered in grammar formations
 where identifiers are disallowed.
+
+\Sub{Tesselation and Geometry Stages}{AnnexB.LegacyHLSL.TessAndGeo}
+
+\p Existing implementations of \acrshort{hlsl} support the \textit{geometry}
+shader stage and the tesselation shader stages \textit{hull} and
+\textit{domain}.
+
+\p Geometry shaders are largely replaced by mesh shading (\ref{Stages.Mesh}) and
+are excluded from this standard since they are not the recommended way of
+authoring such workloads.
+
+\p Tesselation shader stages are still widely used today, however their
+functionality is also expected to be replaced by mesh shading
+(\ref{Stages.Mesh}), as such this standard has opted not to include tesselation
+stages.
