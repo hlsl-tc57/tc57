@@ -1,6 +1,6 @@
 ---
 title: 0020 - C++ Attributes
-slug: 0020
+slug: "0020"
 params:
   authors:
   - llvm-beanz: Chris Bieneman
