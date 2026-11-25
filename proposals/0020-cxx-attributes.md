@@ -1,6 +1,6 @@
 ---
-title: NNNN - C++ Attributes
-slug: NNNN
+title: 0020 - C++ Attributes
+slug: 0020
 params:
   authors:
   - llvm-beanz: Chris Bieneman
